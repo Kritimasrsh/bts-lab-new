@@ -8,17 +8,17 @@ export default function Ticket({
   className = "",
 }) {
   const accents = {
-    violet: "bg-violet",
-    coral: "bg-coral",
-    sun: "bg-sun",
-    mint: "bg-mint",
+    violet: "text-violet",
+    coral: "text-coral",
+    sun: "text-sun",
+    mint: "text-mint",
   };
 
   return (
     <div className={`ticket hover-lift flex flex-col ${className}`}>
       <div className="flex items-start gap-4 p-6">
         <span
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-ink/12 text-xl ${accents[accent]}`}
+          className={`flex h-12 w-12 shrink-0 items-center justify-center text-xl ${accents[accent]}`}
         >
           {icon}
         </span>

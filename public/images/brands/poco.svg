@@ -1,0 +1,14 @@
+<svg role="img" viewBox="0 0 120 68" xmlns="http://www.w3.org/2000/svg">
+  <title>POCO</title>
+  <rect width="120" height="68" rx="4" fill="#FFDD00"/>
+  <text
+    x="60"
+    y="46"
+    text-anchor="middle"
+    font-family="Arial Black, Impact, sans-serif"
+    font-weight="900"
+    font-size="32"
+    letter-spacing="1"
+    fill="#1A1A1A"
+  >POCO</text>
+</svg>
