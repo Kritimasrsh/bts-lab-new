@@ -66,19 +66,19 @@ export default function Navbar() {
         {/* Right Side */}
         <div className="hidden items-center gap-3 lg:flex">
           <a
-  href="tel:+97715354999"
-  className="inline-flex items-center gap-2 rounded-full border border-[#0F6A73] px-4 py-2 text-sm font-semibold text-[#0F6A73] transition hover:bg-[#0F6A73] hover:text-white"
->
-  <PhoneIcon className="h-4 w-4" />
-  +977-9866754678
-</a>
+            href="tel:+97715354999"
+            className="inline-flex items-center gap-2 rounded-full border border-[#0F6A73] px-4 py-2 text-sm font-semibold text-[#0F6A73] transition hover:bg-[#0F6A73] hover:text-white"
+          >
+            <PhoneIcon className="h-4 w-4" />
+            +977-9866754678
+          </a>
 
-<Link
-  href="/contact"
-  className="rounded-full bg-[#0F6A73] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0c5961]"
->
-  Contact
-</Link>
+          <Link
+            href="/contact"
+            className="rounded-full bg-[#0F6A73] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0c5961]"
+          >
+            Contact
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import PageHeader from "../components/PageHeader";
 import Ticket from "../components/Ticket";
 import CtaBanner from "../components/CtaBanner";
@@ -28,6 +29,19 @@ export default function ServicesPage() {
         title="Every repair, one counter."
         desc="Walk in with any brand, any issue. We diagnose for free and quote before we touch a single screw."
       />
+
+      {/* Image banner */}
+      <section className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="relative h-64 w-full overflow-hidden rounded-2xl sm:h-80 lg:h-96">
+          <Image
+            src="/images/services-banner.jpg"
+            alt="Technician repairing a phone at the Mobizilla counter"
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
