@@ -50,13 +50,13 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Navigation */}
         <nav className="hidden items-center gap-8 lg:flex">
           {LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-[15px] font-medium text-gray-700 transition hover:text-green-700"
+              className="text-[15px] font-medium text-gray-700 transition hover:text-[#0F6A73]"
             >
               {link.label}
             </Link>
@@ -66,7 +66,7 @@ export default function Navbar() {
         {/* Right Side */}
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="tel:+97715354999"
+            href="tel:+9779866754678"
             className="inline-flex items-center gap-2 rounded-full border border-[#0F6A73] px-4 py-2 text-sm font-semibold text-[#0F6A73] transition hover:bg-[#0F6A73] hover:text-white"
           >
             <PhoneIcon className="h-4 w-4" />
@@ -74,10 +74,10 @@ export default function Navbar() {
           </a>
 
           <Link
-            href="/contact"
+            href="/admin"
             className="rounded-full bg-[#0F6A73] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#0c5961]"
           >
-            Contact
+            Admin
           </Link>
         </div>
 
@@ -107,19 +107,19 @@ export default function Navbar() {
             ))}
 
             <a
-              href="tel:+97715354999"
-              className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-green-700 px-4 py-2 font-semibold text-green-700"
+              href="tel:+9779866754678"
+              className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-[#0F6A73] px-4 py-2 font-semibold text-[#0F6A73]"
             >
               <PhoneIcon className="h-4 w-4" />
-              +977-1-5354999
+              +977-9866754678
             </a>
 
             <Link
-              href="/contact"
+              href="/admin"
               onClick={() => setOpen(false)}
-              className="mt-3 inline-flex w-fit rounded-full bg-green-700 px-5 py-2 font-semibold text-white"
+              className="mt-3 inline-flex w-fit rounded-full bg-[#0F6A73] px-5 py-2 font-semibold text-white"
             >
-              Contact
+              Admin
             </Link>
           </nav>
         </div>
