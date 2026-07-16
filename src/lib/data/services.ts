@@ -1,0 +1,85 @@
+export type ServiceAccent = "violet" | "coral" | "sun" | "mint";
+
+export type Service = {
+  icon: string;
+  title: string;
+  desc: string;
+  price: string;
+  code: string;
+  accent: ServiceAccent;
+};
+
+export const SERVICES: Service[] = [
+  {
+    icon: "📱",
+    title: "Screen replacement",
+    desc: "LCD, OLED & AMOLED swaps for iPhone, Samsung, Xiaomi, Oppo, Vivo and more, with touch calibration on every job.",
+    price: "From ₨2,999",
+    code: "TKT-01",
+    accent: "violet",
+  },
+  {
+    icon: "🔋",
+    title: "Battery replacement",
+    desc: "Original and high-capacity batteries, safe disposal of the old one, and a full health diagnostic.",
+    price: "From ₨1,499",
+    code: "TKT-02",
+    accent: "coral",
+  },
+  {
+    icon: "💧",
+    title: "Water damage rescue",
+    desc: "Ultrasonic cleaning and board-level corrosion treatment—we've saved phones others called dead.",
+    price: "From ₨3,999",
+    code: "TKT-03",
+    accent: "mint",
+  },
+  {
+    icon: "🧩",
+    title: "Back glass & housing",
+    desc: "Laser-precision back glass replacement that keeps wireless charging fully intact.",
+    price: "From ₨2,499",
+    code: "TKT-04",
+    accent: "sun",
+  },
+  {
+    icon: "🛠️",
+    title: "Motherboard repair",
+    desc: "Chip-level diagnostics and micro-soldering for charging ports, boot loops and shorted boards.",
+    price: "Custom quote",
+    code: "TKT-05",
+    accent: "violet",
+  },
+  {
+    icon: "🩺",
+    title: "Free diagnostics",
+    desc: "Not sure what's wrong? We check it properly before you spend a single rupee.",
+    price: "Always free",
+    code: "TKT-06",
+    accent: "coral",
+  },
+  {
+    icon: "🔊",
+    title: "Speaker & mic repair",
+    desc: "Crackling calls or silent speakers fixed with genuine replacement components.",
+    price: "From ₨999",
+    code: "TKT-07",
+    accent: "mint",
+  },
+  {
+    icon: "📷",
+    title: "Camera module repair",
+    desc: "Blurry, black, or cracked camera lenses replaced and recalibrated.",
+    price: "From ₨1,999",
+    code: "TKT-08",
+    accent: "sun",
+  },
+  {
+    icon: "🔓",
+    title: "Software & unlocking",
+    desc: "OS troubleshooting, data recovery support, and carrier unlocking.",
+    price: "From ₨799",
+    code: "TKT-09",
+    accent: "violet",
+  },
+];
