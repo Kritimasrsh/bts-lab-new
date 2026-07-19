@@ -1,6 +1,28 @@
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import type { ReactNode } from "react";
+import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import Providers from "@/components/Providers";
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800", "900"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata = {
   title: "BTS Lab — Mobile Repair, Genuine Parts & Buyback | Nepal",
@@ -8,21 +30,14 @@ export const metadata = {
     "BTS Lab is your one-stop lab for mobile repairs, genuine parts and buyback in Nepal. Pick your brand, model and problem to get an instant quote — expert technicians, genuine parts, pickup & delivery, and same-day fixes.",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`h-full antialiased ${archivo.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Check } from "lucide-react";
+import AnimatedButton from "@/components/AnimatedButton";
 
 const PERKS = ["Doorstep service", "Safety with no risk", "90-day warranty"];
 
@@ -29,12 +29,11 @@ export default function DoorstepCta() {
             </div>
           </div>
 
-          <Link
-            href="/contact"
-            className="hover-lift focus-ring relative inline-flex shrink-0 items-center justify-center rounded-full bg-accent-yellow px-8 py-4 font-display text-sm font-bold uppercase tracking-wide text-ink"
-          >
-            Contact Us
-          </Link>
+          <div className="relative shrink-0">
+            <AnimatedButton href="/contact" onDark>
+              Contact Us
+            </AnimatedButton>
+          </div>
         </div>
       </div>
     </section>

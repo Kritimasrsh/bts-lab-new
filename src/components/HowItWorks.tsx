@@ -1,71 +1,87 @@
-import Eyebrow from "@/components/Eyebrow";
+"use client";
+
+import { motion, type Variants } from "motion/react";
+import { ClipboardCheck, Wrench, PackageCheck } from "lucide-react";
 
 const STEPS = [
   {
     num: "01",
     title: "Tell us your device & problem",
     desc: "Select your brand, model and the issue you're facing. Takes under a minute and gives you an instant estimate.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <rect x="5" y="2" width="14" height="20" rx="2.5" />
-        <path d="M10 18h4" />
-        <path d="m8.5 9 2 2 4-4" />
-      </svg>
-    ),
+    Icon: ClipboardCheck,
   },
   {
     num: "02",
     title: "We diagnose & fix it",
     desc: "Free doorstep pickup or walk-in. Certified technicians diagnose the fault and repair with genuine, quality-tested parts.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2 2.5-2.5Z" />
-      </svg>
-    ),
+    Icon: Wrench,
   },
   {
     num: "03",
     title: "Get it back — warrantied",
-    desc: "Your phone is delivered back tested and warrantied. Track everything from your BTS Lab portal, from quote to delivery.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5l-8-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
+    desc: "Delivered back tested and warrantied. Track everything from your BTS Lab account, from quote to delivery.",
+    Icon: PackageCheck,
   },
 ];
 
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.15 } },
+};
+const step: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export default function HowItWorks() {
   return (
-    <section className="border-b border-ink/10 bg-paper">
-      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+    <section className="border-b border-ink/10 bg-paper py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
-          <Eyebrow>How it works</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
-            From broken to brand-new in three steps.
+          <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand">
+            How it works
+          </span>
+          <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+            From broken to brand-new
+            <br />
+            in three steps.
           </h2>
-          <p className="mt-3 font-sans text-base text-ink-soft">
-            No guesswork, no runaround. BTS Lab turns a stressful repair into a simple, trackable process.
+          <p className="mt-4 text-base text-ink-soft">
+            No guesswork, no runaround. BTS Lab turns a stressful repair into a simple,
+            trackable process.
           </p>
         </div>
 
-        <div className="relative mt-12 grid gap-6 md:grid-cols-3">
-          {STEPS.map((step) => (
-            <div key={step.num} className="ticket hover-lift flex flex-col p-6">
-              <div className="flex items-center justify-between">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand">
-                  {step.icon}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="relative mt-16 grid gap-12 md:grid-cols-3 md:gap-8"
+        >
+          {/* connecting line (desktop) */}
+          <div
+            className="absolute left-0 right-0 top-8 hidden h-px bg-linear-to-r from-brand/0 via-brand/30 to-brand/0 md:block"
+            aria-hidden
+          />
+
+          {STEPS.map(({ num, title, desc, Icon }) => (
+            <motion.div key={num} variants={step} className="relative">
+              {/* node: icon circle + big ghost number */}
+              <div className="flex items-center gap-4">
+                <span className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-brand/20 bg-paper text-brand shadow-[0_8px_24px_-12px_rgba(15,106,115,0.5)]">
+                  <Icon className="h-7 w-7" strokeWidth={1.7} />
                 </span>
-                <span className="font-display text-3xl font-extrabold text-ink/10">
-                  {step.num}
+                <span className="font-display text-6xl font-extrabold leading-none text-ink/[0.06]">
+                  {num}
                 </span>
               </div>
-              <h3 className="mt-5 font-display text-lg font-bold text-ink">{step.title}</h3>
-              <p className="mt-2 font-sans text-sm leading-relaxed text-ink-soft">{step.desc}</p>
-            </div>
+
+              <h3 className="mt-6 font-display text-xl font-bold text-ink">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">{desc}</p>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 import {
   motion,
@@ -11,183 +10,201 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import { Phone, ShieldCheck, Truck, Clock } from "lucide-react";
+import { ShieldCheck, Cpu } from "lucide-react";
+import AnimatedButton from "@/components/AnimatedButton";
+import Counter from "@/components/Counter";
+import HeroBackground from "@/components/HeroBackground";
+import { IconWrench, IconUsers, IconShieldCheck, IconGauge } from "@/components/icons/StatIcons";
 
 const container: Variants = {
   hidden: {},
-  show: {
-    transition: { staggerChildren: 0.09, delayChildren: 0.05 },
-  },
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
-
 const rise: Variants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
+const wordContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+const wordBlur: Variants = {
+  hidden: { opacity: 0, filter: "blur(12px)", y: 16 },
+  show: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
 
-const BADGES = [
-  { icon: Truck, label: "Doorstep pickup" },
-  { icon: ShieldCheck, label: "Genuine parts" },
-  { icon: Clock, label: "Same-day fixes" },
+type Stat = { Icon: (p: { className?: string }) => React.ReactElement; to: number; suffix: string; label: string };
+const STATS: Stat[] = [
+  { Icon: IconWrench, to: 10000, suffix: "+", label: "Devices repaired" },
+  { Icon: IconUsers, to: 8000, suffix: "+", label: "Happy customers" },
+  { Icon: IconShieldCheck, to: 90, suffix: "-day", label: "Repair warranty" },
+  { Icon: IconGauge, to: 98, suffix: "%", label: "Success rate" },
 ];
+
+const HEADLINE = ["We", "Fix", "What", "Others"];
 
 export default function Hero() {
   const reduce = useReducedMotion();
   const areaRef = useRef<HTMLDivElement>(null);
 
-  // Mouse parallax for the exploded-phone image
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const springCfg = { stiffness: 120, damping: 18, mass: 0.4 };
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), springCfg);
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), springCfg);
-  const transX = useSpring(useTransform(mx, [-0.5, 0.5], [-14, 14]), springCfg);
-  const transY = useSpring(useTransform(my, [-0.5, 0.5], [-14, 14]), springCfg);
+  const spring = { stiffness: 110, damping: 18, mass: 0.5 };
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), spring);
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), spring);
+  const tX = useSpring(useTransform(mx, [-0.5, 0.5], [-14, 14]), spring);
+  const tY = useSpring(useTransform(my, [-0.5, 0.5], [-14, 14]), spring);
 
-  function handleMove(e: React.MouseEvent<HTMLDivElement>) {
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
     if (reduce || !areaRef.current) return;
-    const rect = areaRef.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
+    const r = areaRef.current.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
   }
-  function handleLeave() {
+  function onLeave() {
     mx.set(0);
     my.set(0);
   }
 
   return (
-    <section className="relative overflow-hidden bg-paper">
-      {/* soft background wash + dotted grid */}
-      <div className="hero-glow pointer-events-none absolute inset-0" aria-hidden />
-      <div className="grid-bg pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+    <section className="relative isolate -mt-20 overflow-hidden pt-20">
+      <HeroBackground />
 
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 px-5 py-14 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:py-20">
-        {/* LEFT — message */}
-        <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col">
-          <motion.span variants={rise} className="section-label text-brand">
-            <span className="mr-2 inline-block h-2 w-2 rounded-full bg-red-600 align-middle" />
-            BTS Lab · Mobile Repair
-          </motion.span>
-
-          <motion.h1
-            variants={rise}
-            className="display-heading mt-5 text-[2.65rem] text-ink sm:text-6xl lg:text-[4.1rem]"
-          >
-            Phone Repair
-            <br />
-            That Comes{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">to You</span>
-              <motion.span
-                aria-hidden
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
-                className="absolute inset-x-0 bottom-1 z-0 h-4 origin-left rounded bg-brand/25 sm:bottom-2 sm:h-5"
-              />
-            </span>
-          </motion.h1>
-
-          <motion.p variants={rise} className="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">
-            BTS Lab is a revolutionary service designed to simplify mobile &amp; computer
-            repairs — genuine parts, certified technicians and doorstep pickup, without
-            making it hard on your wallet.
-          </motion.p>
-
-          <motion.div variants={rise} className="mt-8 flex flex-wrap items-center gap-5">
-            <a href="tel:+9779866754678" className="group inline-flex items-center gap-3 text-ink">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-paper transition group-hover:bg-brand-deep">
-                <Phone className="h-5 w-5" />
-              </span>
-              <span className="font-display text-lg font-extrabold tracking-tight">
-                +977-9866754678
-              </span>
-            </a>
-
-            <Link
-              href="/services"
-              className="hover-lift focus-ring inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-paper"
+      <div className="mx-auto max-w-7xl px-5 pb-14 pt-10 sm:px-8 lg:pb-16 lg:pt-16">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          {/* LEFT — copy */}
+          <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col text-center lg:text-left">
+            <motion.span
+              variants={rise}
+              className="mx-auto inline-flex items-center gap-2 rounded-full border border-paper/20 bg-paper/5 px-3.5 py-1.5 font-mono-tag text-[11px] uppercase tracking-[0.24em] text-brand-mint backdrop-blur-sm lg:mx-0"
             >
-              Book a Repair
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-4 w-4">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </Link>
-          </motion.div>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-mint" />
+              Certified Repair Lab · Nepal
+            </motion.span>
 
-          <motion.div variants={rise} className="mt-8 flex flex-wrap gap-2.5">
-            {BADGES.map(({ icon: Icon, label }) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-paper px-3.5 py-2 text-xs font-semibold text-ink-soft"
+            <motion.h1
+              variants={wordContainer}
+              className="mt-6 font-display text-4xl font-extrabold leading-[1.04] tracking-tight text-paper sm:text-6xl lg:text-[4.25rem]"
+            >
+              <span className="flex flex-wrap justify-center gap-x-4 lg:justify-start">
+                {HEADLINE.map((word) => (
+                  <motion.span key={word} variants={wordBlur} className="inline-block">
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
+              <motion.span variants={wordBlur} className="mt-1 inline-block text-brand-mint">
+                Can&apos;t Fix.
+              </motion.span>
+            </motion.h1>
+
+            <motion.p variants={rise} className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-paper/80 sm:text-lg lg:mx-0">
+              Board-level phone, tablet &amp; laptop repair — genuine parts, certified
+              technicians, doorstep pickup and a warranty on every fix.
+            </motion.p>
+
+            <motion.div variants={rise} className="mt-9 flex flex-wrap items-center justify-center gap-6 lg:justify-start">
+              <AnimatedButton href="/services" onDark>
+                Book a Repair
+              </AnimatedButton>
+              <a
+                href="tel:+9779866754678"
+                className="focus-ring font-display text-sm font-bold uppercase tracking-wide text-paper/90 underline-offset-4 hover:text-paper hover:underline"
               >
-                <Icon className="h-3.5 w-3.5 text-brand-mint" />
-                {label}
-              </span>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* RIGHT — floating phone over a solid brand-teal block (reference style) */}
-        <div
-          ref={areaRef}
-          onMouseMove={handleMove}
-          onMouseLeave={handleLeave}
-          className="relative flex min-h-[440px] items-center justify-center py-6 sm:min-h-[520px]"
-          style={{ perspective: 1200 }}
-        >
-          {/* solid teal block */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="absolute left-1/2 top-1/2 h-[74%] w-[82%] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-brand"
-            aria-hidden
-          >
-            {/* subtle dotted texture inside the block */}
-            <div className="grid-bg absolute inset-0 rounded-2xl opacity-20" aria-hidden />
-            {/* red accent corner tab */}
-            <span className="absolute -left-3 -top-3 h-16 w-16 rounded-xl bg-red-600/90 shadow-lg" aria-hidden />
-          </motion.div>
-
-          {/* the floating phone with mouse parallax + float */}
-          <motion.div
-            style={reduce ? undefined : { rotateX: rotX, rotateY: rotY, x: transX, y: transY }}
-            className="relative z-10"
-          >
-            <motion.div
-              animate={reduce ? undefined : { y: [0, -14, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Image
-                src="/illustration1.jpeg"
-                alt="Exploded view of a smartphone showing internal repair components"
-                width={520}
-                height={700}
-                priority
-                className="h-auto w-[62%] max-w-[340px] rounded-3xl object-contain shadow-[0_50px_90px_-30px_rgba(13,43,46,0.65)] ring-1 ring-black/10 sm:w-full"
-              />
+                Or call +977-9866754678
+              </a>
             </motion.div>
           </motion.div>
 
-          {/* floating "Guaranteed Safety" card — overlaps block edge like the reference */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="absolute -right-1 bottom-8 z-20 hidden w-56 rounded-xl bg-paper p-4 shadow-[0_20px_50px_-20px_rgba(13,43,46,0.45)] ring-1 ring-ink/5 sm:block"
+          {/* RIGHT — framed device stage (spotlight ring + accent chips) */}
+          <div
+            ref={areaRef}
+            onMouseMove={onMove}
+            onMouseLeave={onLeave}
+            className="relative hidden items-center justify-center lg:flex"
+            style={{ perspective: 1200 }}
           >
-            <div className="flex items-center gap-2 text-brand">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/10">
-                <ShieldCheck className="h-4 w-4" />
-              </span>
-              <span className="font-display text-sm font-bold text-ink">Guaranteed Safety</span>
-            </div>
-            <p className="mt-2 text-xs leading-relaxed text-ink-soft">
-              90-day warranty on every repair. If it&apos;s not right, we make it right.
-            </p>
-          </motion.div>
+            <motion.div
+              initial={reduce ? undefined : { opacity: 0, scale: 0.92 }}
+              animate={reduce ? undefined : { opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
+              className="relative flex h-[520px] w-[440px] items-center justify-center"
+            >
+              {/* spotlight glow */}
+              <div className="absolute inset-0 rounded-full bg-brand/25 blur-3xl" aria-hidden />
+              {/* concentric rings */}
+              <div className="absolute h-[420px] w-[420px] rounded-full border border-paper/10" aria-hidden />
+              <div className="absolute h-[320px] w-[320px] rounded-full border border-paper/15" aria-hidden />
+              <div
+                className="absolute h-[420px] w-[420px] rounded-full"
+                style={{ background: "conic-gradient(from 0deg, transparent, rgba(47,168,154,0.25), transparent 60%)" }}
+                aria-hidden
+              />
+
+              {/* the exploded phone with parallax + float */}
+              <motion.div
+                style={reduce ? undefined : { rotateX: rotX, rotateY: rotY, x: tX, y: tY }}
+                className="relative z-10"
+              >
+                <motion.div
+                  animate={reduce ? undefined : { y: [0, -14, 0] }}
+                  transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Image
+                    src="/phone-decomposed.png"
+                    alt="Exploded view of a smartphone showing every internal repair component"
+                    width={520}
+                    height={700}
+                    priority
+                    className="h-auto w-[340px] object-contain mix-blend-screen"
+                  />
+                </motion.div>
+              </motion.div>
+
+              {/* floating accent chips */}
+              <motion.div
+                initial={reduce ? undefined : { opacity: 0, y: 12 }}
+                animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="absolute left-0 top-16 z-20 flex items-center gap-2 rounded-xl border border-paper/15 bg-ink/60 px-3 py-2 backdrop-blur-md"
+              >
+                <ShieldCheck className="h-4 w-4 text-brand-mint" />
+                <span className="text-xs font-semibold text-paper">Genuine parts</span>
+              </motion.div>
+              <motion.div
+                initial={reduce ? undefined : { opacity: 0, y: 12 }}
+                animate={reduce ? undefined : { opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+                className="absolute bottom-16 right-0 z-20 flex items-center gap-2 rounded-xl border border-paper/15 bg-ink/60 px-3 py-2 backdrop-blur-md"
+              >
+                <Cpu className="h-4 w-4 text-brand-mint" />
+                <span className="text-xs font-semibold text-paper">Board-level repair</span>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
+
+        {/* stats row with custom SVG icons */}
+        <motion.div
+          initial={reduce ? undefined : { opacity: 0, y: 20 }}
+          animate={reduce ? undefined : { opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="mt-12 grid grid-cols-2 gap-y-8 border-t border-paper/15 pt-10 lg:grid-cols-4"
+        >
+          {STATS.map(({ Icon, to, suffix, label }) => (
+            <div key={label} className="flex flex-col items-center gap-3 text-center lg:items-start lg:text-left">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-paper/10 text-brand-mint">
+                <Icon className="h-6 w-6" />
+              </span>
+              <span className="font-display text-3xl font-extrabold tracking-tight text-paper sm:text-4xl">
+                <Counter to={to} suffix={suffix} />
+              </span>
+              <span className="font-mono-tag text-[11px] uppercase tracking-widest text-paper/60">
+                {label}
+              </span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

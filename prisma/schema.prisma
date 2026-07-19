@@ -1,0 +1,173 @@
+// BTS Lab — repair flow schema
+// Brand → Model → (global) Problem list → RepairRequest
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Auth (Auth.js / NextAuth v5 + Prisma adapter) + customer accounts
+// ---------------------------------------------------------------------------
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  passwordHash  String? // null for OAuth-only users
+  role          Role            @default(CUSTOMER)
+  accounts      Account[]
+  sessions      Session[]
+  requests      RepairRequest[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+/// A phone/device manufacturer (admin-managed).
+model Brand {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logo      String? // public path or URL
+  order     Int      @default(0) // display ordering
+  active    Boolean  @default(true)
+  models    Model[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, order])
+}
+
+/// A specific device model (admin-managed), grouped under a series for display.
+/// e.g. brand=Apple, series="iPhone 11", name="iPhone 11 Pro Max".
+model Model {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String
+  series    String? // e.g. "iPhone 11" — used to group models in the UI
+  image     String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  brand     Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  brandId   String
+  requests  RepairRequest[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([brandId, slug])
+  @@index([brandId, active, order])
+}
+
+/// A group of problems shown as a heading (Display, Audio, Body, …).
+model ProblemCategory {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  order     Int       @default(0)
+  problems  Problem[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([order])
+}
+
+/// A single selectable problem (global — same list for every model).
+model Problem {
+  id             String                @id @default(cuid())
+  name           String
+  slug           String                @unique
+  order          Int                   @default(0)
+  active         Boolean               @default(true)
+  category       ProblemCategory       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId     String
+  onRequests     RepairRequestProblem[]
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  @@unique([categoryId, name])
+  @@index([categoryId, active, order])
+}
+
+/// A repair enquiry submitted from the public flow.
+model RepairRequest {
+  id            String                 @id @default(cuid())
+  model         Model                  @relation(fields: [modelId], references: [id])
+  modelId       String
+  problems      RepairRequestProblem[]
+  customNote    String? // free-text "describe your problem"
+  customerName  String?
+  customerPhone String?
+  status        RepairStatus           @default(NEW)
+  // Optional link to a logged-in user (anonymous requests still allowed).
+  user          User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId        String?
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId])
+}
+
+/// Join table: which problems a given request selected.
+model RepairRequestProblem {
+  id        String        @id @default(cuid())
+  request   RepairRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestId String
+  problem   Problem       @relation(fields: [problemId], references: [id])
+  problemId String
+
+  @@unique([requestId, problemId])
+}
+
+enum RepairStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
