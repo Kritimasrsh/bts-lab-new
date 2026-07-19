@@ -20,6 +20,52 @@ export type SeedCategory = {
   problems: string[];
 };
 
+export type SeedReview = {
+  author: string;
+  rating: number;
+  text: string;
+  service: string;
+};
+
+export const GOOGLE_REVIEWS: SeedReview[] = [
+  {
+    author: "Rajesh Karki",
+    rating: 5,
+    text: "Got my iPhone 12 screen replaced here. Genuine OLED, perfect touch, and done the same day. Fair price and very professional staff.",
+    service: "Screen replacement",
+  },
+  {
+    author: "Sushmita Gurung",
+    rating: 5,
+    text: "They revived my water-damaged phone after two other shops gave up. Kept me updated the whole time. Highly recommend BTS Lab.",
+    service: "Water damage rescue",
+  },
+  {
+    author: "Bibek Shrestha",
+    rating: 5,
+    text: "Sold my old Samsung through their buyback — instant payment, no haggling drama. Smoothest experience I've had.",
+    service: "Buyback",
+  },
+  {
+    author: "Anita Tamang",
+    rating: 5,
+    text: "Battery was draining in hours. New genuine battery + full diagnostic and it lasts all day again. Honest people.",
+    service: "Battery replacement",
+  },
+  {
+    author: "Prakash Adhikari",
+    rating: 5,
+    text: "Motherboard-level repair on a dead OnePlus — nobody else in town would touch it. These guys fixed it. Real technicians.",
+    service: "Motherboard repair",
+  },
+  {
+    author: "Melina Rai",
+    rating: 5,
+    text: "Doorstep pickup and delivery made it so easy. Camera fixed and recalibrated perfectly. Warranty gave me peace of mind.",
+    service: "Camera repair",
+  },
+];
+
 function slugify(s: string) {
   return s
     .toLowerCase()

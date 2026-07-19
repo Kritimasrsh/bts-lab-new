@@ -2,20 +2,19 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Clock } from "lucide-react";
 import OptionWheel from "@/components/animated/OptionWheel";
 import ShineButton from "@/components/ShineButton";
-import { SERVICES } from "@/lib/data/services";
+import { SHOWCASE_SERVICES } from "@/lib/data/services";
 
-const ITEMS = SERVICES.map((s) => s.title);
+const ITEMS = SHOWCASE_SERVICES.map((s) => s.title);
 
 export default function ServicesWheel() {
   const [index, setIndex] = useState(0);
-  const active = SERVICES[index] ?? SERVICES[0];
+  const active = SHOWCASE_SERVICES[index] ?? SHOWCASE_SERVICES[0];
 
   return (
     <section className="relative overflow-hidden bg-ink py-20 text-paper sm:py-24">
-      {/* ambient glow */}
       <div className="pointer-events-none absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-brand/25 blur-3xl" aria-hidden />
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-[0.06]" aria-hidden />
 
@@ -30,19 +29,19 @@ export default function ServicesWheel() {
             repair services.
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-            Scroll or drag the dial to explore what our lab handles — every job with genuine
-            parts and a warranty.
+            Scroll or drag the dial to explore what our lab handles — from cracked screens to
+            board-level rescues, every job with genuine parts and a warranty.
           </p>
         </div>
 
-        <div className="mt-12 grid items-center gap-10 lg:grid-cols-2">
+        <div className="mt-12 grid items-stretch gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           {/* interactive wheel */}
-          <div className="relative h-[360px] select-none sm:h-[420px]">
+          <div className="relative h-[380px] select-none sm:h-[460px]">
             <OptionWheel
               items={ITEMS}
               defaultSelected={0}
               side="left"
-              textColor="rgba(255,255,255,0.35)"
+              textColor="rgba(255,255,255,0.32)"
               activeColor="#ffffff"
               fontSize={1.9}
               spacing={1.5}
@@ -55,40 +54,57 @@ export default function ServicesWheel() {
             />
           </div>
 
-          {/* synced detail panel */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active.code}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="rounded-3xl border border-paper/10 bg-paper/[0.03] p-8 backdrop-blur-sm"
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand/20 text-3xl">
-                {active.icon}
-              </span>
-              <h3 className="mt-6 font-display text-2xl font-extrabold">{active.title}</h3>
-              <p className="mt-3 leading-relaxed text-paper/70">{active.desc}</p>
-              <div className="mt-6 flex items-center gap-4">
-                <span className="font-display text-lg font-extrabold text-brand-mint">
-                  {active.price}
-                </span>
-                <span className="font-mono-tag text-[11px] uppercase tracking-widest text-paper/40">
-                  {active.code}
-                </span>
-              </div>
-              <div className="mt-8">
-                <ShineButton href="/services" onDark>
-                  Book this repair
-                </ShineButton>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          {/* detail — no card, open editorial layout that fills the height */}
+          <div className="flex min-h-[460px] flex-col justify-center border-l border-paper/10 lg:pl-12">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active.title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{active.icon}</span>
+                  <span className="font-mono-tag text-[11px] uppercase tracking-[0.2em] text-brand-mint">
+                    {active.tagline}
+                  </span>
+                </div>
+
+                <h3 className="mt-5 font-display text-3xl font-extrabold sm:text-4xl">
+                  {active.title}
+                </h3>
+                <p className="mt-4 max-w-lg text-base leading-relaxed text-paper/70">
+                  {active.desc}
+                </p>
+
+                <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                  {active.covers.map((c) => (
+                    <li key={c} className="flex items-center gap-2.5 text-sm text-paper/85">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-mint/20 text-brand-mint">
+                        <Check className="h-3 w-3" strokeWidth={3} />
+                      </span>
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-7 flex flex-wrap items-center gap-6">
+                  <span className="inline-flex items-center gap-2 text-sm text-paper/70">
+                    <Clock className="h-4 w-4 text-brand-mint" />
+                    {active.turnaround}
+                  </span>
+                  <ShineButton href="/services" onDark>
+                    Book this repair
+                  </ShineButton>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         <div className="mt-12 flex items-center gap-2 text-sm font-semibold text-paper/60">
-          <span>See the full menu</span>
+          <span>See everything we repair</span>
           <ArrowRight className="h-4 w-4 text-brand-mint" />
           <a href="/services" className="text-brand-mint hover:underline">
             All repair services

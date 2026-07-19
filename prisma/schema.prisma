@@ -9,6 +9,23 @@ datasource db {
   provider = "postgresql"
 }
 
+/// Customer reviews shown in the "Google Reviews" homepage section.
+/// Admin-managed (add/edit/hide, set order and the overall rating).
+model GoogleReview {
+  id        String   @id @default(cuid())
+  author    String
+  rating    Int      @default(5) // 1–5 stars
+  text      String
+  service   String? // e.g. "Screen replacement" — small label under the review
+  avatarUrl String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, order])
+}
+
 // ---------------------------------------------------------------------------
 // Auth (Auth.js / NextAuth v5 + Prisma adapter) + customer accounts
 // ---------------------------------------------------------------------------

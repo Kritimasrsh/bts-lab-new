@@ -39,9 +39,15 @@ export default function HeroBackground() {
         </div>
       ))}
 
-      {/* lowered overlay so the photos read through */}
-      <div className="absolute inset-0 bg-linear-to-b from-ink/70 via-ink/55 to-ink/80" />
-      <div className="absolute inset-0 bg-brand/15 mix-blend-multiply" />
+      {/* refined dark teal overlay — crisp text, intentional (not muddy) */}
+      <div className="absolute inset-0 bg-brand-deep/70 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/55 to-ink/70" />
+      {/* subtle vignette to focus the centered content */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(6,26,28,0.6) 100%)" }}
+        aria-hidden
+      />
     </div>
   );
 }
