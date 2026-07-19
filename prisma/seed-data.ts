@@ -66,6 +66,46 @@ export const GOOGLE_REVIEWS: SeedReview[] = [
   },
 ];
 
+export type SeedTestimonial = {
+  author: string;
+  role: string;
+  rating: number;
+  quote: string;
+  featured: boolean;
+};
+
+export const TESTIMONIALS: SeedTestimonial[] = [
+  {
+    author: "Priya Maharjan",
+    role: "iPhone 12 Pro · Water damage",
+    rating: 5,
+    quote:
+      "They fixed my water-damaged phone when three other shops told me it was dead. Honest pricing, kept me updated the whole time, and it works like new.",
+    featured: true,
+  },
+  {
+    author: "Rajesh K.",
+    role: "Screen replacement",
+    rating: 5,
+    quote: "Excellent work and the price was very fair. Done the same day.",
+    featured: false,
+  },
+  {
+    author: "Suman S.",
+    role: "Buyback",
+    rating: 5,
+    quote: "Sold my old Samsung through them — fast payment, smooth process.",
+    featured: false,
+  },
+  {
+    author: "Anita T.",
+    role: "Battery swap",
+    rating: 5,
+    quote: "Genuine battery, proper diagnostics. My phone lasts all day again.",
+    featured: false,
+  },
+];
+
 function slugify(s: string) {
   return s
     .toLowerCase()

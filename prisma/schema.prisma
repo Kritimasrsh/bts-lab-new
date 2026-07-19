@@ -26,6 +26,23 @@ model GoogleReview {
   @@index([published, order])
 }
 
+/// On-site testimonials shown in the "Trusted by thousands" section.
+/// Admin-managed. One may be marked `featured` to become the large quote.
+model Testimonial {
+  id        String   @id @default(cuid())
+  author    String
+  role      String? // e.g. "iPhone 12 Pro · Water damage"
+  rating    Int      @default(5)
+  quote     String
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, order])
+}
+
 // ---------------------------------------------------------------------------
 // Auth (Auth.js / NextAuth v5 + Prisma adapter) + customer accounts
 // ---------------------------------------------------------------------------

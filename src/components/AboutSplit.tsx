@@ -18,10 +18,7 @@ export default function AboutSplit() {
           {/* LEFT — heading over yellow block + photos */}
           <div className="relative">
             <div className="relative">
-              <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand">
-                03 / About Us
-              </span>
-              <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[2.9rem]">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[2.9rem]">
                 Award-winning
                 <br />
                 <span className="text-brand">repair lab</span> in the city.

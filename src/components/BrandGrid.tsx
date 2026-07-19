@@ -23,10 +23,7 @@ export default function BrandGrid() {
         {/* header */}
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand">
-              01 / Select your device
-            </span>
-            <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+            <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
               Choose your brand
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-soft">

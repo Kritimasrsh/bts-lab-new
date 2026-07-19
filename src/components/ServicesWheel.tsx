@@ -20,10 +20,7 @@ export default function ServicesWheel() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
-          <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand-mint">
-            What we fix
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
             Spin through our
             <br />
             repair services.

@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { BRANDS, PROBLEM_CATEGORIES, GOOGLE_REVIEWS, slugify } from "./seed-data";
+import { BRANDS, PROBLEM_CATEGORIES, GOOGLE_REVIEWS, TESTIMONIALS, slugify } from "./seed-data";
 
 // Prisma 7 requires a driver adapter. dotenv/config loads DATABASE_URL from .env
 // since the seed runs outside Next.js (which would otherwise inject it).
@@ -83,6 +83,27 @@ async function main() {
     console.log(`  ✓ ${GOOGLE_REVIEWS.length} google reviews`);
   } else {
     console.log(`  • ${existingReviews} google reviews already present — skipped`);
+  }
+
+  // --- Testimonials (only seed if none exist) ---
+  const existingTestimonials = await prisma.testimonial.count();
+  if (existingTestimonials === 0) {
+    for (let i = 0; i < TESTIMONIALS.length; i++) {
+      const t = TESTIMONIALS[i];
+      await prisma.testimonial.create({
+        data: {
+          author: t.author,
+          role: t.role,
+          rating: t.rating,
+          quote: t.quote,
+          featured: t.featured,
+          order: i,
+        },
+      });
+    }
+    console.log(`  ✓ ${TESTIMONIALS.length} testimonials`);
+  } else {
+    console.log(`  • ${existingTestimonials} testimonials already present — skipped`);
   }
 
   console.log("Seed complete.");

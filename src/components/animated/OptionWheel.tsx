@@ -371,11 +371,32 @@ const OptionWheel = ({
           }}
           role="option"
           aria-selected={selectedIndex === index}
-          className={`absolute top-1/2 cursor-pointer whitespace-nowrap leading-none will-change-[transform,opacity,filter] [font-size:var(--ow-font-size)] [color:color-mix(in_srgb,var(--ow-active-color)_calc(var(--ow-p,0)*100%),var(--ow-text-color))] ${
-            side === 'right' ? 'right-[var(--ow-inset)] origin-right' : 'left-[var(--ow-inset)] origin-left'
+          className={`absolute top-1/2 flex cursor-pointer items-center gap-3 whitespace-nowrap leading-none will-change-[transform,opacity,filter] [font-size:var(--ow-font-size)] [color:color-mix(in_srgb,var(--ow-active-color)_calc(var(--ow-p,0)*100%),var(--ow-text-color))] ${
+            side === 'right'
+              ? 'right-[var(--ow-inset)] origin-right flex-row-reverse'
+              : 'left-[var(--ow-inset)] origin-left'
           } ${selectedIndex === index ? 'font-medium' : 'font-extralight'}`}
           onClick={() => handleItemClick(index)}
         >
+          {/* arrow marker on the active option */}
+          <span
+            aria-hidden
+            className="inline-flex shrink-0 items-center transition-all duration-300"
+            style={{
+              opacity: selectedIndex === index ? 1 : 0,
+              transform:
+                selectedIndex === index
+                  ? 'translateX(0)'
+                  : side === 'right'
+                    ? 'translateX(0.5em)'
+                    : 'translateX(-0.5em)',
+              width: selectedIndex === index ? '0.7em' : 0,
+            }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ width: '0.6em', height: '0.6em' }}>
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </span>
           {label}
         </div>
       ))}

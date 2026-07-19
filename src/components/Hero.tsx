@@ -45,17 +45,9 @@ export default function Hero() {
       {/* content pushed toward the bottom of the hero */}
       <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-end px-5 pb-10 text-center sm:px-8">
         <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col items-center">
-          <motion.span
-            variants={rise}
-            className="inline-flex items-center gap-2 rounded-full border border-paper/20 bg-paper/5 px-3.5 py-1.5 font-mono-tag text-[10px] uppercase tracking-[0.24em] text-brand-mint backdrop-blur-sm"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-mint" />
-            Certified Repair Lab · Nepal
-          </motion.span>
-
           <motion.h1
             variants={wordContainer}
-            className="mt-5 font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-paper sm:text-5xl lg:text-6xl"
+            className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-paper sm:text-5xl lg:text-6xl"
           >
             <span className="flex flex-wrap justify-center gap-x-3.5">
               {HEADLINE.map((word) => (
@@ -92,13 +84,13 @@ export default function Hero() {
           initial={reduce ? undefined : { opacity: 0, y: 20 }}
           animate={reduce ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
-          className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-x-8 gap-y-7 lg:grid-cols-4"
+          className="mt-14 grid w-full max-w-5xl grid-cols-2 gap-x-14 gap-y-9 lg:grid-cols-4 lg:gap-x-20"
         >
           {STATS.map(({ name, to, suffix, label }) => (
             <div key={name} className="flex items-center justify-center gap-3 lg:justify-start">
-              <StatIcon name={name} className="h-9 w-9 shrink-0 text-paper" />
+              <StatIcon name={name} className="h-8 w-8 shrink-0 text-paper" />
               <div className="text-left">
-                <span className="block font-display text-2xl font-extrabold leading-none tracking-tight text-paper sm:text-3xl">
+                <span className="block font-display text-xl font-extrabold leading-none tracking-tight text-paper sm:text-2xl">
                   <Counter to={to} suffix={suffix} />
                 </span>
                 <span className="mt-1 block font-mono-tag text-[10px] font-bold uppercase tracking-widest text-paper/70">

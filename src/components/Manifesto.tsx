@@ -8,15 +8,10 @@ export default function Manifesto() {
   return (
     <section className="bg-paper py-24 sm:py-32">
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-        <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand">
-          Our promise
-        </span>
-
         <ScrollReveal
           baseOpacity={0.08}
           baseRotation={2}
           blurStrength={6}
-          containerClassName="mt-6"
           textClassName="!text-3xl sm:!text-4xl lg:!text-5xl !font-extrabold !leading-[1.15] tracking-tight text-ink font-display"
         >
           We treat every device like it&apos;s our own — diagnosed properly, repaired with
