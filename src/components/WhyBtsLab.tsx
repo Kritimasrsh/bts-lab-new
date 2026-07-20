@@ -104,7 +104,7 @@ export default function WhyBtsLab() {
             actually earns your trust.
           </h2>
           <p className="mt-4 max-w-md font-sans text-base leading-relaxed text-ink-soft">
-            BTS Lab isn&apos;t just a repair shop — it&apos;s a proper lab. Every device is
+            BTS Lab isn&apos;t just a repair shop it&apos;s a proper lab. Every device is
             diagnosed, repaired with genuine parts, and returned warrantied. From a cracked
             screen to a dead motherboard, we treat your phone like it&apos;s our own.
           </p>

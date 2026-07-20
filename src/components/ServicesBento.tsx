@@ -30,7 +30,7 @@ export default function ServicesBento() {
               containerClassName="mt-2"
               textClassName="!text-base !leading-relaxed !font-normal text-ink-soft max-w-md"
             >
-              We fix every kind of fault with cost-effective, board-level solutions — genuine
+              We fix every kind of fault with cost-effective, board-level solutions genuine
               parts, honest pricing, and a warranty on every single repair.
             </ScrollReveal>
 

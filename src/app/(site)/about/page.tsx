@@ -4,7 +4,7 @@ import Eyebrow from "@/components/Eyebrow";
 
 export const metadata = {
   title: "About | BTS Lab",
-  description: "BTS Lab — Kathmandu's trusted mobile repair, buyback and training destination.",
+  description: "BTS Lab Kathmandu's trusted mobile repair, buyback and training destination.",
 };
 
 const VALUES = [
@@ -25,7 +25,7 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-4xl px-5 py-20 sm:px-8">
         <p className="font-sans text-lg leading-relaxed text-ink-soft">
-          BTS Lab —
+          BTS Lab 
           was built on a simple idea: a broken phone shouldn&apos;t mean a
           broken week. We invested early in proper tools — OCA bonding
           stations, CNC glass cutters, laser precision machines — so repairs

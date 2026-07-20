@@ -25,9 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "BTS Lab — Mobile Repair, Genuine Parts & Buyback | Nepal",
+  title: "BTS Lab",
   description:
-    "BTS Lab is your one-stop lab for mobile repairs, genuine parts and buyback in Nepal. Pick your brand, model and problem to get an instant quote — expert technicians, genuine parts, pickup & delivery, and same-day fixes.",
+    "BTS Lab is your one-stop lab for mobile repairs, genuine parts and buyback in Nepal. Pick your brand, model and problem to get an instant quote expert technicians, genuine parts, pickup & delivery, and same-day fixes.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

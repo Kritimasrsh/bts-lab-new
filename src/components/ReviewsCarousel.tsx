@@ -39,7 +39,7 @@ function initials(name: string) {
 
 function ReviewCard({ r, i }: { r: Review; i: number }) {
   return (
-    <figure className="flex h-full w-[340px] shrink-0 flex-col rounded-2xl border border-ink/10 bg-paper p-6">
+    <figure className="flex h-72 w-[340px] shrink-0 flex-col rounded-2xl border border-ink/10 bg-paper p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm font-bold text-white ${TINTS[i % TINTS.length]}`}>
@@ -53,15 +53,14 @@ function ReviewCard({ r, i }: { r: Review; i: number }) {
         <GoogleG className="h-5 w-5" />
       </div>
 
-      <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-ink-soft">
+      <blockquote className="mt-4 flex-1 overflow-hidden text-sm leading-relaxed text-ink-soft">
         {r.text}
       </blockquote>
 
-      {r.service && (
-        <span className="mt-5 border-t border-ink/8 pt-4 font-mono-tag text-[10px] uppercase tracking-widest text-ink-soft">
-          {r.service}
-        </span>
-      )}
+      {/* footer always reserves a row so every card ends at the same height */}
+      <span className="mt-4 border-t border-ink/8 pt-4 font-mono-tag text-[10px] uppercase tracking-widest text-ink-soft">
+        {r.service || " "}
+      </span>
     </figure>
   );
 }

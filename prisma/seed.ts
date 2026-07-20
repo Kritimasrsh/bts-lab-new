@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { BRANDS, PROBLEM_CATEGORIES, GOOGLE_REVIEWS, slugify } from "./seed-data";
+import { BRANDS, PROBLEM_CATEGORIES, slugify } from "./seed-data";
 
 // Prisma 7 requires a driver adapter. dotenv/config loads DATABASE_URL from .env
 // since the seed runs outside Next.js (which would otherwise inject it).
@@ -64,26 +64,6 @@ async function main() {
   console.log(
     `  ✓ ${PROBLEM_CATEGORIES.length} problem categories, ${problemCount} problems`
   );
-
-  // --- Google reviews (only seed if none exist, so admin edits aren't clobbered) ---
-  const existingReviews = await prisma.googleReview.count();
-  if (existingReviews === 0) {
-    for (let i = 0; i < GOOGLE_REVIEWS.length; i++) {
-      const r = GOOGLE_REVIEWS[i];
-      await prisma.googleReview.create({
-        data: {
-          author: r.author,
-          rating: r.rating,
-          text: r.text,
-          service: r.service,
-          order: i,
-        },
-      });
-    }
-    console.log(`  ✓ ${GOOGLE_REVIEWS.length} google reviews`);
-  } else {
-    console.log(`  • ${existingReviews} google reviews already present — skipped`);
-  }
 
   console.log("Seed complete.");
 }

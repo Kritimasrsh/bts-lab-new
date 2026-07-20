@@ -51,7 +51,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-paper/70">
-              Your one-stop solution for mobile repairs &amp; buyback — expert
+              Your one-stop solution for mobile repairs &amp; buyback expert
               technicians, genuine parts, and fair prices, every time.
             </p>
             <p className="mt-5 font-sans text-sm text-paper/60">

@@ -28,7 +28,7 @@ export default function BrowseByBrand() {
           We repair every major brand.
         </h2>
         <p className="mt-3 max-w-xl font-sans text-base text-ink-soft">
-          Tap your brand to jump straight into a repair — or start from the quote finder above.
+          Tap your brand to jump straight into a repair or start from the quote finder above.
         </p>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">

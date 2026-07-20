@@ -78,7 +78,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
         </span>
         <h2 className="mt-5 font-display text-2xl font-extrabold text-ink">Request received!</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          Thanks — we&apos;ve logged your {modelName} repair request
+          Thanks we&apos;ve logged your {modelName} repair request
           {selectedNames.length ? ` (${selectedNames.length} issue${selectedNames.length > 1 ? "s" : ""})` : ""}.
           Our team will reach out shortly to confirm the details and pricing.
         </p>

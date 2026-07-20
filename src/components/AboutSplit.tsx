@@ -18,10 +18,7 @@ export default function AboutSplit() {
           {/* LEFT — heading over yellow block + photos */}
           <div className="relative">
             <div className="relative">
-              <span className="font-mono-tag text-xs uppercase tracking-[0.24em] text-brand">
-                03 / About Us
-              </span>
-              <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[2.9rem]">
+              <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[2.9rem]">
                 Award-winning
                 <br />
                 <span className="text-brand">repair lab</span> in the city.
@@ -61,7 +58,7 @@ export default function AboutSplit() {
               containerClassName="mt-2"
               textClassName="!text-base !leading-relaxed !font-normal text-ink-soft"
             >
-              We&apos;re one of the few labs that perform board-level repair for any device — we
+              We&apos;re one of the few labs that perform board-level repair for any device we
               don&apos;t just swap parts, we diagnose the real fault and fix it right the first
               time, across every major brand, with a 90%+ success rate on the boards we take on.
             </ScrollReveal>

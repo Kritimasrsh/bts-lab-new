@@ -22,7 +22,7 @@ export default function AcademySection() {
             <p className="mt-5 max-w-md font-sans text-base leading-relaxed text-paper/70">
               From your first screen swap to chip-level repair, our
               certified instructors train students, job-seekers and future
-              shop owners — hands-on, on real devices.
+              shop owners hands-on, on real devices.
             </p>
           </div>
           <Link

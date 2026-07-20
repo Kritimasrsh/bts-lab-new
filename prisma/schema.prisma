@@ -1,38 +1,9 @@
-// BTS Lab — repair flow schema
-// Brand → Model → (global) Problem list → RepairRequest
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-/// Customer reviews shown in the "Google Reviews" homepage section.
-/// Admin-managed (add/edit/hide, set order and the overall rating).
-model GoogleReview {
-  id        String   @id @default(cuid())
-  author    String
-  rating    Int      @default(5) // 1–5 stars
-  text      String
-  service   String? // e.g. "Screen replacement" — small label under the review
-  avatarUrl String?
-  order     Int      @default(0)
-  published Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([published, order])
-}
-
-// ---------------------------------------------------------------------------
-// Auth (Auth.js / NextAuth v5 + Prisma adapter) + customer accounts
-// ---------------------------------------------------------------------------
-
-enum Role {
-  CUSTOMER
-  ADMIN
 }
 
 model User {
@@ -42,13 +13,13 @@ model User {
   emailVerified DateTime?
   image         String?
   phone         String?
-  passwordHash  String? // null for OAuth-only users
+  passwordHash  String?
   role          Role            @default(CUSTOMER)
-  accounts      Account[]
-  sessions      Session[]
-  requests      RepairRequest[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  accounts      Account[]
+  requests      RepairRequest[]
+  sessions      Session[]
 }
 
 model Account {
@@ -57,12 +28,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -90,12 +61,12 @@ model Brand {
   id        String   @id @default(cuid())
   name      String
   slug      String   @unique
-  logo      String? // public path or URL
-  order     Int      @default(0) // display ordering
+  logo      String?
+  order     Int      @default(0)
   active    Boolean  @default(true)
-  models    Model[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  models    Model[]
 
   @@index([active, order])
 }
@@ -103,18 +74,18 @@ model Brand {
 /// A specific device model (admin-managed), grouped under a series for display.
 /// e.g. brand=Apple, series="iPhone 11", name="iPhone 11 Pro Max".
 model Model {
-  id        String   @id @default(cuid())
+  id        String          @id @default(cuid())
   name      String
   slug      String
-  series    String? // e.g. "iPhone 11" — used to group models in the UI
+  series    String?
   image     String?
-  order     Int      @default(0)
-  active    Boolean  @default(true)
-  brand     Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  order     Int             @default(0)
+  active    Boolean         @default(true)
   brandId   String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  brand     Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
   requests  RepairRequest[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@unique([brandId, slug])
   @@index([brandId, active, order])
@@ -126,25 +97,25 @@ model ProblemCategory {
   name      String    @unique
   slug      String    @unique
   order     Int       @default(0)
-  problems  Problem[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  problems  Problem[]
 
   @@index([order])
 }
 
 /// A single selectable problem (global — same list for every model).
 model Problem {
-  id             String                @id @default(cuid())
-  name           String
-  slug           String                @unique
-  order          Int                   @default(0)
-  active         Boolean               @default(true)
-  category       ProblemCategory       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId     String
-  onRequests     RepairRequestProblem[]
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
+  id         String                 @id @default(cuid())
+  name       String
+  slug       String                 @unique
+  order      Int                    @default(0)
+  active     Boolean                @default(true)
+  categoryId String
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
+  category   ProblemCategory        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  onRequests RepairRequestProblem[]
 
   @@unique([categoryId, name])
   @@index([categoryId, active, order])
@@ -153,18 +124,17 @@ model Problem {
 /// A repair enquiry submitted from the public flow.
 model RepairRequest {
   id            String                 @id @default(cuid())
-  model         Model                  @relation(fields: [modelId], references: [id])
   modelId       String
-  problems      RepairRequestProblem[]
-  customNote    String? // free-text "describe your problem"
+  customNote    String?
   customerName  String?
   customerPhone String?
   status        RepairStatus           @default(NEW)
-  // Optional link to a logged-in user (anonymous requests still allowed).
-  user          User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId        String?
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @updatedAt
+  model         Model                  @relation(fields: [modelId], references: [id])
+  user          User?                  @relation(fields: [userId], references: [id])
+  problems      RepairRequestProblem[]
 
   @@index([status, createdAt])
   @@index([userId])
@@ -173,12 +143,47 @@ model RepairRequest {
 /// Join table: which problems a given request selected.
 model RepairRequestProblem {
   id        String        @id @default(cuid())
-  request   RepairRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
   requestId String
-  problem   Problem       @relation(fields: [problemId], references: [id])
   problemId String
+  problem   Problem       @relation(fields: [problemId], references: [id])
+  request   RepairRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
 
   @@unique([requestId, problemId])
+}
+
+model GoogleReview {
+  id        String   @id
+  author    String
+  rating    Int      @default(5)
+  text      String
+  service   String?
+  avatarUrl String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([published, order])
+}
+
+model Testimonial {
+  id        String   @id
+  author    String
+  role      String?
+  rating    Int      @default(5)
+  quote     String
+  featured  Boolean  @default(false)
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([published, order])
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
 }
 
 enum RepairStatus {
