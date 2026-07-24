@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Ticket({
   code,
   title,
-  description,
+  desc,
   price,
   className = "",
 }) {
@@ -69,7 +69,7 @@ export default function Ticket({
           text-slate-600
         "
       >
-        {description ||
+        {desc ||
           "Professional repair service with expert technicians and quality parts to restore your device quickly and safely."}
       </p>
 
@@ -85,7 +85,7 @@ export default function Ticket({
           {/* Price */}
           <div>
             <p className="text-sm text-slate-500">
-              Starting From Rs
+              Starting From 
             </p>
 
             <p className="text-lg font-bold text-[#0F6A73]">

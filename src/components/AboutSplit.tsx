@@ -53,7 +53,6 @@ export default function AboutSplit() {
             {/* per-word blur reveal on scroll */}
             <ScrollReveal
               baseOpacity={0.12}
-              baseRotation={2}
               blurStrength={5}
               containerClassName="mt-2"
               textClassName="!text-base !leading-relaxed !font-normal text-ink-soft"

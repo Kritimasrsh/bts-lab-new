@@ -99,7 +99,7 @@ export default function ServicesPage() {
       {/* CTA Section */}
       <CtaBanner
         title="Not sure what's wrong with it?"
-        subtitle="Bring it in for a free diagnostic — no pressure, no obligation."
+        subtitle="Bring it in for a free diagnostic no pressure, no obligation."
         ctaLabel="Book a Diagnostic"
       />
 
