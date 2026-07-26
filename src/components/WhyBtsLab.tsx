@@ -19,7 +19,7 @@ function Feature({ icon, title, desc }) {
 const FEATURES = [
   {
     title: "Certified technicians",
-    desc: "Board-level specialists with thousands of successful repairs — not a random back-alley fix.",
+    desc: "Board-level specialists with thousands of successful repairs not a random back-alley fix.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5l-8-3Z" />
@@ -29,7 +29,7 @@ const FEATURES = [
   },
   {
     title: "100% genuine parts",
-    desc: "OLED/AMOLED panels, original batteries and quality-tested components — every part traceable.",
+    desc: "OLED/AMOLED panels, original batteries and quality-tested components every part traceable.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="m7.5 4.27 9 5.15" />
@@ -40,7 +40,7 @@ const FEATURES = [
   },
   {
     title: "Upfront, honest pricing",
-    desc: "See your estimate before you commit. No surprise charges, no inflated bills — ever.",
+    desc: "See your estimate before you commit. No surprise charges, no inflated bills ever.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <circle cx="12" cy="12" r="9" />

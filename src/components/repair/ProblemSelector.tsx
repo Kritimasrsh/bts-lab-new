@@ -78,7 +78,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
         </span>
         <h2 className="mt-5 font-display text-2xl font-extrabold text-ink">Request received!</h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          Thanks — we&apos;ve logged your {modelName} repair request
+          Thanks we&apos;ve logged your {modelName} repair request
           {selectedNames.length ? ` (${selectedNames.length} issue${selectedNames.length > 1 ? "s" : ""})` : ""}.
           Our team will reach out shortly to confirm the details and pricing.
         </p>
@@ -218,7 +218,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                 )}
               </>
             ) : (
-              /* Not logged in — require login to send the request */
+              /* Not logged in require login to send the request */
               <div className="rounded-xl border border-brand/20 bg-brand/5 p-4 text-center">
                 <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-brand">
                   <Lock className="h-5 w-5" />
@@ -227,7 +227,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                   Log in to send your request
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-ink-soft">
-                  You need an account to submit — it lets you track the repair and skips
+                  You need an account to submit it lets you track the repair and skips
                   re-typing your details. Your selection is kept.
                 </p>
                 <Link
@@ -247,7 +247,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
           </div>
 
           <p className="mt-3 text-center text-[11px] text-ink-soft">
-            No payment now — we confirm pricing first.
+            No payment now we confirm pricing first.
           </p>
         </div>
       </aside>

@@ -1,4 +1,4 @@
-// Custom line-art SVG icons for the hero stats — more distinctive than the
+// Custom line-art SVG icons for the hero stats  more distinctive than the
 // stock lucide set. Inherit currentColor.
 
 type P = { className?: string };

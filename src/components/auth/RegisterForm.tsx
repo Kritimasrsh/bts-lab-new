@@ -58,7 +58,7 @@ export default function RegisterForm() {
         redirect: false,
       });
       if (signInRes?.error) {
-        // account created but auto-login failed — send to login
+        // account created but auto-login failed send to login
         router.push("/login");
         return;
       }

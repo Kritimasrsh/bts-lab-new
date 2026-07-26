@@ -20,7 +20,7 @@ export default function AuthShell({
 }) {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      {/* left — brand panel (hidden on small screens) */}
+      {/* left brand panel (hidden on small screens) */}
       <div className="relative hidden overflow-hidden bg-brand-deep lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div className="grid-bg pointer-events-none absolute inset-0 opacity-10" aria-hidden />
         <Link href="/" className="relative flex items-center gap-2.5">
@@ -55,7 +55,7 @@ export default function AuthShell({
         </p>
       </div>
 
-      {/* right — form */}
+      {/* right form */}
       <div className="flex flex-col items-center justify-center px-5 py-10 sm:px-8">
         <div className="w-full max-w-md">
           {/* mobile logo (brand panel is hidden on small screens) */}

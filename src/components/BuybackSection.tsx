@@ -5,7 +5,7 @@ const STEPS = [
   {
     n: "01",
     title: "Tell us about it",
-    desc: "Model, condition, storage — takes 60 seconds online or in-store.",
+    desc: "Model, condition, storage  takes 60 seconds online or in-store.",
   },
   {
     n: "02",

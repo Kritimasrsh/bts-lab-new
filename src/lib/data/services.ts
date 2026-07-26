@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
   {
     icon: "💧",
     title: "Water damage rescue",
-    desc: "Ultrasonic cleaning and board-level corrosion treatment—we've saved phones others called dead.",
+    desc: "Ultrasonic cleaning and board-level corrosion treatment we've saved phones others called dead.",
     price: "Rs 3,999",
     code: "TKT-03",
     accent: "mint",
@@ -85,7 +85,7 @@ export const SERVICES: Service[] = [
 ];
 
 // Broader service categories for the homepage showcase wheel. Richer content,
-// no prices — meant to fill the section and communicate range.
+// no prices  meant to fill the section and communicate range.
 export type ShowcaseService = {
   icon: string;
   title: string;
@@ -100,7 +100,7 @@ export const SHOWCASE_SERVICES: ShowcaseService[] = [
     icon: "📱",
     title: "Screen & Display",
     tagline: "Cracks, dead pixels, ghost touch",
-    desc: "OLED, AMOLED and LCD replacement with full touch calibration and True Tone preserved where possible — so your display looks and feels original.",
+    desc: "OLED, AMOLED and LCD replacement with full touch calibration and True Tone preserved where possible  so your display looks and feels original.",
     covers: ["Cracked / broken glass", "Ghost touch & dead zones", "Lines, flicker & discoloration", "Digitizer & frame fitting"],
     turnaround: "Most done same day",
   },
@@ -116,7 +116,7 @@ export const SHOWCASE_SERVICES: ShowcaseService[] = [
     icon: "🛠️",
     title: "Motherboard / Board-level",
     tagline: "The repairs others refuse",
-    desc: "Chip-level diagnostics and micro-soldering for the faults most shops won't touch — under a microscope, by certified board engineers.",
+    desc: "Chip-level diagnostics and micro-soldering for the faults most shops won't touch  under a microscope, by certified board engineers.",
     covers: ["Boot loops & hang on logo", "Charging IC & power faults", "Shorted / dead boards", "Data recovery attempts"],
     turnaround: "1–3 days after diagnosis",
   },
@@ -124,7 +124,7 @@ export const SHOWCASE_SERVICES: ShowcaseService[] = [
     icon: "💧",
     title: "Water Damage Rescue",
     tagline: "Spilled, dropped, submerged",
-    desc: "Ultrasonic cleaning and board-level corrosion treatment. The sooner it reaches us, the more we can save — we've revived phones declared dead.",
+    desc: "Ultrasonic cleaning and board-level corrosion treatment. The sooner it reaches us, the more we can save  we've revived phones declared dead.",
     covers: ["Corrosion cleaning", "Moisture-triggered faults", "Post-liquid diagnostics", "Component-level restore"],
     turnaround: "Bring it in fast",
   },
@@ -140,7 +140,7 @@ export const SHOWCASE_SERVICES: ShowcaseService[] = [
     icon: "🔊",
     title: "Audio, Buttons & Body",
     tagline: "Speakers, mics, housing, keys",
-    desc: "From silent speakers and distorted mics to bent housings, dead buttons and back-glass replacement — the everyday fixes that make a phone whole.",
+    desc: "From silent speakers and distorted mics to bent housings, dead buttons and back-glass replacement  the everyday fixes that make a phone whole.",
     covers: ["Speaker & mic issues", "Power / volume / home keys", "Back glass & housing", "Vibration motor"],
     turnaround: "Same day, most models",
   },
@@ -148,7 +148,7 @@ export const SHOWCASE_SERVICES: ShowcaseService[] = [
     icon: "💻",
     title: "Tablet & Laptop Repair",
     tagline: "iPad, MacBook, Windows & PC",
-    desc: "Beyond phones — we service tablets and laptops too: screens, batteries, keyboards, ports and board-level faults across all major brands.",
+    desc: "Beyond phones we service tablets and laptops too: screens, batteries, keyboards, ports and board-level faults across all major brands.",
     covers: ["iPad & Android tablets", "MacBook & Windows laptops", "Keyboard & port repair", "Screen & battery swaps"],
     turnaround: "Quote after diagnosis",
   },
