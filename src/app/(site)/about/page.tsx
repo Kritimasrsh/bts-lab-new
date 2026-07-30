@@ -27,8 +27,8 @@ export default function AboutPage() {
         <p className="font-sans text-lg leading-relaxed text-ink-soft">
           BTS Lab —
           was built on a simple idea: a broken phone shouldn&apos;t mean a
-          broken week. We invested early in proper tools — OCA bonding
-          stations, CNC glass cutters, laser precision machines — so repairs
+          broken week. We invested early in proper tools OCA bonding
+          stations, CNC glass cutters, laser precision machines so repairs
           that other shops turn away become routine here.
         </p>
         <p className="mt-5 font-sans text-lg leading-relaxed text-ink-soft">

@@ -84,7 +84,7 @@ export const NAV_ITEMS: NavItem[] = [
     ],
     promo: {
       title: "Every major brand",
-      desc: "From flagships to budget phones — if it powers on (or doesn't), we can help.",
+      desc: "From flagships to budget phones if it powers on (or doesn't), we can help.",
       ctaLabel: "Browse all brands",
       href: "/#select-brand",
     },

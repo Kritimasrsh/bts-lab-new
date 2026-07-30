@@ -26,7 +26,7 @@ export default function ServicesWheel() {
             repair services.
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-            Scroll or drag the dial to explore what our lab handles — from cracked screens to
+            Scroll or drag the dial to explore what our lab handles from cracked screens to
             board-level rescues, every job with genuine parts and a warranty.
           </p>
         </div>

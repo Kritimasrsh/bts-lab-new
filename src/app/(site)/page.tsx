@@ -8,6 +8,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import GoogleReviews from "@/components/GoogleReviews";
 import DoorstepCta from "@/components/DoorstepCta";
+import FAQ from "@/components/sections/FAQ"; 
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Testimonials />
       <GoogleReviews />
       <DoorstepCta />
+      <FAQ/>
     </>
   );
 }

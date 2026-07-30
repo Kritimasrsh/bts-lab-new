@@ -28,7 +28,7 @@ const POSTS = [
   {
     tag: "Guides",
     title: "Water Damage: What To Do In The First Hour",
-    desc: "The steps that actually help — and the myths (like rice) that can make things worse.",
+    desc: "The steps that actually help and the myths (like rice) that can make things worse.",
     date: "May 29, 2026",
   },
 ];

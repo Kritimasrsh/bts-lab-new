@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { brand } = await params;
   const data = await getBrandWithModelGroups(brand);
   return {
-    title: data ? `${data.brand.name} Repair — Select your model | BTS Lab` : "Repair | BTS Lab",
+    title: data ? `${data.brand.name} Repair Select your model | BTS Lab` : "Repair | BTS Lab",
   };
 }
 

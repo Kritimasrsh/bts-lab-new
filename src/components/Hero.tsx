@@ -10,21 +10,54 @@ const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
+
 const rise: Variants = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
 };
+
 const wordContainer: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.15,
+    },
+  },
 };
+
 const wordBlur: Variants = {
-  hidden: { opacity: 0, filter: "blur(12px)", y: 16 },
-  show: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+  hidden: {
+    opacity: 0,
+    filter: "blur(12px)",
+    y: 16,
+  },
+  show: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
 };
 
 type StatName = "repaired" | "customers" | "warranty" | "success";
-type Stat = { name: StatName; to: number; suffix: string; label: string };
+
+type Stat = {
+  name: StatName;
+  to: number;
+  suffix: string;
+  label: string;
+};
 
 const STATS: Stat[] = [
   { name: "repaired", to: 10000, suffix: "+", label: "Devices repaired" },
@@ -51,17 +84,23 @@ export default function Hero() {
           >
             <span className="flex flex-wrap justify-center gap-x-3.5">
               {HEADLINE.map((word) => (
-                <motion.span key={word} variants={wordBlur} className="inline-block">
+                <motion.span
+                  key={word}
+                  variants={wordBlur}
+                  className="inline-block"
+                >
                   {word}
                 </motion.span>
               ))}
-              <motion.span variants={wordBlur} className="inline-block text-brand-mint">
+              <motion.span
+                variants={wordBlur}
+                className="inline-block text-brand-mint"
+              >
                 Can&apos;t Fix.
               </motion.span>
             </span>
           </motion.h1>
 
-          {/* tagline dots (reference style) */}
           <motion.p
             variants={rise}
             className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono-tag text-[11px] font-bold uppercase tracking-widest text-paper/70"
@@ -73,13 +112,14 @@ export default function Hero() {
             <span>Warranty on Every Fix</span>
           </motion.p>
 
-          {/* global search */}
-          <motion.div variants={rise} className="mt-7 flex w-full justify-center">
+          <motion.div
+            variants={rise}
+            className="mt-7 flex w-full justify-center"
+          >
             <HeroSearch />
           </motion.div>
         </motion.div>
 
-        {/* stats row — reference style: icon left, value/label stacked right, no bg tiles */}
         <motion.div
           initial={reduce ? undefined : { opacity: 0, y: 20 }}
           animate={reduce ? undefined : { opacity: 1, y: 0 }}

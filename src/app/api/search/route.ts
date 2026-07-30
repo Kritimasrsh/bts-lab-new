@@ -8,7 +8,7 @@ export type SearchResult = {
   href: string;
 };
 
-// GET /api/search?q=...  — searches brands, models, problems across the app.
+// GET /api/search?q=...   searches brands, models, problems across the app.
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const q = (searchParams.get("q") || "").trim();

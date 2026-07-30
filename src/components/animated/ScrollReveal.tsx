@@ -1,97 +1,136 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState, ReactNode } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 interface ScrollRevealProps {
-  children: ReactNode;
-  /** Blur the words in as they reveal. */
+  children: React.ReactNode;
   enableBlur?: boolean;
-  /** Starting opacity of each word before reveal (0–1). */
   baseOpacity?: number;
-  /** Starting blur in px (when enableBlur). */
   blurStrength?: number;
-  /** Kept for API compatibility (no longer used). */
-  baseRotation?: number;
-  rotationEnd?: string;
-  wordAnimationEnd?: string;
   containerClassName?: string;
   textClassName?: string;
 }
 
-/**
- * Reveals its text word-by-word (fade + blur, staggered) the first time it
- * scrolls into view. Uses IntersectionObserver + CSS transitions — deterministic
- * and independent of scroll position (unlike scrubbed ScrollTrigger).
- */
-const ScrollReveal: React.FC<ScrollRevealProps> = ({
+export default function ScrollReveal({
   children,
   enableBlur = true,
   baseOpacity = 0.1,
   blurStrength = 4,
   containerClassName = '',
   textClassName = '',
-}) => {
+}: ScrollRevealProps) {
   const ref = useRef<HTMLParagraphElement>(null);
-  // Lazy init: if reduced-motion is preferred, start already revealed (no
-  // synchronous setState inside an effect).
-  const [revealed, setRevealed] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  );
 
-  // Split into tokens and precompute each visible word's stagger index so we
-  // never mutate a variable during render.
-  const tokens = useMemo(() => {
-    const text = typeof children === 'string' ? children : '';
-    let wi = 0;
-    return text.split(/(\s+)/).map((word) => {
-      const isSpace = /^\s+$/.test(word);
-      return { word, isSpace, order: isSpace ? -1 : wi++ };
-    });
-  }, [children]);
+  const [revealed, setRevealed] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el || revealed) return;
+    if (typeof window === 'undefined') return;
+
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    setReduceMotion(media.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setReduceMotion(e.matches);
+
+      if (e.matches) {
+        setRevealed(true);
+      }
+    };
+
+    media.addEventListener('change', handleChange);
+
+    return () => media.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setRevealed(true);
+      return;
+    }
+
+    const element = ref.current;
+    if (!element) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setRevealed(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setRevealed(true);
           observer.disconnect();
         }
       },
-      { threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px',
+      }
     );
-    observer.observe(el);
+
+    observer.observe(element);
+
     return () => observer.disconnect();
-  }, [revealed]);
+  }, [reduceMotion]);
+
+  const lines = useMemo(() => {
+    const text =
+      typeof children === 'string'
+        ? children
+        : React.Children.toArray(children).join(' ');
+
+    return text.split('\n');
+  }, [children]);
 
   return (
     <div className={containerClassName}>
-      <p ref={ref} className={`text-[clamp(1.6rem,4vw,3rem)] leading-[1.4] font-semibold ${textClassName}`}>
-        {tokens.map(({ word, isSpace, order }, i) => {
-          if (isSpace) return <span key={i}>{word}</span>;
-          const delay = order * 0.045;
+      <p
+        ref={ref}
+        className={`text-[clamp(1.6rem,4vw,3rem)] leading-[1.6] font-semibold ${textClassName}`}
+      >
+        {lines.map((line, lineIndex) => {
+          const words = line.trim().split(/\s+/);
+
           return (
-            <span
-              key={i}
-              className="inline-block"
-              style={{
-                opacity: revealed ? 1 : baseOpacity,
-                filter: revealed || !enableBlur ? 'blur(0px)' : `blur(${blurStrength}px)`,
-                transform: revealed ? 'translateY(0)' : 'translateY(6px)',
-                transition: `opacity 0.6s ease ${delay}s, filter 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
-              }}
-            >
-              {word}
-            </span>
+            <React.Fragment key={lineIndex}>
+              {words.map((word, wordIndex) => {
+                const delay = (lineIndex * 20 + wordIndex) * 0.05;
+
+                return (
+                  <span
+                    key={`${lineIndex}-${wordIndex}`}
+                    className="inline-flex mr-[0.28em] will-change-transform"
+                    style={{
+                      opacity: revealed ? 1 : baseOpacity,
+                      filter:
+                        revealed || !enableBlur
+                          ? 'blur(0px)'
+                          : `blur(${blurStrength}px)`,
+                      transform: revealed
+                        ? 'translate3d(0,0,0)'
+                        : 'translate3d(0,10px,0)',
+                      transition: reduceMotion
+                        ? 'none'
+                        : `
+                            opacity 700ms cubic-bezier(.22,1,.36,1) ${delay}s,
+                            filter 700ms cubic-bezier(.22,1,.36,1) ${delay}s,
+                            transform 700ms cubic-bezier(.22,1,.36,1) ${delay}s
+                          `,
+                    }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
+
+              {lineIndex < lines.length - 1 && <br />}
+            </React.Fragment>
           );
         })}
       </p>
     </div>
   );
-};
-
-export default ScrollReveal;
+}

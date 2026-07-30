@@ -8,7 +8,7 @@ type MaskIconProps = {
 
 /**
  * Renders any solid-fill SVG from /public tinted with currentColor via a CSS
- * mask — crisp at any size, independent of the file's own fill/viewBox.
+ * mask crisp at any size, independent of the file's own fill/viewBox.
  */
 export default function MaskIcon({ src, className }: MaskIconProps) {
   return (

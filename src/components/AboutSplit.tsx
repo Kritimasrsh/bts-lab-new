@@ -53,12 +53,11 @@ export default function AboutSplit() {
             {/* per-word blur reveal on scroll */}
             <ScrollReveal
               baseOpacity={0.12}
-              baseRotation={2}
               blurStrength={5}
               containerClassName="mt-2"
               textClassName="!text-base !leading-relaxed !font-normal text-ink-soft"
             >
-              We&apos;re one of the few labs that perform board-level repair for any device — we
+              We&apos;re one of the few labs that perform board-level repair for any device we
               don&apos;t just swap parts, we diagnose the real fault and fix it right the first
               time, across every major brand, with a 90%+ success rate on the boards we take on.
             </ScrollReveal>
