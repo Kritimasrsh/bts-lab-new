@@ -334,9 +334,37 @@ const OptionWheel = ({
     applyTarget(targetRef.current, false);
   }, [items, fontSize, spacing, curve, tilt, blur, fade, minOpacity, side, loop, smoothing, applyTarget]);
 
+  // Self-heal: re-run a layout pass whenever the wheel (re)enters view, resizes,
+  // or the tab regains focus. A settled loop leaves rafRef null, so startLoop can
+  // schedule one frame that re-applies every option's transform — this fixes the
+  // "options stacked at center" state seen after navigating back to the page.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const relayout = () => startLoop();
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) relayout();
+    });
+    io.observe(el);
+    const ro = new ResizeObserver(relayout);
+    ro.observe(el);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") relayout();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      io.disconnect();
+      ro.disconnect();
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [startLoop]);
+
   useEffect(
     () => () => {
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       audioRef.current?.pause();
     },
     []

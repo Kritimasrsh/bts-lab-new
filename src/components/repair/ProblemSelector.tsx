@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Check, Loader2, Lock, User } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 type Problem = { id: string; name: string };
 type Category = { id: string; name: string; problems: Problem[] };
@@ -20,11 +21,11 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated";
+  const { success, error: toastError } = useToast();
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [customNote, setCustomNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
   const selectedCount = selected.size;
@@ -47,7 +48,6 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
   async function submit() {
     if (!canSubmit || submitting || !isAuthed) return;
     setSubmitting(true);
-    setError(null);
     try {
       const res = await fetch("/api/repair-requests", {
         method: "POST",
@@ -61,10 +61,11 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
+      success("Repair request sent — we'll reach out shortly!");
       setDone(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to submit");
+      toastError(e instanceof Error ? e.message : "Failed to submit request");
     } finally {
       setSubmitting(false);
     }
@@ -136,24 +137,9 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
             </fieldset>
           ))}
         </div>
-
-        {/* custom problem field */}
-        <div className="mt-8">
-          <label htmlFor="customNote" className="font-mono-tag text-xs uppercase tracking-[0.2em] text-brand">
-            Describe the problem (optional)
-          </label>
-          <textarea
-            id="customNote"
-            value={customNote}
-            onChange={(e) => setCustomNote(e.target.value)}
-            rows={3}
-            placeholder="Anything else we should know? e.g. 'phone got wet and won't turn on since yesterday…'"
-            className="focus-ring mt-3 w-full resize-y rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none"
-          />
-        </div>
       </div>
 
-      {/* sticky summary / submit */}
+      {/* sticky summary / note / submit */}
       <aside className="lg:sticky lg:top-28">
         <div className="rounded-2xl border border-ink/10 bg-paper-dim p-5">
           <p className="font-display text-sm font-bold text-ink">Your repair</p>
@@ -176,6 +162,24 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
             )}
           </div>
 
+          {/* short note — recorded before submitting */}
+          <div className="mt-4 border-t border-ink/10 pt-4">
+            <label
+              htmlFor="customNote"
+              className="font-mono-tag text-[11px] uppercase tracking-widest text-ink-soft"
+            >
+              Add a note (optional)
+            </label>
+            <textarea
+              id="customNote"
+              value={customNote}
+              onChange={(e) => setCustomNote(e.target.value)}
+              rows={4}
+              placeholder="Anything else we should know? e.g. 'got wet and won't turn on since yesterday…'"
+              className="focus-ring mt-2 w-full resize-y rounded-xl border border-ink/15 bg-paper px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none"
+            />
+          </div>
+
           {/* contact / auth-gated submit */}
           <div className="mt-4 border-t border-ink/10 pt-4">
             {status === "loading" ? (
@@ -193,8 +197,6 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                     <p className="truncate text-xs text-ink-soft">{session?.user?.email}</p>
                   </div>
                 </div>
-
-                {error && <p className="mt-3 text-xs font-semibold text-red-600">{error}</p>}
 
                 <button
                   type="button"

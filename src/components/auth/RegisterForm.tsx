@@ -4,13 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, Check, X } from "lucide-react";
 import GoogleButton from "@/components/auth/GoogleButton";
+import { useToast } from "@/components/Toast";
 
 export default function RegisterForm() {
   const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") || "/";
+  const { success, error: toastError } = useToast();
 
   const [form, setForm] = useState({
     name: "",
@@ -21,23 +23,27 @@ export default function RegisterForm() {
   });
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   function update(key: keyof typeof form) {
     return (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({ ...f, [key]: e.target.value }));
   }
 
+  // Real-time password match state
+  const confirmTouched = form.confirmPassword.length > 0;
+  const passwordsMatch = form.password === form.confirmPassword;
+  const showMismatch = confirmTouched && !passwordsMatch;
+  const showMatch = confirmTouched && passwordsMatch && form.password.length > 0;
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
 
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
+      toastError("Passwords do not match.");
       return;
     }
     if (form.password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      toastError("Password must be at least 8 characters.");
       return;
     }
 
@@ -51,6 +57,8 @@ export default function RegisterForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create account");
 
+      success("Account created — welcome to BTS Lab!");
+
       // auto sign-in after successful registration
       const signInRes = await signIn("credentials", {
         email: form.email,
@@ -59,19 +67,28 @@ export default function RegisterForm() {
       });
       if (signInRes?.error) {
         // account created but auto-login failed — send to login
+        toastError("Account created, but sign-in failed. Please log in.");
         router.push("/login");
         return;
       }
-      router.push(callbackUrl);
+      // land on the account page by default; honor an explicit callbackUrl.
+      router.push(callbackUrl && callbackUrl !== "/" ? callbackUrl : "/account");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      toastError(err instanceof Error ? err.message : "Something went wrong");
       setLoading(false);
     }
   }
 
   const inputCls =
     "focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none";
+  const confirmCls = `focus-ring w-full rounded-xl border bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:outline-none ${
+    showMismatch
+      ? "border-red-400 focus:border-red-500"
+      : showMatch
+      ? "border-emerald-400 focus:border-emerald-500"
+      : "border-ink/15 focus:border-brand"
+  }`;
 
   return (
     <div>
@@ -172,11 +189,20 @@ export default function RegisterForm() {
             value={form.confirmPassword}
             onChange={update("confirmPassword")}
             placeholder="Re-enter your password"
-            className={inputCls}
+            className={confirmCls}
+            aria-invalid={showMismatch}
           />
+          {showMismatch && (
+            <p className="mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-red-600">
+              <X className="h-3.5 w-3.5" strokeWidth={3} /> Passwords don&apos;t match
+            </p>
+          )}
+          {showMatch && (
+            <p className="mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+              <Check className="h-3.5 w-3.5" strokeWidth={3} /> Passwords match
+            </p>
+          )}
         </div>
-
-        {error && <p className="text-sm font-semibold text-red-600">{error}</p>}
 
         <button
           type="submit"

@@ -6,22 +6,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import GoogleButton from "@/components/auth/GoogleButton";
+import { useToast } from "@/components/Toast";
 
 export default function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") || "/";
+  const { success, error: toastError } = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
     const res = await signIn("credentials", {
       email,
       password,
@@ -29,9 +29,10 @@ export default function LoginForm() {
     });
     setLoading(false);
     if (res?.error) {
-      setError("Invalid email or password.");
+      toastError("Invalid email or password.");
       return;
     }
+    success("Signed in — welcome back!");
     router.push(callbackUrl);
     router.refresh();
   }
@@ -92,8 +93,6 @@ export default function LoginForm() {
             </button>
           </div>
         </div>
-
-        {error && <p className="text-sm font-semibold text-red-600">{error}</p>}
 
         <button
           type="submit"

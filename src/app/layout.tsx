@@ -1,18 +1,11 @@
 import "./globals.css";
 import type { ReactNode } from "react";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Providers from "@/components/Providers";
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800", "900"],
-  variable: "--font-archivo",
-  display: "swap",
-});
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-inter",
   display: "swap",
 });
@@ -34,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${archivo.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`h-full antialiased ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <Providers>{children}</Providers>

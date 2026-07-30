@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
-
-// NOTE: Not yet protected — add auth before production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 // GET /api/admin/models?brandId=... — models, optionally filtered by brand.
 export async function GET(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   const { searchParams } = new URL(req.url);
   const brandId = searchParams.get("brandId") || undefined;
   try {
@@ -23,6 +24,8 @@ export async function GET(req: Request) {
 
 // POST /api/admin/models — create a model under a brand.
 export async function POST(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const body = await req.json();
     const name = String(body.name || "").trim();

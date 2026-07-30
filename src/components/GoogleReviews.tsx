@@ -31,7 +31,7 @@ export default async function GoogleReviews() {
     Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) * 10) / 10;
 
   return (
-    <section className="bg-paper py-20 sm:py-24">
+    <section id="reviews" className="scroll-mt-24 bg-paper py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* header — mirrors the Google Reviews widget */}
         <div className="flex flex-col items-center text-center">
@@ -47,7 +47,7 @@ export default async function GoogleReviews() {
         </div>
       </div>
 
-      {/* endless auto-scrolling carousel of BorderGlow cards */}
+      {/* full-bleed carousel — slides one card at a time */}
       <ReviewsCarousel reviews={reviews} />
     </section>
   );

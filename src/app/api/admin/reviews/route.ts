@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// NOTE: Not yet protected — add admin auth before production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 // GET /api/admin/reviews — all reviews (incl. hidden).
 export async function GET() {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const reviews = await prisma.googleReview.findMany({
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
@@ -18,6 +19,8 @@ export async function GET() {
 
 // POST /api/admin/reviews — create a review.
 export async function POST(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const body = await req.json();
     const author = String(body.author || "").trim();

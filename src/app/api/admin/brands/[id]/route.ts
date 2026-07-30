@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
-
-// NOTE: Not yet protected — add auth before production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 type Ctx = { params: Promise<{ id: string }> };
 
 // PATCH /api/admin/brands/[id] — update a brand.
 export async function PATCH(req: Request, { params }: Ctx) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   const { id } = await params;
   try {
     const body = await req.json();
@@ -31,6 +32,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
 
 // DELETE /api/admin/brands/[id] — delete a brand (cascades to models).
 export async function DELETE(_req: Request, { params }: Ctx) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   const { id } = await params;
   try {
     await prisma.brand.delete({ where: { id } });

@@ -1,6 +1,7 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 export type Review = {
   id: string;
@@ -24,25 +25,27 @@ function GoogleG({ className }: { className?: string }) {
 
 function Stars({ n }: { n: number }) {
   return (
-    <div className="flex gap-0.5 text-[#fbbc05]">
+    <div className="flex gap-0.5 text-sun">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className="h-4 w-4" fill={i < n ? "currentColor" : "none"} strokeWidth={1.5} />
+        <Star key={i} className="h-3.5 w-3.5" fill={i < n ? "currentColor" : "none"} strokeWidth={1.5} />
       ))}
     </div>
   );
 }
 
-const TINTS = ["bg-emerald-600", "bg-teal-600", "bg-cyan-700", "bg-brand", "bg-brand-deep", "bg-sky-700"];
+const TINTS = ["bg-brand", "bg-brand-mint", "bg-brand-cyan", "bg-brand-deep", "bg-emerald-600", "bg-teal-600"];
 function initials(name: string) {
   return name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
 }
 
 function ReviewCard({ r, i }: { r: Review; i: number }) {
   return (
-    <figure className="flex h-72 w-[340px] shrink-0 flex-col rounded-2xl border border-ink/10 bg-paper p-6">
+    <figure className="flex h-full min-h-[268px] flex-col rounded-2xl border border-ink/10 bg-paper p-6 transition-shadow duration-300 hover:shadow-[0_18px_40px_-22px_rgba(13,43,46,0.4)]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm font-bold text-white ${TINTS[i % TINTS.length]}`}>
+          <span
+            className={`flex h-11 w-11 items-center justify-center rounded-full font-display text-sm font-bold text-white ${TINTS[i % TINTS.length]}`}
+          >
             {initials(r.author)}
           </span>
           <div>
@@ -53,29 +56,95 @@ function ReviewCard({ r, i }: { r: Review; i: number }) {
         <GoogleG className="h-5 w-5" />
       </div>
 
-      <blockquote className="mt-4 flex-1 overflow-hidden text-sm leading-relaxed text-ink-soft">
+      <Quote className="mt-5 h-5 w-5 text-brand/25" fill="currentColor" strokeWidth={0} />
+      <blockquote className="mt-1 line-clamp-5 flex-1 text-[15px] leading-relaxed text-ink/80">
         {r.text}
       </blockquote>
 
-      {/* footer always reserves a row so every card ends at the same height */}
-      <span className="mt-4 border-t border-ink/8 pt-4 font-mono-tag text-[10px] uppercase tracking-widest text-ink-soft">
-        {r.service || " "}
+      <span className="mt-5 border-t border-ink/8 pt-4 font-mono-tag text-[10px] uppercase tracking-widest text-ink-soft">
+        {r.service || "Verified customer"}
       </span>
     </figure>
   );
 }
 
 export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
-  // duplicate the list for a seamless -50% marquee loop
-  const row = [...reviews, ...reviews];
+  const [index, setIndex] = useState(0);
+  const [perView, setPerView] = useState(3);
+
+  useEffect(() => {
+    const compute = () => {
+      const w = window.innerWidth;
+      setPerView(w < 640 ? 1 : w < 1024 ? 2 : w < 1536 ? 3 : 4);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
+  const maxIndex = Math.max(0, reviews.length - perView);
+  const clamped = Math.min(index, maxIndex);
+  const atStart = clamped <= 0;
+  const atEnd = clamped >= maxIndex;
+
+  const prev = () => setIndex(Math.max(0, clamped - 1));
+  const next = () => setIndex(Math.min(maxIndex, clamped + 1));
 
   return (
-    <div className="marquee-mask marquee-track mt-12 overflow-hidden">
-      <div className="animate-marquee-fast flex w-max items-stretch gap-6 py-2">
-        {row.map((r, i) => (
-          <ReviewCard key={`${r.id}-${i}`} r={r} i={i} />
-        ))}
+    <div className="relative mt-12">
+      <div className="overflow-hidden px-5 sm:px-12 lg:px-20">
+        <div
+          className="flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          style={{ transform: `translateX(-${clamped * (100 / perView)}%)` }}
+        >
+          {reviews.map((r, i) => (
+            <div
+              key={r.id}
+              className="shrink-0 px-3"
+              style={{ flex: `0 0 ${100 / perView}%`, maxWidth: `${100 / perView}%` }}
+            >
+              <ReviewCard r={r} i={i} />
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* side controls */}
+      <button
+        type="button"
+        aria-label="Previous review"
+        onClick={prev}
+        disabled={atStart}
+        className="focus-ring absolute left-3 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-ink/10 bg-paper text-brand shadow-[0_10px_26px_-12px_rgba(13,43,46,0.5)] transition hover:bg-brand hover:text-paper disabled:pointer-events-none disabled:opacity-30 sm:flex lg:left-6"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        type="button"
+        aria-label="Next review"
+        onClick={next}
+        disabled={atEnd}
+        className="focus-ring absolute right-3 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-ink/10 bg-paper text-brand shadow-[0_10px_26px_-12px_rgba(13,43,46,0.5)] transition hover:bg-brand hover:text-paper disabled:pointer-events-none disabled:opacity-30 sm:flex lg:right-6"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
+      {/* dots */}
+      {maxIndex > 0 && (
+        <div className="mt-9 flex justify-center gap-2">
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={`h-2 rounded-full transition-all ${
+                i === clamped ? "w-6 bg-brand" : "w-2 bg-ink/20 hover:bg-ink/40"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

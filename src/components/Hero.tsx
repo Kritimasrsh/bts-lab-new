@@ -43,8 +43,8 @@ export default function Hero() {
       <HeroBackground />
 
       {/* content pushed toward the bottom of the hero */}
-      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-end px-5 pb-10 text-center sm:px-8">
-        <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col items-center">
+      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-end px-5 pb-10 text-center sm:px-8">
+        <motion.div variants={container} initial="hidden" animate="show" className="flex max-w-4xl flex-col items-center">
           <motion.h1
             variants={wordContainer}
             className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-paper sm:text-5xl lg:text-6xl"
@@ -84,16 +84,16 @@ export default function Hero() {
           initial={reduce ? undefined : { opacity: 0, y: 20 }}
           animate={reduce ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
-          className="mt-14 grid w-full max-w-5xl grid-cols-2 gap-x-14 gap-y-9 lg:grid-cols-4 lg:gap-x-20"
+          className="mt-16 grid w-full grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 sm:gap-x-10 lg:gap-x-16"
         >
           {STATS.map(({ name, to, suffix, label }) => (
-            <div key={name} className="flex items-center justify-center gap-3 lg:justify-start">
+            <div key={name} className="flex items-center justify-center gap-3">
               <StatIcon name={name} className="h-8 w-8 shrink-0 text-paper" />
               <div className="text-left">
                 <span className="block font-display text-xl font-extrabold leading-none tracking-tight text-paper sm:text-2xl">
                   <Counter to={to} suffix={suffix} />
                 </span>
-                <span className="mt-1 block font-mono-tag text-[10px] font-bold uppercase tracking-widest text-paper/70">
+                <span className="mt-1 block whitespace-nowrap font-mono-tag text-[10px] font-bold uppercase tracking-widest text-paper/70">
                   {label}
                 </span>
               </div>

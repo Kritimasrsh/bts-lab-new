@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
-
-// NOTE: Admin routes are NOT yet protected. Add authentication/authorization
-// (e.g. middleware or a session check) before exposing these in production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 // GET /api/admin/brands — all brands (incl. inactive) with model counts.
 export async function GET() {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const brands = await prisma.brand.findMany({
       orderBy: [{ order: "asc" }, { name: "asc" }],
@@ -21,6 +21,8 @@ export async function GET() {
 
 // POST /api/admin/brands — create a brand.
 export async function POST(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const body = await req.json();
     const name = String(body.name || "").trim();

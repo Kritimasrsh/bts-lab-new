@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import bcrypt from "bcryptjs";
 import { BRANDS, PROBLEM_CATEGORIES, GOOGLE_REVIEWS, TESTIMONIALS, slugify } from "./seed-data";
 
 // Prisma 7 requires a driver adapter. dotenv/config loads DATABASE_URL from .env
@@ -105,6 +106,21 @@ async function main() {
   } else {
     console.log(`  • ${existingTestimonials} testimonials already present — skipped`);
   }
+
+  // --- Admin user (idempotent; password is re-hashed each run) ---
+  const adminEmail = "admin@btslabnepal.com";
+  const adminHash = await bcrypt.hash("BTS@nepal123", 12);
+  await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: { role: "ADMIN", passwordHash: adminHash, name: "BTS Lab Admin" },
+    create: {
+      email: adminEmail,
+      name: "BTS Lab Admin",
+      role: "ADMIN",
+      passwordHash: adminHash,
+    },
+  });
+  console.log(`  ✓ admin user (${adminEmail})`);
 
   console.log("Seed complete.");
 }

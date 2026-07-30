@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
-
-// NOTE: Not yet protected — add auth before production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 // GET /api/admin/problems — all categories with their problems (incl. inactive).
 export async function GET() {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const categories = await prisma.problemCategory.findMany({
       orderBy: { order: "asc" },
@@ -20,6 +21,8 @@ export async function GET() {
 
 // POST /api/admin/problems — create a problem under a category.
 export async function POST(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const body = await req.json();
     const name = String(body.name || "").trim();

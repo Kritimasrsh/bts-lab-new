@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// NOTE: Not yet protected — add admin auth before production.
+import { requireAdmin } from "@/lib/admin-auth";
 
 // GET /api/admin/testimonials — all testimonials (incl. hidden).
 export async function GET() {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const testimonials = await prisma.testimonial.findMany({
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
@@ -18,6 +19,8 @@ export async function GET() {
 
 // POST /api/admin/testimonials — create a testimonial.
 export async function POST(req: Request) {
+  const { response } = await requireAdmin();
+  if (response) return response;
   try {
     const body = await req.json();
     const author = String(body.author || "").trim();

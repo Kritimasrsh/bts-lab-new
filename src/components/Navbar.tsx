@@ -5,137 +5,56 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X, ChevronDown, ArrowRight, User, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowUpRight, User, LogOut, LayoutDashboard, Shield } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
-import { NAV_ITEMS, NAV_FOOTER, type NavItem } from "@/lib/data/nav";
 
-/* ---------------- Desktop mega-menu panel ---------------- */
-
-function MegaPanel({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 8 }}
-      transition={{ duration: 0.16, ease: "easeOut" }}
-      className="absolute inset-x-0 top-full z-40"
-    >
-      {/* invisible hover bridge so moving cursor down doesn't close the menu */}
-      <div className="h-3 w-full" />
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="overflow-hidden rounded-2xl border border-ink/10 bg-paper shadow-[0_30px_60px_-24px_rgba(13,43,46,0.35)]">
-          <div className="grid gap-8 p-7 lg:grid-cols-[1fr_1fr_0.9fr]">
-            {item.columns?.map((col) => (
-              <div key={col.heading}>
-                <p className="section-label mb-4 text-ink-soft">{col.heading}</p>
-                <ul className="space-y-1">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        onClick={onNavigate}
-                        className="focus-ring group block rounded-lg px-3 py-2 transition-colors hover:bg-brand/5"
-                      >
-                        <span className="block font-display text-sm font-bold text-ink group-hover:text-brand">
-                          {link.label}
-                        </span>
-                        {link.desc && (
-                          <span className="mt-0.5 block text-xs text-ink-soft">{link.desc}</span>
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-
-            {/* promo card */}
-            {item.promo && (
-              <div className="flex flex-col justify-between rounded-xl bg-brand p-6 text-paper">
-                <div>
-                  <p className="font-display text-lg font-extrabold leading-tight">
-                    {item.promo.title}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-paper/85">{item.promo.desc}</p>
-                </div>
-                <Link
-                  href={item.promo.href}
-                  onClick={onNavigate}
-                  className="focus-ring mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-paper px-5 py-2.5 font-display text-sm font-bold text-brand transition hover:gap-3"
-                >
-                  {item.promo.ctaLabel}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* footer quick-actions bar */}
-          <div className="flex flex-wrap items-center gap-x-7 gap-y-2 border-t border-ink/8 bg-paper-dim px-7 py-3.5">
-            {NAV_FOOTER.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={onNavigate}
-                className="focus-ring rounded text-sm font-semibold text-ink-soft transition-colors hover:text-brand"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
+function initialsOf(name?: string | null) {
+  if (!name) return "ME";
+  return name.trim().split(/\s+/).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
 }
 
-/* ---------------- Mobile accordion item ---------------- */
+const PROFILE_MENU = "__profile__";
 
-function MobileItem({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
-  const [open, setOpen] = useState(false);
+/* ---------------- Nav model — trimmed to the essentials ---------------- */
 
-  if (!item.columns) {
-    return (
-      <Link
-        href={item.href}
-        onClick={onNavigate}
-        className="block border-b border-ink/5 py-3 font-semibold text-ink/80 hover:text-brand"
-      >
-        {item.label}
-      </Link>
-    );
-  }
+type SubLink = { label: string; href: string };
+type NavLink = { label: string; href: string; menu?: SubLink[] };
 
+const SERVICE_LINKS: SubLink[] = [
+  { label: "Screen replacement", href: "/services" },
+  { label: "Battery replacement", href: "/services" },
+  { label: "Water damage rescue", href: "/services" },
+  { label: "Board-level repair", href: "/services" },
+  { label: "All repair services", href: "/services" },
+];
+
+const NAV: NavLink[] = [
+  { label: "Services", href: "/services", menu: SERVICE_LINKS },
+  { label: "Shop", href: "/shop" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+/* ---------------- Signature CTA (arrow-badge pill) ---------------- */
+
+function BookCta({
+  onClick,
+  className = "",
+}: {
+  onClick?: () => void;
+  className?: string;
+}) {
   return (
-    <div className="border-b border-ink/5">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between py-3 font-semibold text-ink/80"
-        aria-expanded={open}
-      >
-        {item.label}
-        <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <div className="pb-3">
-          {item.columns.map((col) => (
-            <div key={col.heading} className="mb-2">
-              <p className="section-label px-1 py-1.5 text-ink-soft">{col.heading}</p>
-              {col.links.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={onNavigate}
-                  className="block rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:bg-brand/5 hover:text-brand"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <Link
+      href="/services"
+      onClick={onClick}
+      className={`group focus-ring inline-flex items-center gap-2 rounded-full bg-brand py-1.5 pl-5 pr-1.5 font-display text-sm font-bold text-paper shadow-sm transition-colors hover:bg-brand-deep ${className}`}
+    >
+      Book a Repair
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-paper text-brand transition-transform duration-300 group-hover:rotate-45">
+        <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+      </span>
+    </Link>
   );
 }
 
@@ -144,256 +63,371 @@ function MobileItem({ item, onNavigate }: { item: NavItem; onNavigate: () => voi
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    // Only "float" once the user has scrolled past 40% of the viewport height.
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
-  // Escape closes the open mega-menu
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveMenu(null);
+      if (e.key === "Escape") setOpenMenu(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  function openMenu(label: string) {
+  function open(label: string) {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setActiveMenu(label);
+    setOpenMenu(label);
   }
   function scheduleClose() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setActiveMenu(null), 140);
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 140);
   }
 
-  const isActive = (href: string) => pathname === href;
-  const active = NAV_ITEMS.find((i) => i.label === activeMenu);
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  // Transparent (light text) only over the homepage hero, at the top, no menu open.
+  // Light text only over the homepage hero, before scrolling.
   const isHome = pathname === "/";
-  const transparent = isHome && !scrolled && !activeMenu;
+  const transparent = isHome && !scrolled;
   const linkColor = transparent
-    ? "text-paper/80 hover:text-paper"
+    ? "text-paper/85 hover:text-paper"
     : "text-ink/70 hover:text-brand";
 
-  return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        transparent
-          ? "border-b border-transparent bg-transparent"
-          : "border-b border-ink/10 bg-paper/95 backdrop-blur-md shadow-[0_4px_20px_-12px_rgba(13,43,46,0.3)]"
-      }`}
-      onMouseLeave={scheduleClose}
-    >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
-        {/* Logo + slogan */}
-        <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-          <Image
-            src="/logo.png"
-            alt="BTS Lab"
-            width={120}
-            height={120}
-            priority
-            className={`h-11 w-auto object-contain md:h-12 ${transparent ? "brightness-0 invert" : ""}`}
-          />
-          <span className="flex flex-col leading-none">
-            <span
-              className={`font-display text-lg font-extrabold tracking-tight ${
-                transparent ? "text-paper" : "text-ink"
-              }`}
-            >
-              BTS <span className={transparent ? "text-brand-mint" : "text-brand"}>Lab</span>
-            </span>
-            <span
-              className={`mt-1 font-mono-tag text-[9px] uppercase tracking-[0.18em] ${
-                transparent ? "text-paper/60" : "text-ink-soft"
-              }`}
-            >
-              Fix · Sell · Trust
-            </span>
-          </span>
-        </Link>
+  // Same width in both states. At the top it's flat (no border/shadow); once
+  // past 40% of the viewport it detaches into a floating, elevated pill.
+  const chrome = scrolled
+    ? "mt-3 rounded-full border-ink/10 bg-paper/90 shadow-[0_14px_36px_-14px_rgba(13,43,46,0.42)] backdrop-blur-md"
+    : "mt-0 rounded-none border-transparent bg-transparent shadow-none";
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 px-3 sm:px-5">
+      <div
+        className={`mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 border px-5 transition-[margin-top,background-color,border-color,box-shadow,border-radius] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-6 ${chrome}`}
+      >
+          {/* Logo */}
           <Link
             href="/"
-            className={`rounded-full px-4 py-2 text-[15px] font-semibold transition-colors ${
-              isActive("/") ? (transparent ? "text-paper" : "text-brand") : linkColor
-            }`}
+            className="flex items-center gap-2 transition-opacity hover:opacity-90"
           >
-            Home
-          </Link>
-
-          {NAV_ITEMS.map((item) => {
-            const hasMenu = !!item.columns;
-            const menuOpen = activeMenu === item.label;
-            return (
-              <div
-                key={item.label}
-                onMouseEnter={() => hasMenu && openMenu(item.label)}
-              >
-                <Link
-                  href={item.href}
-                  onFocus={() => hasMenu && openMenu(item.label)}
-                  onClick={() => setActiveMenu(null)}
-                  aria-expanded={hasMenu ? menuOpen : undefined}
-                  aria-haspopup={hasMenu || undefined}
-                  className={`inline-flex items-center gap-1 rounded-full px-4 py-2 text-[15px] font-semibold transition-colors ${
-                    menuOpen ? "text-brand" : linkColor
-                  }`}
-                >
-                  {item.label}
-                  {hasMenu && (
-                    <ChevronDown
-                      className={`h-3.5 w-3.5 transition-transform ${menuOpen ? "rotate-180" : ""}`}
-                    />
-                  )}
-                </Link>
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* Right side */}
-        <div className="hidden items-center gap-2.5 lg:flex">
-          {/* Auth state */}
-          {status === "loading" ? (
-            <span className={`h-9 w-24 rounded-full ${transparent ? "skeleton skeleton-dark" : "skeleton"}`} />
-          ) : session?.user ? (
-            <Link
-              href="/account"
-              className={`focus-ring inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                transparent
-                  ? "border-paper/30 text-paper hover:border-paper hover:bg-paper/10"
-                  : "border-ink/15 text-ink hover:border-brand hover:text-brand"
-              }`}
-            >
+            <Image
+              src="/logo.png"
+              alt="BTS Lab"
+              width={96}
+              height={96}
+              priority
+              className={`h-9 w-auto object-contain ${transparent ? "brightness-0 invert" : ""}`}
+            />
+            <span className="hidden flex-col leading-none sm:flex">
               <span
-                className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                  transparent ? "bg-paper/20 text-paper" : "bg-brand/10 text-brand"
+                className={`font-display text-base font-extrabold tracking-tight ${
+                  transparent ? "text-paper" : "text-ink"
                 }`}
               >
-                <User className="h-3.5 w-3.5" />
+                BTS <span className={transparent ? "text-brand-mint" : "text-brand"}>Lab</span>
               </span>
-              {session.user.name?.split(" ")[0] || "Account"}
-            </Link>
-          ) : (
-            <Link
-              href="/login"
-              className={`focus-ring inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition ${
-                transparent
-                  ? "text-paper hover:bg-paper/10"
-                  : "text-ink hover:text-brand"
-              }`}
-            >
-              Log in
-            </Link>
-          )}
-
-          {/* CTA — outlined-fill hover */}
-          <Link
-            href="/services"
-            className={`group focus-ring relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
-              transparent
-                ? "bg-paper text-brand hover:bg-brand-mint hover:text-ink"
-                : "bg-brand text-paper hover:bg-brand-deep"
-            }`}
-          >
-            Book a Repair
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <span
+                className={`mt-0.5 font-mono-tag text-[8px] uppercase tracking-[0.18em] ${
+                  transparent ? "text-paper/60" : "text-ink-soft"
+                }`}
+              >
+                Fix · Sell · Trust
+              </span>
+            </span>
           </Link>
-        </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen((v) => !v)}
-          className={`focus-ring inline-flex h-11 w-11 items-center justify-center rounded-xl border transition lg:hidden ${
-            transparent ? "border-paper/30 text-paper" : "border-ink/10 text-ink"
-          }`}
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-
-      {/* Desktop mega-menu panel */}
-      <AnimatePresence>
-        {active?.columns && (
-          <div onMouseEnter={() => openMenu(active.label)} onMouseLeave={scheduleClose}>
-            <MegaPanel item={active} onNavigate={() => setActiveMenu(null)} />
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-ink/10 bg-paper lg:hidden">
-          <nav className="mx-auto max-w-7xl px-5 py-3 sm:px-8">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="block border-b border-ink/5 py-3 font-semibold text-ink/80 hover:text-brand"
-            >
-              Home
-            </Link>
-            {NAV_ITEMS.map((item) => (
-              <MobileItem key={item.label} item={item} onNavigate={() => setMobileOpen(false)} />
-            ))}
-
-            {/* Auth (mobile) */}
-            {session?.user ? (
-              <div className="mt-2 flex flex-col gap-1 border-t border-ink/5 pt-2">
-                <Link
-                  href="/account"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 py-3 font-semibold text-ink/80 hover:text-brand"
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-0.5 lg:flex">
+            {NAV.map((item) => {
+              const hasMenu = !!item.menu;
+              const menuOpen = openMenu === item.label;
+              const activeState = isActive(item.href) || menuOpen;
+              return (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => hasMenu && open(item.label)}
+                  onMouseLeave={() => hasMenu && scheduleClose()}
                 >
-                  <User className="h-4 w-4" /> My account
-                </Link>
+                  <Link
+                    href={item.href}
+                    onFocus={() => hasMenu && open(item.label)}
+                    onClick={() => setOpenMenu(null)}
+                    aria-expanded={hasMenu ? menuOpen : undefined}
+                    aria-haspopup={hasMenu || undefined}
+                    className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-semibold transition-colors ${
+                      activeState
+                        ? transparent
+                          ? "text-paper"
+                          : "text-brand"
+                        : linkColor
+                    }`}
+                  >
+                    {item.label}
+                    {hasMenu && (
+                      <ChevronDown
+                        className={`h-3.5 w-3.5 transition-transform ${
+                          menuOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    )}
+                  </Link>
+
+                  <AnimatePresence>
+                    {hasMenu && menuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.16, ease: "easeOut" }}
+                        className="absolute left-1/2 top-full z-40 -translate-x-1/2 pt-3"
+                      >
+                        <div className="w-60 overflow-hidden rounded-2xl border border-ink/10 bg-paper p-1.5 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)]">
+                          {item.menu!.map((sub) => (
+                            <Link
+                              key={sub.label}
+                              href={sub.href}
+                              onClick={() => setOpenMenu(null)}
+                              className="block rounded-xl px-3.5 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                            >
+                              {sub.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </nav>
+
+          {/* Right side — Book a Repair first, profile/login on the far right */}
+          <div className="hidden items-center gap-2.5 lg:flex">
+            <BookCta onClick={() => setOpenMenu(null)} />
+
+            {status === "loading" ? (
+              <span
+                className={`h-9 w-9 rounded-full ${
+                  transparent ? "skeleton skeleton-dark" : "skeleton"
+                }`}
+              />
+            ) : session?.user ? (
+              <div
+                className="relative"
+                onMouseEnter={() => open(PROFILE_MENU)}
+                onMouseLeave={scheduleClose}
+              >
                 <button
                   type="button"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    signOut({ callbackUrl: "/" });
-                  }}
-                  className="flex items-center gap-2 py-3 text-left font-semibold text-ink/80 hover:text-brand"
+                  onClick={() =>
+                    setOpenMenu((m) => (m === PROFILE_MENU ? null : PROFILE_MENU))
+                  }
+                  aria-expanded={openMenu === PROFILE_MENU}
+                  aria-haspopup="menu"
+                  className={`focus-ring flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2 transition ${
+                    transparent ? "hover:bg-paper/10" : "hover:bg-ink/5"
+                  }`}
                 >
-                  <LogOut className="h-4 w-4" /> Sign out
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand font-display text-xs font-bold text-paper">
+                    {initialsOf(session.user.name)}
+                  </span>
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform ${
+                      openMenu === PROFILE_MENU ? "rotate-180" : ""
+                    } ${transparent ? "text-paper/80" : "text-ink/60"}`}
+                  />
                 </button>
+
+                <AnimatePresence>
+                  {openMenu === PROFILE_MENU && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.16, ease: "easeOut" }}
+                      className="absolute right-0 top-full z-40 pt-3"
+                    >
+                      <div className="w-60 overflow-hidden rounded-2xl border border-ink/10 bg-paper p-1.5 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)]">
+                        <div className="border-b border-ink/8 px-3 py-2.5">
+                          <p className="truncate font-display text-sm font-bold text-ink">
+                            {session.user.name || "Your account"}
+                          </p>
+                          <p className="truncate text-xs text-ink-soft">{session.user.email}</p>
+                        </div>
+                        <Link
+                          href="/account"
+                          onClick={() => setOpenMenu(null)}
+                          className="mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                        >
+                          <User className="h-4 w-4" /> Profile
+                        </Link>
+                        <Link
+                          href="/account#requests"
+                          onClick={() => setOpenMenu(null)}
+                          className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                        >
+                          <LayoutDashboard className="h-4 w-4" /> Dashboard
+                        </Link>
+                        {session.user.role === "ADMIN" && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setOpenMenu(null)}
+                            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                          >
+                            <Shield className="h-4 w-4" /> Admin panel
+                          </Link>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setOpenMenu(null);
+                            signOut({ callbackUrl: "/" });
+                          }}
+                          className="mt-1 flex w-full items-center gap-2.5 rounded-xl border-t border-ink/8 px-3 py-2.5 text-left text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                        >
+                          <LogOut className="h-4 w-4" /> Sign out
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <Link
                 href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="block border-t border-ink/5 py-3 font-semibold text-ink/80 hover:text-brand"
+                className={`focus-ring inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  transparent ? "text-paper hover:bg-paper/10" : "text-ink/75 hover:text-brand"
+                }`}
               >
                 Log in
               </Link>
             )}
+          </div>
 
-            <div className="mt-4 pb-4">
-              <Link
-                href="/services"
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-paper"
-              >
-                Book a Repair
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </nav>
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            className={`focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border transition lg:hidden ${
+              transparent
+                ? "border-paper/30 text-paper hover:border-paper"
+                : "border-ink/10 text-ink hover:border-brand hover:text-brand"
+            }`}
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
-      )}
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="mx-4 mt-1 rounded-2xl border border-ink/10 bg-paper p-3 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)] lg:hidden"
+          >
+            <nav className="flex flex-col">
+              {NAV.map((item) => (
+                <div key={item.label}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block rounded-xl px-3 py-3 text-[15px] font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                  >
+                    {item.label}
+                  </Link>
+                  {item.menu && (
+                    <div className="mb-1 ml-3 border-l border-ink/10 pl-3">
+                      {item.menu.slice(0, -1).map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-sm font-medium text-ink/60 hover:text-brand"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              <div className="my-2 h-px bg-ink/8" />
+
+              {session?.user ? (
+                <>
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                  >
+                    <User className="h-4 w-4" /> Profile
+                  </Link>
+                  <Link
+                    href="/account#requests"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                  >
+                    <LayoutDashboard className="h-4 w-4" /> Dashboard
+                  </Link>
+                  {session.user.role === "ADMIN" && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                    >
+                      <Shield className="h-4 w-4" /> Admin panel
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen(false);
+                      signOut({ callbackUrl: "/" });
+                    }}
+                    className="flex items-center gap-2 rounded-xl px-3 py-3 text-left font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                  >
+                    <LogOut className="h-4 w-4" /> Sign out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
+                >
+                  Log in
+                </Link>
+              )}
+
+              <div className="mt-2 px-1">
+                <BookCta
+                  onClick={() => setMobileOpen(false)}
+                  className="w-full justify-between"
+                />
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

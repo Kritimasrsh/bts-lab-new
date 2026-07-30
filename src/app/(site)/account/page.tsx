@@ -40,7 +40,7 @@ export default async function AccountPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-5 py-10 sm:px-8">
+      <section id="requests" className="mx-auto max-w-4xl scroll-mt-28 px-5 py-10 sm:px-8">
         <h2 className="font-display text-xl font-extrabold text-ink">Your repair requests</h2>
 
         {requests.length === 0 ? (
