@@ -9,7 +9,7 @@ type CtaBannerProps = {
 
 export default function CtaBanner({
   title = "Ready to fix your phone?",
-  subtitle = "Select your brand, model and problem to get an instant estimate — then let BTS Lab handle the rest.",
+  subtitle = "Pick your brand, model and problem, get an instant estimate, and we'll take it from there.",
   ctaLabel = "Start a repair",
   ctaHref = "/services",
 }: CtaBannerProps) {

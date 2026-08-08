@@ -5,7 +5,7 @@ import StatIcon from "@/components/icons/StatIcon";
 
 const STEPS = [
   { n: "01", t: "Drop in or book", d: "Visit the counter or start a repair online in under a minute." },
-  { n: "02", t: "Free diagnosis", d: "We find the real fault before quoting — no guesswork, no pressure." },
+  { n: "02", t: "Free diagnosis", d: "We find the real fault before quoting. No guesswork, no pressure." },
   { n: "03", t: "We repair it", d: "Genuine parts, certified techs. Most fixes are done the same day." },
   { n: "04", t: "Warranty included", d: "Every repair leaves with up to 90 days of cover on the work." },
 ];

@@ -65,8 +65,8 @@ export default function LabShowcase() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/70">
-              Every device is opened on a proper bench — diagnosed, cleaned and repaired by
-              certified engineers, not swapped blindly. Here&apos;s a look at how we work.
+              Every device gets opened on a proper bench, then diagnosed, cleaned and repaired
+              by real engineers. No blind part-swapping. Here&apos;s a look at how we actually work.
             </p>
           </Reveal>
         </div>
@@ -103,7 +103,7 @@ export default function LabShowcase() {
             {/* static caption card (replaces the PiP clip) */}
             <div className="absolute bottom-5 left-5 right-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <p className="max-w-md font-display text-lg font-bold leading-snug text-white drop-shadow sm:text-xl">
-                Diagnosed under a microscope — before we touch a single screw.
+                We diagnose under a microscope before touching a single screw.
               </p>
               <div className="glass-dark inline-flex shrink-0 items-center gap-4 rounded-2xl px-4 py-3">
                 <div>

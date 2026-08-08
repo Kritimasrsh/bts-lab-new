@@ -27,7 +27,7 @@ export default function DoorstepCta() {
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">
               Not sure what&apos;s wrong, or need help booking? Our technicians are on hand to
-              answer questions and guide you — no obligation, no pressure.
+              answer your questions and help you out. No pressure, no obligation.
             </p>
             <a
               href={`https://wa.me/${WHATSAPP}`}

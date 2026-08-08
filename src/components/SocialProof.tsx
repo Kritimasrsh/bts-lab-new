@@ -74,7 +74,7 @@ export default async function SocialProof() {
             <div className="flex items-center gap-2.5">
               <GoogleG className="h-6 w-6" />
               <span className="font-display text-lg font-extrabold text-ink">Straight from Google</span>
-              <span className="ml-1 text-sm text-ink-soft">— live, unedited</span>
+              <span className="ml-1 text-sm text-ink-soft">straight off our profile</span>
             </div>
           </Reveal>
           <ReviewsMarquee reviews={reviews} />

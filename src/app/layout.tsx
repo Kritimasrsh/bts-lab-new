@@ -1,4 +1,5 @@
 import "./globals.css";
+import "lenis/dist/lenis.css";
 import type { ReactNode } from "react";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Providers from "@/components/Providers";
@@ -28,9 +29,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`h-full antialiased ${inter.variable} ${jetbrainsMono.variable}`}
+      data-scroll-behavior="smooth"
+      className={`antialiased ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink">
+      <body className="flex min-h-screen flex-col bg-paper text-ink">
         <Providers>{children}</Providers>
       </body>
     </html>

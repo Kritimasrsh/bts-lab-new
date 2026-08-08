@@ -77,8 +77,8 @@ export default function ServicesHero() {
             variants={rise}
             className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg"
           >
-            Walk in with any brand, any issue. We diagnose for free and quote before we touch a
-            single screw — genuine parts, certified techs, warranty on every fix.
+            Walk in with any brand, any issue. We check it for free and tell you the price
+            before we touch a single screw. Genuine parts, trained techs, warranty on every fix.
           </motion.p>
 
           <motion.div variants={rise} className="mt-9 flex flex-wrap items-center justify-center gap-4">

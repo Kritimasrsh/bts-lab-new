@@ -18,7 +18,7 @@ export default function HomeServicesStack() {
         </Reveal>
         <Reveal delay={0.1}>
           <p className="mt-4 text-base leading-relaxed text-ink-soft">
-            Our most-requested repairs — genuine parts, certified techs, warranty on every fix.
+            The repairs people ask for most, with genuine parts, trained techs and a warranty on every fix.
           </p>
         </Reveal>
       </div>

@@ -122,9 +122,8 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth scrolling is handled by Lenis (see SmoothScroll); native smooth here
+   would fight Lenis's per-frame scroll, so we leave it as the default. */
 
 body {
   background: var(--paper);

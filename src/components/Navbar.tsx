@@ -114,8 +114,8 @@ function BookCta({ onClick, className = "" }: { onClick?: () => void; className?
 function Hairlines() {
   return (
     <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
-      <line x1="0" y1="63.5" x2="100%" y2="63.5" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
-      <line x1="0" y1="60.5" x2="100%" y2="60.5" stroke="currentColor" strokeOpacity={0.08} strokeWidth={0.5} />
+      <line x1="0" y1="79.5" x2="100%" y2="79.5" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+      <line x1="0" y1="76.5" x2="100%" y2="76.5" stroke="currentColor" strokeOpacity={0.08} strokeWidth={0.5} />
     </svg>
   );
 }
@@ -156,22 +156,22 @@ export default function Navbar() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex h-16 text-white">
+    <header className="fixed inset-x-0 top-0 z-50 flex h-20 text-white">
       {/* Left rail */}
-      <div className="relative hidden h-10 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
+      <div className="relative hidden h-12 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
         <Hairlines />
       </div>
 
       {/* Notch container */}
-      <div className="relative z-10 flex h-16 min-w-0 flex-1 shrink-0 md:flex-initial">
+      <div className="relative z-10 flex h-20 min-w-0 flex-1 shrink-0 md:flex-initial">
         {/* Left corner */}
         <div className="relative hidden h-full w-[46px] shrink-0 md:block">
           <div
             className="absolute inset-0 bg-[#0b1c1d]/95 backdrop-blur-md"
-            style={{ clipPath: "path('M0 0 H46 V64 C23 64 23 40 0 40 Z')" }}
+            style={{ clipPath: "path('M0 0 H46 V80 C23 80 23 48 0 48 Z')" }}
           />
-          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 64" preserveAspectRatio="none">
-            <path d="M0 39.5 C23 39.5 23 63.5 46 63.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 80" preserveAspectRatio="none">
+            <path d="M0 47.5 C23 47.5 23 79.5 46 79.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
           </svg>
         </div>
 
@@ -388,16 +388,16 @@ export default function Navbar() {
         <div className="relative -ml-px hidden h-full w-[46px] shrink-0 md:block">
           <div
             className="absolute inset-0 bg-[#0b1c1d]/95 backdrop-blur-md"
-            style={{ clipPath: "path('M0 0 H46 V40 C23 40 23 64 0 64 Z')" }}
+            style={{ clipPath: "path('M0 0 H46 V48 C23 48 23 80 0 80 Z')" }}
           />
-          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 64" preserveAspectRatio="none">
-            <path d="M0 63.5 C23 63.5 23 39.5 46 39.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 80" preserveAspectRatio="none">
+            <path d="M0 79.5 C23 79.5 23 47.5 46 47.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
           </svg>
         </div>
       </div>
 
       {/* Right rail */}
-      <div className="relative -ml-px hidden h-10 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
+      <div className="relative -ml-px hidden h-12 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
         <Hairlines />
       </div>
 
@@ -409,7 +409,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute inset-x-3 top-[4.5rem] rounded-2xl border border-ink/10 bg-paper p-3 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)] lg:hidden"
+            className="absolute inset-x-3 top-[5.5rem] rounded-2xl border border-ink/10 bg-paper p-3 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)] lg:hidden"
           >
             <nav className="flex flex-col">
               {NAV.map((item) => (

@@ -11,7 +11,7 @@ export default function BrandStrip() {
     <section className="border-y border-ink/10 bg-paper py-12">
       <div className="mx-auto max-w-7xl px-5 text-center sm:px-8">
         <p className="font-mono-tag text-[11px] uppercase tracking-[0.22em] text-ink-soft">
-          Every major brand — if it powers on (or doesn&apos;t), we fix it
+          Every major brand. If it powers on (or doesn&apos;t), we fix it
         </p>
       </div>
       <div className="marquee-mask marquee-track mt-8 overflow-hidden">

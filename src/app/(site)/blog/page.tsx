@@ -10,7 +10,7 @@ const POSTS = [
   {
     tag: "Repair Tips",
     title: "5 Signs Your Battery Needs Replacing",
-    desc: "Slow charging, sudden shutdowns, and swelling — here's what to watch for before it's too late.",
+    desc: "Slow charging, sudden shutdowns, and swelling. Here's what to watch for before it's too late.",
     date: "Jul 02, 2026",
   },
   {

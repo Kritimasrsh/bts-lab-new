@@ -59,9 +59,9 @@ export default function AboutSplit() {
               containerClassName="mt-2"
               textClassName="!text-base !leading-relaxed !font-normal text-ink-soft"
             >
-              We&apos;re one of the few labs that perform board-level repair for any device we
-              don&apos;t just swap parts, we diagnose the real fault and fix it right the first
-              time, across every major brand, with a 90%+ success rate on the boards we take on.
+              We&apos;re one of the few labs that do proper board-level repair on any device. We
+              don&apos;t just swap parts. We find the real fault and fix it right the first time,
+              across every major brand, with a 90%+ success rate on the boards we take on.
             </ScrollReveal>
 
             <div className="mt-7">

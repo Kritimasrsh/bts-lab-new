@@ -17,8 +17,8 @@ export default function ServicesStack() {
         </Reveal>
         <Reveal delay={0.1}>
           <p className="mt-4 text-base leading-relaxed text-ink-soft">
-            From cracked screens to board-level rescues — every repair runs through one lab,
-            with genuine parts and a warranty on the work. Scroll to explore.
+            From cracked screens to board-level rescues, every repair runs through one lab,
+            with genuine parts and a warranty on the work. Scroll to have a look.
           </p>
         </Reveal>
       </div>

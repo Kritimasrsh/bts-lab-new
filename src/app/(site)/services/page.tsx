@@ -28,7 +28,7 @@ export default function ServicesPage() {
       <FAQ />
       <CtaBanner
         title="Not sure what's wrong with it?"
-        subtitle="Bring it in for a free diagnostic — no pressure, no obligation. We find the fault before you spend a rupee."
+        subtitle="Bring it in for a free diagnostic. No pressure, no obligation, and we find the fault before you spend a rupee."
         ctaLabel="Start a repair"
         ctaHref="/#select-brand"
       />

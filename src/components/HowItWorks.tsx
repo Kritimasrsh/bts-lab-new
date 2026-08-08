@@ -18,7 +18,7 @@ const STEPS = [
   },
   {
     num: "03",
-    title: "Get it back — warrantied",
+    title: "Get it back, warrantied",
     desc: "Delivered back tested and warrantied. Track everything from your BTS Lab account, from quote to delivery.",
     icon: "/svgs/fixed-check.svg",
   },

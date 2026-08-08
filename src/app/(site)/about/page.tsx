@@ -6,7 +6,7 @@ import Reveal from "@/components/animated/Reveal";
 
 export const metadata = {
   title: "About | BTS Lab",
-  description: "BTS Lab — Kathmandu's trusted mobile repair, buyback and training destination.",
+  description: "BTS Lab is Kathmandu's trusted spot for mobile repair, buyback and training.",
 };
 
 const STATS = [
@@ -17,16 +17,16 @@ const STATS = [
 ];
 
 const DIFFERENCE = [
-  { icon: Cpu, title: "Board-level expertise", desc: "Chip-level diagnostics and micro-soldering most shops send away — done in-house under a microscope." },
+  { icon: Cpu, title: "Board-level expertise", desc: "Chip-level diagnostics and micro-soldering that most shops send away, done in-house under a microscope." },
   { icon: ShieldCheck, title: "Genuine parts & warranty", desc: "Vetted components, tested before they go in, and a warranty on the work every single time." },
   { icon: Wrench, title: "Free, honest diagnosis", desc: "We find the real fault and quote before we touch a screw. No guesswork, no mystery charges." },
-  { icon: HeartHandshake, title: "Trusted across Nepal", desc: "Thousands of repairs, buybacks and trained technicians — a lab the community actually relies on." },
+  { icon: HeartHandshake, title: "Trusted across Nepal", desc: "Thousands of repairs, buybacks and trained technicians. A lab the community actually relies on." },
 ];
 
 const VALUES = [
   { icon: "✓", title: "Genuine parts, always", desc: "Every component is sourced from vetted vendors and tested before it goes in." },
   { icon: "🛡", title: "Your data, protected", desc: "Devices are handled with strict privacy protocols at every step of the repair." },
-  { icon: "⚡", title: "Speed without shortcuts", desc: "Most repairs finish same day — because our process is efficient, not rushed." },
+  { icon: "⚡", title: "Speed without shortcuts", desc: "Most repairs finish the same day, because our process is tight, not rushed." },
   { icon: "🎓", title: "Knowledge, shared", desc: "We believe repair skills should be taught, not gatekept." },
 ];
 
@@ -35,17 +35,16 @@ export default function AboutPage() {
     <>
       <PageHeader
         title="Behind every screen is a story."
-        desc="We started as a two-person repair counter in Kathmandu. Today we're a full lab: repairs, buyback, training, and a shop — all under one roof."
+        desc="We started as a two-person repair counter in Kathmandu. Today we're a full lab: repairs, buyback, training and a shop, all under one roof."
       />
 
       <section className="mx-auto max-w-4xl px-5 py-20 sm:px-8">
         <Reveal>
           <p className="font-sans text-lg leading-relaxed text-ink-soft">
-            BTS Lab —
-            was built on a simple idea: a broken phone shouldn&apos;t mean a
-            broken week. We invested early in proper tools OCA bonding
-            stations, CNC glass cutters, laser precision machines so repairs
-            that other shops turn away become routine here.
+            BTS Lab started with a simple idea: a broken phone shouldn&apos;t wreck
+            your whole week. We put money into proper kit early on, OCA bonding
+            stations, CNC glass cutters and laser machines, so the repairs other
+            shops turn away are just routine for us.
           </p>
         </Reveal>
         <Reveal delay={0.1}>
@@ -80,7 +79,7 @@ export default function AboutPage() {
               What makes us different
             </h2>
             <p className="mt-4 text-base leading-relaxed text-ink-soft">
-              Not just another phone counter — a proper lab built for the repairs everyone else avoids.
+              Not just another phone counter. A proper lab built for the repairs everyone else avoids.
             </p>
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
