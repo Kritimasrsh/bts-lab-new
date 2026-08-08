@@ -12,16 +12,26 @@ const ICONS = {
   service: Wrench,
 } as const;
 
+// Rotating example searches shown as an animated typewriter placeholder.
+const KEYWORDS = [
+  "cracked iPhone screen",
+  "Samsung battery replacement",
+  "water-damaged phone",
+  "iPhone 13 Pro camera",
+  "charging port not working",
+  "MacBook screen repair",
+];
+
 export default function HeroSearch() {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
   const boxRef = useRef<HTMLDivElement>(null);
 
-  // debounced fetch — all state changes happen inside the (async) timer, never
-  // synchronously in the effect body.
+  // debounced search fetch
   useEffect(() => {
     const query = q.trim();
     const t = setTimeout(async () => {
@@ -43,6 +53,40 @@ export default function HeroSearch() {
       }
     }, 200);
     return () => clearTimeout(t);
+  }, [q]);
+
+  // typewriter placeholder — runs only while the field is empty
+  useEffect(() => {
+    if (q) return;
+    let ki = 0;
+    let ci = 0;
+    let deleting = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const word = KEYWORDS[ki % KEYWORDS.length];
+      if (!deleting) {
+        ci += 1;
+        setTyped(word.slice(0, ci));
+        if (ci === word.length) {
+          deleting = true;
+          timer = setTimeout(tick, 1600);
+          return;
+        }
+        timer = setTimeout(tick, 65);
+      } else {
+        ci -= 1;
+        setTyped(word.slice(0, ci));
+        if (ci === 0) {
+          deleting = false;
+          ki += 1;
+          timer = setTimeout(tick, 350);
+          return;
+        }
+        timer = setTimeout(tick, 30);
+      }
+    };
+    timer = setTimeout(tick, 400);
+    return () => clearTimeout(timer);
   }, [q]);
 
   // close on outside click
@@ -69,17 +113,26 @@ export default function HeroSearch() {
     <div ref={boxRef} className="relative w-full max-w-xl">
       <form
         onSubmit={onSubmit}
-        className="flex items-center gap-2 rounded-full bg-paper p-1.5 pl-5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.6)]"
+        className="relative flex items-center gap-2 rounded-full border border-black/5 bg-paper p-1.5 pl-5 shadow-[0_18px_44px_-18px_rgba(13,43,46,0.55)]"
       >
-        <Search className="h-5 w-5 shrink-0 text-ink-soft" />
+        <Search className="h-5 w-5 shrink-0 text-ink/40" />
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onFocus={() => results.length && setOpen(true)}
-          placeholder="Search a brand, model or problem…"
-          className="min-w-0 flex-1 bg-transparent py-2.5 text-sm text-ink placeholder:text-ink-soft/70 focus:outline-none"
+          placeholder=""
+          className="min-w-0 flex-1 bg-transparent py-2.5 text-sm text-ink placeholder:text-ink/40 focus:outline-none"
           aria-label="Search services, models and problems"
         />
+
+        {/* realistic typewriter placeholder — shown only while empty */}
+        {!q && (
+          <span className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 truncate pr-28 text-sm text-ink/45">
+            {typed}
+            <span className="animate-caret ml-px text-brand">|</span>
+          </span>
+        )}
+
         <button
           type="submit"
           className="focus-ring inline-flex shrink-0 items-center gap-2 rounded-full bg-brand px-6 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-paper transition hover:bg-brand-deep"
@@ -90,7 +143,7 @@ export default function HeroSearch() {
 
       {/* results dropdown */}
       {open && q.trim().length >= 2 && (
-        <div className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-ink/10 bg-paper text-left shadow-[0_30px_60px_-24px_rgba(0,0,0,0.5)]">
+        <div className="glass absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl text-left">
           {loading && results.length === 0 ? (
             <div className="px-5 py-6 text-center text-sm text-ink-soft">Searching…</div>
           ) : results.length === 0 ? (

@@ -31,8 +31,7 @@ export default function ServiceSteps() {
     <section id="how-it-works" className="scroll-mt-24 bg-paper-dim py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
-          <span className="section-label text-brand">How it works</span>
-          <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Four steps, zero surprises.
           </h2>
         </div>

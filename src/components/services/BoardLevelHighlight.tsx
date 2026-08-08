@@ -13,16 +13,15 @@ const POINTS = [
 
 export default function BoardLevelHighlight() {
   return (
-    <section id="board-level" className="relative overflow-hidden bg-ink py-20 text-paper sm:py-24">
+    <section id="board-level" className="surface-dark relative overflow-hidden py-20 sm:py-24">
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-[0.06]" aria-hidden />
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-brand/30 blur-3xl" aria-hidden />
 
-      <div className="relative mx-auto max-w-5xl px-5 text-center sm:px-8">
-        <span className="section-label text-brand-mint">Board-level lab</span>
-        <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
+      <div className="relative mx-auto max-w-5xl px-5 text-center text-white sm:px-8">
+        <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
           The repairs other shops refuse.
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-paper/70">
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/70">
           When a phone is written off elsewhere, it usually lands on our microscope bench.
           Chip-level diagnostics and micro-soldering by certified board engineers.
         </p>
@@ -49,7 +48,7 @@ export default function BoardLevelHighlight() {
                     <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-mint/15 text-brand-mint">
                       <Icon className="h-5 w-5" />
                     </span>
-                    <span className="text-sm font-semibold leading-snug text-paper/85">
+                    <span className="text-sm font-semibold leading-snug text-white/85">
                       {label}
                     </span>
                   </div>
@@ -57,7 +56,7 @@ export default function BoardLevelHighlight() {
               </div>
 
               <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
-                <p className="font-mono-tag text-[11px] uppercase tracking-[0.2em] text-paper/60">
+                <p className="font-mono-tag text-[11px] uppercase tracking-[0.2em] text-white/60">
                   Free diagnosis · Quote before we start
                 </p>
                 <Link

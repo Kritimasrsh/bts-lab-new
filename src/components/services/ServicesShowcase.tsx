@@ -59,11 +59,10 @@ export default function ServicesShowcase() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* animated statement */}
         <div className="mx-auto max-w-4xl text-center">
-          <span className="section-label text-brand">What we fix</span>
           <ScrollReveal
             baseOpacity={0.12}
             blurStrength={5}
-            containerClassName="mt-4"
+            containerClassName=""
             textClassName="text-ink"
           >
             From cracked screens to board-level rescues — every repair runs through one lab, with genuine parts and a warranty on the work.

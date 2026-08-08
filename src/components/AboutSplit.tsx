@@ -3,6 +3,8 @@ import { Smartphone, Star, Wrench } from "lucide-react";
 import Counter from "@/components/Counter";
 import AnimatedButton from "@/components/AnimatedButton";
 import ScrollReveal from "@/components/animated/ScrollReveal";
+import Reveal from "@/components/animated/Reveal";
+import Parallax from "@/components/animated/Parallax";
 
 const STATS = [
   { icon: Smartphone, to: 7580, suffix: "+", label: "Phones & PCs repaired in the last two years" },
@@ -17,32 +19,32 @@ export default function AboutSplit() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           {/* LEFT — heading over yellow block + photos */}
           <div className="relative">
-            <div className="relative">
+            <Reveal direction="right">
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[2.9rem]">
                 Award-winning
                 <br />
                 <span className="text-brand">repair lab</span> in the city.
               </h2>
-            </div>
+            </Reveal>
 
-            {/* overlapping photos — clean, minimal framing */}
+            {/* overlapping photos with subtle parallax drift */}
             <div className="mt-8 flex items-end gap-4">
-              <div className="relative aspect-4/5 w-3/5 overflow-hidden rounded-2xl ring-1 ring-ink/10">
+              <Parallax offset={26} className="relative aspect-4/5 w-3/5 overflow-hidden rounded-2xl ring-1 ring-ink/10">
                 <Image
                   src="/illustration3.jpeg"
                   alt="Technician performing a delicate phone repair"
                   fill
                   className="object-cover"
                 />
-              </div>
-              <div className="relative aspect-square w-2/5 overflow-hidden rounded-2xl bg-ink ring-1 ring-ink/10">
+              </Parallax>
+              <Parallax offset={-32} className="relative aspect-square w-2/5 overflow-hidden rounded-2xl bg-ink ring-1 ring-ink/10">
                 <Image
                   src="/parts-decomposed.png"
                   alt="Exploded view of phone parts"
                   fill
                   className="object-contain p-2 mix-blend-screen"
                 />
-              </div>
+              </Parallax>
             </div>
           </div>
 
@@ -66,19 +68,18 @@ export default function AboutSplit() {
               <AnimatedButton href="/contact">Contact Us</AnimatedButton>
             </div>
 
-            {/* stat tiles — flat, bordered (no drop shadow) */}
-            <div className="mt-10 grid overflow-hidden rounded-2xl border border-ink/10 sm:grid-cols-3">
-              {STATS.map(({ icon: Icon, to, suffix, label }) => (
-                <div
-                  key={label}
-                  className="border-ink/10 p-5 not-last:border-b sm:not-last:border-b-0 sm:not-last:border-r"
-                >
-                  <span className="font-display text-3xl font-extrabold tracking-tight text-brand">
-                    <Counter to={to} suffix={suffix} />
-                  </span>
-                  <p className="mt-2 text-xs leading-relaxed text-ink-soft">{label}</p>
-                  <Icon className="mt-4 h-6 w-6 text-brand-mint" />
-                </div>
+            {/* stat tiles — glass */}
+            <div className="mt-10 grid gap-3 sm:grid-cols-3">
+              {STATS.map(({ icon: Icon, to, suffix, label }, i) => (
+                <Reveal key={label} delay={0.08 * i} className="h-full">
+                  <div className="glass glass-hover h-full rounded-2xl p-5">
+                    <span className="font-display text-3xl font-extrabold tracking-tight text-brand">
+                      <Counter to={to} suffix={suffix} />
+                    </span>
+                    <p className="mt-2 text-xs leading-relaxed text-ink-soft">{label}</p>
+                    <Icon className="mt-4 h-6 w-6 text-brand-mint" />
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>

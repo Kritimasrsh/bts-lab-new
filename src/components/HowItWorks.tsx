@@ -75,9 +75,9 @@ export default function HowItWorks() {
           viewport={{ once: true, margin: "-100px" }}
           className="mt-16 grid gap-x-8 gap-y-12 md:grid-cols-3"
         >
-          {STEPS.map(({ num, title, desc, icon }, i) => (
-            <motion.div key={num} variants={step} className="relative">
-              {/* icon + big ghost number (no card) */}
+          {STEPS.map(({ num, title, desc, icon }) => (
+            <motion.div key={num} variants={step} className="glass glass-hover relative rounded-2xl p-6">
+              {/* icon + big ghost number */}
               <div className="flex items-center gap-4">
                 <span className="flex h-16 w-16 shrink-0 items-center justify-center text-brand">
                   <MaskIcon src={icon} className="h-11 w-11" />

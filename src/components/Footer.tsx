@@ -32,7 +32,7 @@ const COLUMNS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-ink/10 bg-ink text-paper">
+    <footer className="surface-dark border-t border-white/10">
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -50,14 +50,14 @@ export default function Footer() {
                 BTS <span className="text-brand-mint">Lab</span>
               </span>
             </Link>
-            <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-paper/70">
+            <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-white/70">
               Your one-stop solution for mobile repairs &amp; buyback — expert
               technicians, genuine parts, and fair prices, every time.
             </p>
-            <p className="mt-5 font-sans text-sm text-paper/60">
+            <p className="mt-5 font-sans text-sm text-white/60">
               +977-1-5354999
             </p>
-            <p className="mt-1 font-mono-tag text-xs uppercase tracking-wide text-paper/50">
+            <p className="mt-1 font-mono-tag text-xs uppercase tracking-wide text-white/50">
               New Road, Kathmandu, Nepal
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="font-sans text-sm text-paper/80 hover:text-paper focus-ring rounded"
+                      className="font-sans text-sm text-white/80 hover:text-white focus-ring rounded"
                     >
                       {link.label}
                     </Link>
@@ -83,11 +83,11 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-paper/15 pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono-tag text-xs text-paper/50">
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-6 sm:flex-row sm:items-center">
+          <p className="font-mono-tag text-xs text-white/50">
             © {new Date().getFullYear()} BTS Lab. All rights reserved.
           </p>
-          <div className="flex gap-5 font-mono-tag text-xs uppercase tracking-wide text-paper/60">
+          <div className="flex gap-5 font-mono-tag text-xs uppercase tracking-wide text-white/60">
             <a href="#" className="hover:text-mint">Instagram</a>
             <a href="#" className="hover:text-mint">Facebook</a>
             <a href="#" className="hover:text-mint">TikTok</a>

@@ -80,7 +80,7 @@ export default function Hero() {
         <motion.div variants={container} initial="hidden" animate="show" className="flex max-w-4xl flex-col items-center">
           <motion.h1
             variants={wordContainer}
-            className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-paper sm:text-5xl lg:text-6xl"
+            className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
             <span className="flex flex-wrap justify-center gap-x-3.5">
               {HEADLINE.map((word) => (
@@ -103,7 +103,7 @@ export default function Hero() {
 
           <motion.p
             variants={rise}
-            className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono-tag text-[11px] font-bold uppercase tracking-widest text-paper/70"
+            className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono-tag text-[11px] font-bold uppercase tracking-widest text-white/70"
           >
             <span>Genuine Parts</span>
             <span className="text-brand-mint">•</span>
@@ -128,12 +128,12 @@ export default function Hero() {
         >
           {STATS.map(({ name, to, suffix, label }) => (
             <div key={name} className="flex items-center justify-center gap-3">
-              <StatIcon name={name} className="h-8 w-8 shrink-0 text-paper" />
+              <StatIcon name={name} className="h-8 w-8 shrink-0 text-white" />
               <div className="text-left">
-                <span className="block font-display text-xl font-extrabold leading-none tracking-tight text-paper sm:text-2xl">
+                <span className="block font-display text-xl font-extrabold leading-none tracking-tight text-white sm:text-2xl">
                   <Counter to={to} suffix={suffix} />
                 </span>
-                <span className="mt-1 block whitespace-nowrap font-mono-tag text-[10px] font-bold uppercase tracking-widest text-paper/70">
+                <span className="mt-1 block whitespace-nowrap font-mono-tag text-[10px] font-bold uppercase tracking-widest text-white/70">
                   {label}
                 </span>
               </div>

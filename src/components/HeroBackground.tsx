@@ -1,51 +1,32 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-const SLIDES = ["/hero/repairing-bg.jpg", "/hero/repairing2.jpg"];
-const INTERVAL = 6000;
-
 /**
- * Full-bleed hero background that cross-fades between the hero images with a
- * slow Ken-Burns zoom on each. Lower overlay lets the photos show through.
+ * Full-bleed hero background: a looping repair-lab video with a dark teal
+ * overlay + vignette so the centered content stays crisp. Falls back to a
+ * poster image while the video buffers (and if autoplay is blocked).
  */
 export default function HeroBackground() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length);
-    }, INTERVAL);
-    return () => clearInterval(id);
-  }, []);
-
   return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-ink">
-      {SLIDES.map((src, i) => (
-        <div
-          key={src}
-          className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
-          style={{ opacity: i === index ? 1 : 0 }}
-          aria-hidden
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt=""
-            className={`h-full w-full object-cover ${
-              i === index ? (i % 2 === 0 ? "animate-kenburns" : "animate-kenburns-pan") : ""
-            }`}
-          />
-        </div>
-      ))}
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#08191a]">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/hero/repairing-bg.jpg"
+        className="absolute inset-0 h-full w-full object-cover"
+        aria-hidden
+      >
+        <source src="/repair-videos/6755161-uhd_3840_2160_25fps.mp4" type="video/mp4" />
+      </video>
 
-      {/* refined dark teal overlay — crisp text, intentional (not muddy) */}
-      <div className="absolute inset-0 bg-brand-deep/70 mix-blend-multiply" />
-      <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/55 to-ink/70" />
+      {/* refined dark teal overlay — crisp text, intentional (not muddy).
+          Uses fixed dark colors so it stays dark regardless of theme. */}
+      <div className="absolute inset-0 bg-[#0a4d54]/65 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#061a1c] via-[#061a1c]/60 to-[#061a1c]/75" />
       {/* subtle vignette to focus the centered content */}
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(6,26,28,0.6) 100%)" }}
+        style={{ background: "radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(6,26,28,0.62) 100%)" }}
         aria-hidden
       />
     </div>

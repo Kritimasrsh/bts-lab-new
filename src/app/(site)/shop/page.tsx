@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import CtaBanner from "@/components/CtaBanner";
-import Eyebrow from "@/components/Eyebrow";
+import Reveal from "@/components/animated/Reveal";
 
 export const metadata = {
   title: "Shop | BTS Lab",
@@ -34,34 +34,36 @@ export default function ShopPage() {
       />
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-        <Eyebrow>Accessories</Eyebrow>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {ACCESSORIES.map((product) => (
-            <div
-              key={product.name}
-              className={`hover-lift rounded-2xl border border-ink/12 p-6 ${product.accent}`}
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-ink/12 bg-paper text-2xl">
-                {product.icon}
-              </span>
-              <h3 className="mt-5 font-display text-base font-bold">{product.name}</h3>
-              <p className="mt-1 font-mono-tag text-sm text-ink-soft">
-                from {product.price}
-              </p>
-            </div>
+        <Reveal>
+          <h2 className="font-display text-2xl font-extrabold sm:text-3xl">Accessories</h2>
+        </Reveal>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {ACCESSORIES.map((product, i) => (
+            <Reveal key={product.name} delay={0.05 * i} className="h-full">
+              <div className="glass glass-hover h-full rounded-2xl p-6">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-ink/12 bg-paper text-2xl">
+                  {product.icon}
+                </span>
+                <h3 className="mt-5 font-display text-base font-bold">{product.name}</h3>
+                <p className="mt-1 font-mono-tag text-sm text-ink-soft">
+                  from {product.price}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="border-y border-ink/10 bg-paper-dim">
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-          <Eyebrow>Refurbished phones</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-extrabold sm:text-4xl">
-            Verified, tested, guaranteed.
-          </h2>
+          <Reveal>
+            <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
+              Verified, tested, guaranteed.
+            </h2>
+          </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            {PHONES.map((phone) => (
-              <div key={phone.name} className="ticket bg-paper">
+            {PHONES.map((phone, i) => (
+              <Reveal key={phone.name} delay={0.08 * i} className="glass rounded-2xl">
                 <div className="p-6">
                   <h3 className="font-display text-lg font-bold">{phone.name}</h3>
                   <span className="mt-2 inline-block rounded-full bg-mint px-3 py-1 font-mono-tag text-xs font-bold text-ink">
@@ -77,7 +79,7 @@ export default function ShopPage() {
                     {phone.price}
                   </span>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

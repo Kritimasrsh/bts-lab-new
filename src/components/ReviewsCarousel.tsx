@@ -40,7 +40,7 @@ function initials(name: string) {
 
 function ReviewCard({ r, i }: { r: Review; i: number }) {
   return (
-    <figure className="flex h-full min-h-[268px] flex-col rounded-2xl border border-ink/10 bg-paper p-6 transition-shadow duration-300 hover:shadow-[0_18px_40px_-22px_rgba(13,43,46,0.4)]">
+    <figure className="glass glass-hover flex h-full min-h-[268px] flex-col rounded-2xl p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span

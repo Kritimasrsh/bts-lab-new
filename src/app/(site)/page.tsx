@@ -1,14 +1,14 @@
 import Hero from "@/components/Hero";
 import BrandCarousel from "@/components/BrandCarousel";
 import BrandGrid from "@/components/BrandGrid";
-import ServicesWheel from "@/components/ServicesWheel";
+import HomeServicesStack from "@/components/HomeServicesStack";
 import Manifesto from "@/components/Manifesto";
 import AboutSplit from "@/components/AboutSplit";
 import HowItWorks from "@/components/HowItWorks";
-import Testimonials from "@/components/Testimonials";
-import GoogleReviews from "@/components/GoogleReviews";
+import LabShowcase from "@/components/LabShowcase";
+import SocialProof from "@/components/SocialProof";
 import DoorstepCta from "@/components/DoorstepCta";
-import FAQ from "@/components/sections/FAQ"; 
+import FAQ from "@/components/sections/FAQ";
 
 export default function Home() {
   return (
@@ -16,14 +16,14 @@ export default function Home() {
       <Hero />
       <BrandCarousel />
       <BrandGrid />
-      <ServicesWheel />
+      <HomeServicesStack />
       <Manifesto />
       <HowItWorks />
+      <LabShowcase />
       <AboutSplit />
-      <Testimonials />
-      <GoogleReviews />
+      <SocialProof />
       <DoorstepCta />
-      <FAQ/>
+      <FAQ />
     </>
   );
 }

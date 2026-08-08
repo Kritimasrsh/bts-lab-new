@@ -27,6 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`h-full antialiased ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">

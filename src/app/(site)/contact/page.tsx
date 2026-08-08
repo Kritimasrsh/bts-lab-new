@@ -1,5 +1,13 @@
 import PageHeader from "@/components/PageHeader";
-import Eyebrow from "@/components/Eyebrow";
+import Reveal from "@/components/animated/Reveal";
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="font-display text-sm font-extrabold uppercase tracking-wide text-brand">
+      {children}
+    </h3>
+  );
+}
 
 export const metadata = {
   title: "Contact | BTS Lab",
@@ -17,7 +25,8 @@ export default function ContactPage() {
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr]">
-          <form className="ticket bg-paper p-8">
+          <Reveal as="div" direction="right" className="glass rounded-3xl p-8">
+            <form>
             <p className="font-mono-tag text-xs uppercase tracking-widest text-ink-soft">
               New ticket
             </p>
@@ -38,32 +47,33 @@ export default function ContactPage() {
             </div>
             <button
               type="submit"
-              className="hover-lift focus-ring mt-7 inline-flex w-full items-center justify-center rounded-full border border-ink/12 bg-coral px-7 py-3.5 font-display text-sm font-bold text-paper"
+              className="hover-lift focus-ring mt-7 inline-flex w-full items-center justify-center rounded-full border border-ink/12 bg-brand px-7 py-3.5 font-display text-sm font-bold text-paper transition hover:bg-brand-deep"
             >
               Submit Ticket →
             </button>
-          </form>
+            </form>
+          </Reveal>
 
-          <div className="flex flex-col gap-8">
-            <div>
-              <Eyebrow>Visit us</Eyebrow>
-              <p className="mt-4 font-display text-xl font-bold">
+          <div className="flex flex-col gap-6">
+            <Reveal className="glass rounded-2xl p-6">
+              <Label>Visit us</Label>
+              <p className="mt-3 font-display text-xl font-bold">
                 New Road, Kathmandu
               </p>
               <p className="mt-1 font-sans text-sm text-ink-soft">
                 New Road, Kathmandu, Nepal
               </p>
-            </div>
-            <div>
-              <Eyebrow>Call or message</Eyebrow>
-              <p className="mt-4 font-mono-tag text-lg font-bold">
+            </Reveal>
+            <Reveal delay={0.08} className="glass rounded-2xl p-6">
+              <Label>Call or message</Label>
+              <p className="mt-3 font-mono-tag text-lg font-bold">
                 +977 98-0101-8203
               </p>
               <p className="mt-1 font-mono-tag text-sm text-ink-soft">01-5354999</p>
-            </div>
-            <div>
-              <Eyebrow>Hours</Eyebrow>
-              <ul className="mt-4 space-y-2 font-sans text-sm">
+            </Reveal>
+            <Reveal delay={0.16} className="glass rounded-2xl p-6">
+              <Label>Hours</Label>
+              <ul className="mt-3 space-y-2 font-sans text-sm">
                 <li className="flex justify-between border-b border-ink/10 pb-2">
                   <span>Sun – Fri</span>
                   <span className="font-mono-tag">10:00 – 19:00</span>
@@ -73,7 +83,7 @@ export default function ContactPage() {
                   <span className="font-mono-tag">11:00 – 17:00</span>
                 </li>
               </ul>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

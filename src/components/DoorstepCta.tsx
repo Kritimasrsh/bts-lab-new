@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { Phone, MessageCircle } from "lucide-react";
+import Reveal from "@/components/animated/Reveal";
 
 const WHATSAPP = "9779866754678";
 
 export default function DoorstepCta() {
   return (
-    <section className="bg-paper-dim px-5 py-16 sm:px-8 sm:py-20">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-ink/10 bg-paper shadow-[0_30px_60px_-30px_rgba(13,43,46,0.25)]">
+    <section className="bg-paper px-5 py-16 sm:px-8 sm:py-20">
+      <Reveal className="relative mx-auto block max-w-6xl overflow-hidden rounded-3xl glass">
         {/* faint illustration background on the right */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <Image
@@ -32,7 +33,7 @@ export default function DoorstepCta() {
               href={`https://wa.me/${WHATSAPP}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover-lift focus-ring mt-7 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-paper transition hover:bg-brand-deep"
+              className="btn-glass focus-ring mt-7 uppercase tracking-wide"
             >
               <MessageCircle className="h-4 w-4" />
               Talk with us
@@ -61,7 +62,7 @@ export default function DoorstepCta() {
             </div>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

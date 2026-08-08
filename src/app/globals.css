@@ -279,8 +279,16 @@ body {
   .animate-marquee-fast {
     animation: marquee-scroll 22s linear infinite;
   }
+  @keyframes marquee-scroll-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+  .animate-marquee-reverse {
+    animation: marquee-scroll-reverse 38s linear infinite;
+  }
   .marquee-track:hover .animate-marquee,
-  .marquee-track:hover .animate-marquee-fast {
+  .marquee-track:hover .animate-marquee-fast,
+  .marquee-track:hover .animate-marquee-reverse {
     animation-play-state: paused;
   }
 
@@ -328,6 +336,169 @@ body {
   border: 1px solid rgba(13, 43, 46, 0.08);
   border-radius: 16px;
   box-shadow: 0 1px 2px rgba(13, 43, 46, 0.04);
+}
+
+/* ---- Glassmorphism ---- */
+/* Frosted panel for light surfaces / over imagery. Kept legible (not too see-through). */
+.glass {
+  background: color-mix(in srgb, var(--paper) 84%, transparent);
+  border: 1px solid rgba(13, 43, 46, 0.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 20px 44px -28px rgba(13, 43, 46, 0.35);
+}
+
+/* Softer tinted glass for large surface panels. */
+.glass-tint {
+  background: color-mix(in srgb, var(--paper-dim) 78%, transparent);
+  border: 1px solid rgba(13, 43, 46, 0.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+/* Frosted panel for dark surfaces / video overlays (reference look). Deep teal-black tint. */
+.glass-dark {
+  background: color-mix(in srgb, var(--ink) 58%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 26px 50px -30px rgba(0, 0, 0, 0.7);
+}
+
+/* Interactive glass: border lifts toward brand on hover. */
+.glass-hover {
+  transition: border-color 0.35s ease, background-color 0.35s ease,
+    transform 0.35s ease, box-shadow 0.35s ease;
+}
+.glass-hover:hover {
+  transform: translateY(-3px);
+}
+.glass.glass-hover:hover {
+  border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+}
+.glass-dark.glass-hover:hover {
+  border-color: color-mix(in srgb, var(--brand-mint) 55%, transparent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Always-dark accent surface — stays dark in both light and dark themes. */
+.surface-dark {
+  background: #08191a;
+  color: #e7f1f1;
+}
+.dark .surface-dark {
+  background: #0d1f20;
+}
+
+/* Glass adapts to the dark theme: lighter border + deeper shadow. */
+.dark .glass {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 48px -30px rgba(0, 0, 0, 0.8);
+}
+.dark .glass-tint {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Blinking caret for the typewriter search placeholder. */
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-caret {
+  animation: caret-blink 1.05s step-end infinite;
+}
+
+/* ---- Glassmorphism buttons ---- */
+/* Frosted primary button (brand-tinted, for light surfaces). */
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.85rem 1.9rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--paper);
+  background: color-mix(in srgb, var(--brand) 82%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 16px 34px -18px rgba(13, 43, 46, 0.6);
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-glass:hover {
+  background: color-mix(in srgb, var(--brand-deep) 92%, transparent);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 22px 44px -20px rgba(13, 43, 46, 0.7);
+}
+
+/* Frosted ghost button (outline glass). */
+.btn-glass-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.85rem 1.9rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--brand);
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.btn-glass-ghost:hover {
+  color: var(--paper);
+  background: color-mix(in srgb, var(--brand) 88%, transparent);
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* Frosted buttons over dark surfaces / imagery. */
+.btn-glass-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.85rem 1.9rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.btn-glass-dark:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+/* Bright accent variant on dark surfaces. */
+.btn-glass-dark.is-primary {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--brand-mint) 90%, transparent);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn-glass-dark.is-primary:hover {
+  background: var(--brand-mint);
 }
 
 /* ---- Shimmer / skeleton loading ---- */
@@ -385,10 +556,14 @@ body {
   font-family: var(--font-display), sans-serif;
   font-size: 15px;
   font-weight: 700;
-  background-color: transparent;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
   border-radius: 100px;
   color: var(--brand);
-  box-shadow: 0 0 0 2px var(--brand);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px color-mix(in srgb, var(--brand) 38%, transparent),
+    0 14px 30px -18px rgba(13, 43, 46, 0.5);
   cursor: pointer;
   overflow: hidden;
   transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
@@ -467,7 +642,9 @@ body {
 /* On-dark variant (white outline → fills white, text turns teal) for the hero */
 .animated-button.on-dark {
   color: #fff;
-  box-shadow: 0 0 0 2px #fff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 .animated-button.on-dark svg {
   fill: #fff;
@@ -501,11 +678,13 @@ body {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 1.5px;
-  background: transparent;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
   color: var(--brand);
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 0 0 0 transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 0 0 transparent;
   transition: all 0.2s ease-in;
 }
 
@@ -557,6 +736,16 @@ body {
 }
 
 .dark {
+  /* ---- BTS Lab dark palette (semantic tokens flip; brand stays teal) ---- */
+  --ink: #e7f1f1;          /* text becomes light */
+  --ink-soft: #93aaab;     /* muted light body text */
+  --paper: #0a1516;        /* near-black teal background */
+  --paper-dim: #0f2021;    /* raised dark surface */
+  --brand: #17a2ad;        /* brightened teal for contrast on dark */
+  --brand-deep: #128c96;
+  --brand-cyan: #2bb8c4;
+  --brand-mint: #38c3b1;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

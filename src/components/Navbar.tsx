@@ -5,7 +5,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X, ChevronDown, ArrowUpRight, User, LogOut, LayoutDashboard, Shield } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ArrowUpRight,
+  ArrowRight,
+  User,
+  LogOut,
+  LayoutDashboard,
+  Shield,
+  Smartphone,
+  BatteryCharging,
+  Droplets,
+  Cpu,
+  Wrench,
+  Headphones,
+  Repeat,
+  Tag,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 function initialsOf(name?: string | null) {
@@ -15,35 +35,66 @@ function initialsOf(name?: string | null) {
 
 const PROFILE_MENU = "__profile__";
 
-/* ---------------- Nav model — trimmed to the essentials ---------------- */
+/* ---------------- Nav model ---------------- */
 
-type SubLink = { label: string; href: string };
-type NavLink = { label: string; href: string; menu?: SubLink[] };
+type SubLink = { label: string; href: string; desc?: string; icon?: LucideIcon };
+type Feature = { title: string; desc: string; href: string; cta: string };
+type NavLink = {
+  label: string;
+  href: string;
+  menu?: SubLink[];
+  menuTitle?: string;
+  feature?: Feature;
+};
 
 const SERVICE_LINKS: SubLink[] = [
-  { label: "Screen replacement", href: "/services" },
-  { label: "Battery replacement", href: "/services" },
-  { label: "Water damage rescue", href: "/services" },
-  { label: "Board-level repair", href: "/services" },
-  { label: "All repair services", href: "/services" },
+  { label: "Screen replacement", href: "/services", desc: "Cracked & unresponsive displays", icon: Smartphone },
+  { label: "Battery replacement", href: "/services", desc: "Fast drain, swelling & health", icon: BatteryCharging },
+  { label: "Water damage rescue", href: "/services", desc: "Board-level corrosion cleaning", icon: Droplets },
+  { label: "Board-level repair", href: "/services", desc: "Micro-soldering & diagnostics", icon: Cpu },
+  { label: "All repair services", href: "/services", desc: "Browse everything we fix", icon: Wrench },
+];
+
+const SHOP_LINKS: SubLink[] = [
+  { label: "Accessories", href: "/shop", desc: "Cases, chargers, cables & more", icon: Headphones },
+  { label: "Refurbished phones", href: "/shop", desc: "Tested, warrantied devices", icon: Smartphone },
+  { label: "Trade-in & buy-back", href: "/shop", desc: "Sell or exchange your device", icon: Repeat },
+  { label: "Deals & offers", href: "/shop", desc: "Current bundles and savings", icon: Tag },
 ];
 
 const NAV: NavLink[] = [
-  { label: "Services", href: "/services", menu: SERVICE_LINKS },
-  { label: "Shop", href: "/shop" },
+  {
+    label: "Services",
+    href: "/services",
+    menu: SERVICE_LINKS,
+    menuTitle: "What we fix",
+    feature: {
+      title: "Board-level lab",
+      desc: "Micro-soldering & chip-level diagnostics other shops refuse.",
+      href: "/services#board-level",
+      cta: "Explore the lab",
+    },
+  },
+  {
+    label: "Shop",
+    href: "/shop",
+    menu: SHOP_LINKS,
+    menuTitle: "Buy · Sell · Exchange",
+    feature: {
+      title: "Trade in your device",
+      desc: "Get instant value toward a refurbished upgrade.",
+      href: "/shop",
+      cta: "Get a quote",
+    },
+  },
   { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
-/* ---------------- Signature CTA (arrow-badge pill) ---------------- */
+/* ---------------- Signature CTA ---------------- */
 
-function BookCta({
-  onClick,
-  className = "",
-}: {
-  onClick?: () => void;
-  className?: string;
-}) {
+function BookCta({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
   return (
     <Link
       href="/services"
@@ -58,27 +109,25 @@ function BookCta({
   );
 }
 
-/* ---------------- Navbar ---------------- */
+/* ---------------- Notch shell hairlines ---------------- */
+
+function Hairlines() {
+  return (
+    <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
+      <line x1="0" y1="63.5" x2="100%" y2="63.5" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+      <line x1="0" y1="60.5" x2="100%" y2="60.5" stroke="currentColor" strokeOpacity={0.08} strokeWidth={0.5} />
+    </svg>
+  );
+}
+
+/* ---------------- Navbar (notch style) ---------------- */
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { data: session, status } = useSession();
-
-  useEffect(() => {
-    // Only "float" once the user has scrolled past 40% of the viewport height.
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.4);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -87,6 +136,13 @@ export default function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // Close any open dropdown / mobile menu whenever the route changes so a menu
+  // never stays stuck open (e.g. the Services menu after landing on /services).
+  useEffect(() => {
+    setOpenMenu(null);
+    setMobileOpen(false);
+  }, [pathname]);
 
   function open(label: string) {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -97,241 +153,253 @@ export default function Navbar() {
     closeTimer.current = setTimeout(() => setOpenMenu(null), 140);
   }
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
-
-  // Light text only over the homepage hero, before scrolling.
-  const isHome = pathname === "/";
-  const transparent = isHome && !scrolled;
-  const linkColor = transparent
-    ? "text-paper/85 hover:text-paper"
-    : "text-ink/70 hover:text-brand";
-
-  // Same width in both states. At the top it's flat (no border/shadow); once
-  // past 40% of the viewport it detaches into a floating, elevated pill.
-  const chrome = scrolled
-    ? "mt-3 rounded-full border-ink/10 bg-paper/90 shadow-[0_14px_36px_-14px_rgba(13,43,46,0.42)] backdrop-blur-md"
-    : "mt-0 rounded-none border-transparent bg-transparent shadow-none";
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 sm:px-5">
-      <div
-        className={`mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 border px-5 transition-[margin-top,background-color,border-color,box-shadow,border-radius] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-6 ${chrome}`}
-      >
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 transition-opacity hover:opacity-90"
-          >
-            <Image
-              src="/logo.png"
-              alt="BTS Lab"
-              width={96}
-              height={96}
-              priority
-              className={`h-9 w-auto object-contain ${transparent ? "brightness-0 invert" : ""}`}
-            />
-            <span className="hidden flex-col leading-none sm:flex">
-              <span
-                className={`font-display text-base font-extrabold tracking-tight ${
-                  transparent ? "text-paper" : "text-ink"
-                }`}
-              >
-                BTS <span className={transparent ? "text-brand-mint" : "text-brand"}>Lab</span>
-              </span>
-              <span
-                className={`mt-0.5 font-mono-tag text-[8px] uppercase tracking-[0.18em] ${
-                  transparent ? "text-paper/60" : "text-ink-soft"
-                }`}
-              >
-                Fix · Sell · Trust
-              </span>
-            </span>
-          </Link>
+    <header className="fixed inset-x-0 top-0 z-50 flex h-16 text-white">
+      {/* Left rail */}
+      <div className="relative hidden h-10 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
+        <Hairlines />
+      </div>
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-0.5 lg:flex">
-            {NAV.map((item) => {
-              const hasMenu = !!item.menu;
-              const menuOpen = openMenu === item.label;
-              const activeState = isActive(item.href) || menuOpen;
-              return (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => hasMenu && open(item.label)}
-                  onMouseLeave={() => hasMenu && scheduleClose()}
-                >
-                  <Link
-                    href={item.href}
-                    onFocus={() => hasMenu && open(item.label)}
-                    onClick={() => setOpenMenu(null)}
-                    aria-expanded={hasMenu ? menuOpen : undefined}
-                    aria-haspopup={hasMenu || undefined}
-                    className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-semibold transition-colors ${
-                      activeState
-                        ? transparent
-                          ? "text-paper"
-                          : "text-brand"
-                        : linkColor
-                    }`}
+      {/* Notch container */}
+      <div className="relative z-10 flex h-16 min-w-0 flex-1 shrink-0 md:flex-initial">
+        {/* Left corner */}
+        <div className="relative hidden h-full w-[46px] shrink-0 md:block">
+          <div
+            className="absolute inset-0 bg-[#0b1c1d]/95 backdrop-blur-md"
+            style={{ clipPath: "path('M0 0 H46 V64 C23 64 23 40 0 40 Z')" }}
+          />
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 64" preserveAspectRatio="none">
+            <path d="M0 39.5 C23 39.5 23 63.5 46 63.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+          </svg>
+        </div>
+
+        {/* Center content */}
+        <div className="relative -ml-px h-full min-w-0 flex-1">
+          <div className="absolute inset-0 bg-[#0b1c1d]/95 backdrop-blur-md md:rounded-b-none">
+            <Hairlines />
+          </div>
+
+          <div className="relative flex h-full items-center justify-between gap-3 px-4 md:px-6">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-90">
+              <Image src="/logo.png" alt="BTS Lab" width={96} height={96} priority className="h-9 w-auto object-contain brightness-0 invert" />
+              <span className="hidden flex-col leading-none sm:flex">
+                <span className="font-display text-base font-extrabold tracking-tight text-white">
+                  BTS <span className="text-brand-mint">Lab</span>
+                </span>
+                <span className="mt-0.5 font-mono-tag text-[8px] uppercase tracking-[0.18em] text-white/55">
+                  Fix · Sell · Trust
+                </span>
+              </span>
+            </Link>
+
+            {/* Desktop nav */}
+            <nav className="hidden items-center gap-0.5 lg:flex">
+              {NAV.map((item) => {
+                const hasMenu = !!item.menu;
+                const menuOpen = openMenu === item.label;
+                const activeState = isActive(item.href) || menuOpen;
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => hasMenu && open(item.label)}
+                    onMouseLeave={() => hasMenu && scheduleClose()}
                   >
-                    {item.label}
-                    {hasMenu && (
-                      <ChevronDown
-                        className={`h-3.5 w-3.5 transition-transform ${
-                          menuOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    )}
-                  </Link>
+                    <Link
+                      href={item.href}
+                      onFocus={() => hasMenu && open(item.label)}
+                      onClick={() => setOpenMenu(null)}
+                      aria-expanded={hasMenu ? menuOpen : undefined}
+                      aria-haspopup={hasMenu || undefined}
+                      className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-semibold transition-colors ${
+                        activeState ? "text-brand-mint" : "text-white/75 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                      {hasMenu && (
+                        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${menuOpen ? "rotate-180" : ""}`} />
+                      )}
+                    </Link>
+
+                    <AnimatePresence>
+                      {hasMenu && menuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute left-1/2 top-full z-40 -translate-x-1/2 pt-3"
+                        >
+                          <div
+                            className={`grid overflow-hidden rounded-2xl border border-ink/10 bg-paper/95 shadow-[0_30px_60px_-22px_rgba(13,43,46,0.45)] backdrop-blur-xl ${
+                              item.feature ? "w-[620px] grid-cols-[1.4fr_1fr]" : "w-[380px]"
+                            }`}
+                          >
+                            <div>
+                              <p className="border-b border-ink/8 px-4 pb-2.5 pt-3.5 font-mono-tag text-[10px] uppercase tracking-[0.18em] text-ink-soft">
+                                {item.menuTitle ?? "What we fix"}
+                              </p>
+                              <div className="p-1.5">
+                                {item.menu!.map((sub) => {
+                                  const Icon = sub.icon;
+                                  return (
+                                    <Link
+                                      key={sub.label}
+                                      href={sub.href}
+                                      onClick={() => setOpenMenu(null)}
+                                      className="group/item flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-brand/5"
+                                    >
+                                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand transition-colors group-hover/item:bg-brand group-hover/item:text-paper">
+                                        {Icon && <Icon className="h-5 w-5" strokeWidth={2} />}
+                                      </span>
+                                      <span className="min-w-0">
+                                        <span className="block text-sm font-bold text-ink transition-colors group-hover/item:text-brand">
+                                          {sub.label}
+                                        </span>
+                                        {sub.desc && (
+                                          <span className="mt-0.5 block text-xs leading-snug text-ink-soft">{sub.desc}</span>
+                                        )}
+                                      </span>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                              <Link
+                                href={item.href}
+                                onClick={() => setOpenMenu(null)}
+                                className="flex items-center justify-between border-t border-ink/8 bg-paper-dim px-4 py-3 text-sm font-bold text-brand transition-colors hover:bg-brand/5"
+                              >
+                                Book a repair
+                                <ArrowRight className="h-4 w-4" />
+                              </Link>
+                            </div>
+
+                            {item.feature && (
+                              <Link
+                                href={item.feature.href}
+                                onClick={() => setOpenMenu(null)}
+                                className="group/feat relative flex flex-col justify-end overflow-hidden bg-linear-to-br from-brand to-brand-deep p-5 text-paper"
+                              >
+                                <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-brand-mint/30 blur-2xl" aria-hidden />
+                                <Sparkles className="h-6 w-6 text-brand-mint" />
+                                <span className="mt-3 font-display text-base font-extrabold leading-tight">{item.feature.title}</span>
+                                <span className="mt-1.5 text-xs leading-relaxed text-paper/80">{item.feature.desc}</span>
+                                <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-brand-mint">
+                                  {item.feature.cta}
+                                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/feat:translate-x-0.5" />
+                                </span>
+                              </Link>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </nav>
+
+            {/* Right cluster */}
+            <div className="hidden items-center gap-2 lg:flex">
+              <BookCta onClick={() => setOpenMenu(null)} />
+
+              {status === "loading" ? (
+                <span className="h-9 w-9 rounded-full skeleton skeleton-dark" />
+              ) : session?.user ? (
+                <div className="relative" onMouseEnter={() => open(PROFILE_MENU)} onMouseLeave={scheduleClose}>
+                  <button
+                    type="button"
+                    onClick={() => setOpenMenu((m) => (m === PROFILE_MENU ? null : PROFILE_MENU))}
+                    aria-expanded={openMenu === PROFILE_MENU}
+                    aria-haspopup="menu"
+                    className="focus-ring flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2 transition hover:bg-white/10"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand font-display text-xs font-bold text-paper">
+                      {initialsOf(session.user.name)}
+                    </span>
+                    <ChevronDown className={`h-3.5 w-3.5 text-white/60 transition-transform ${openMenu === PROFILE_MENU ? "rotate-180" : ""}`} />
+                  </button>
 
                   <AnimatePresence>
-                    {hasMenu && menuOpen && (
+                    {openMenu === PROFILE_MENU && (
                       <motion.div
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 6 }}
                         transition={{ duration: 0.16, ease: "easeOut" }}
-                        className="absolute left-1/2 top-full z-40 -translate-x-1/2 pt-3"
+                        className="absolute right-0 top-full z-40 pt-3"
                       >
                         <div className="w-60 overflow-hidden rounded-2xl border border-ink/10 bg-paper p-1.5 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)]">
-                          {item.menu!.map((sub) => (
-                            <Link
-                              key={sub.label}
-                              href={sub.href}
-                              onClick={() => setOpenMenu(null)}
-                              className="block rounded-xl px-3.5 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
-                            >
-                              {sub.label}
+                          <div className="border-b border-ink/8 px-3 py-2.5">
+                            <p className="truncate font-display text-sm font-bold text-ink">{session.user.name || "Your account"}</p>
+                            <p className="truncate text-xs text-ink-soft">{session.user.email}</p>
+                          </div>
+                          <Link href="/account" onClick={() => setOpenMenu(null)} className="mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand">
+                            <User className="h-4 w-4" /> Profile
+                          </Link>
+                          <Link href="/account#requests" onClick={() => setOpenMenu(null)} className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand">
+                            <LayoutDashboard className="h-4 w-4" /> Dashboard
+                          </Link>
+                          {session.user.role === "ADMIN" && (
+                            <Link href="/admin" onClick={() => setOpenMenu(null)} className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand">
+                              <Shield className="h-4 w-4" /> Admin panel
                             </Link>
-                          ))}
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOpenMenu(null);
+                              signOut({ callbackUrl: "/" });
+                            }}
+                            className="mt-1 flex w-full items-center gap-2.5 rounded-xl border-t border-ink/8 px-3 py-2.5 text-left text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
+                          >
+                            <LogOut className="h-4 w-4" /> Sign out
+                          </button>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-              );
-            })}
-          </nav>
+              ) : (
+                <Link href="/login" className="focus-ring inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold text-white/80 transition hover:text-white">
+                  Log in
+                </Link>
+              )}
+            </div>
 
-          {/* Right side — Book a Repair first, profile/login on the far right */}
-          <div className="hidden items-center gap-2.5 lg:flex">
-            <BookCta onClick={() => setOpenMenu(null)} />
-
-            {status === "loading" ? (
-              <span
-                className={`h-9 w-9 rounded-full ${
-                  transparent ? "skeleton skeleton-dark" : "skeleton"
-                }`}
-              />
-            ) : session?.user ? (
-              <div
-                className="relative"
-                onMouseEnter={() => open(PROFILE_MENU)}
-                onMouseLeave={scheduleClose}
+            {/* Mobile actions */}
+            <div className="flex items-center gap-1 lg:hidden">
+              <button
+                onClick={() => setMobileOpen((v) => !v)}
+                className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:border-brand-mint hover:text-brand-mint"
+                aria-label="Toggle menu"
+                aria-expanded={mobileOpen}
               >
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenMenu((m) => (m === PROFILE_MENU ? null : PROFILE_MENU))
-                  }
-                  aria-expanded={openMenu === PROFILE_MENU}
-                  aria-haspopup="menu"
-                  className={`focus-ring flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2 transition ${
-                    transparent ? "hover:bg-paper/10" : "hover:bg-ink/5"
-                  }`}
-                >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand font-display text-xs font-bold text-paper">
-                    {initialsOf(session.user.name)}
-                  </span>
-                  <ChevronDown
-                    className={`h-3.5 w-3.5 transition-transform ${
-                      openMenu === PROFILE_MENU ? "rotate-180" : ""
-                    } ${transparent ? "text-paper/80" : "text-ink/60"}`}
-                  />
-                </button>
-
-                <AnimatePresence>
-                  {openMenu === PROFILE_MENU && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 6 }}
-                      transition={{ duration: 0.16, ease: "easeOut" }}
-                      className="absolute right-0 top-full z-40 pt-3"
-                    >
-                      <div className="w-60 overflow-hidden rounded-2xl border border-ink/10 bg-paper p-1.5 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)]">
-                        <div className="border-b border-ink/8 px-3 py-2.5">
-                          <p className="truncate font-display text-sm font-bold text-ink">
-                            {session.user.name || "Your account"}
-                          </p>
-                          <p className="truncate text-xs text-ink-soft">{session.user.email}</p>
-                        </div>
-                        <Link
-                          href="/account"
-                          onClick={() => setOpenMenu(null)}
-                          className="mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
-                        >
-                          <User className="h-4 w-4" /> Profile
-                        </Link>
-                        <Link
-                          href="/account#requests"
-                          onClick={() => setOpenMenu(null)}
-                          className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
-                        >
-                          <LayoutDashboard className="h-4 w-4" /> Dashboard
-                        </Link>
-                        {session.user.role === "ADMIN" && (
-                          <Link
-                            href="/admin"
-                            onClick={() => setOpenMenu(null)}
-                            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
-                          >
-                            <Shield className="h-4 w-4" /> Admin panel
-                          </Link>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setOpenMenu(null);
-                            signOut({ callbackUrl: "/" });
-                          }}
-                          className="mt-1 flex w-full items-center gap-2.5 rounded-xl border-t border-ink/8 px-3 py-2.5 text-left text-sm font-semibold text-ink/75 transition-colors hover:bg-brand/5 hover:text-brand"
-                        >
-                          <LogOut className="h-4 w-4" /> Sign out
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className={`focus-ring inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  transparent ? "text-paper hover:bg-paper/10" : "text-ink/75 hover:text-brand"
-                }`}
-              >
-                Log in
-              </Link>
-            )}
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
-
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setMobileOpen((v) => !v)}
-            className={`focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border transition lg:hidden ${
-              transparent
-                ? "border-paper/30 text-paper hover:border-paper"
-                : "border-ink/10 text-ink hover:border-brand hover:text-brand"
-            }`}
-            aria-label="Toggle menu"
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
+
+        {/* Right corner */}
+        <div className="relative -ml-px hidden h-full w-[46px] shrink-0 md:block">
+          <div
+            className="absolute inset-0 bg-[#0b1c1d]/95 backdrop-blur-md"
+            style={{ clipPath: "path('M0 0 H46 V40 C23 40 23 64 0 64 Z')" }}
+          />
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 46 64" preserveAspectRatio="none">
+            <path d="M0 63.5 C23 63.5 23 39.5 46 39.5" fill="none" stroke="currentColor" strokeOpacity={0.12} strokeWidth={0.5} />
+          </svg>
+        </div>
+      </div>
+
+      {/* Right rail */}
+      <div className="relative -ml-px hidden h-10 min-w-0 flex-1 bg-[#0b1c1d]/95 backdrop-blur-md md:block">
+        <Hairlines />
+      </div>
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -341,7 +409,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="mx-4 mt-1 rounded-2xl border border-ink/10 bg-paper p-3 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)] lg:hidden"
+            className="absolute inset-x-3 top-[4.5rem] rounded-2xl border border-ink/10 bg-paper p-3 shadow-[0_24px_50px_-20px_rgba(13,43,46,0.4)] lg:hidden"
           >
             <nav className="flex flex-col">
               {NAV.map((item) => (
@@ -374,26 +442,14 @@ export default function Navbar() {
 
               {session?.user ? (
                 <>
-                  <Link
-                    href="/account"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
-                  >
+                  <Link href="/account" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand">
                     <User className="h-4 w-4" /> Profile
                   </Link>
-                  <Link
-                    href="/account#requests"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
-                  >
+                  <Link href="/account#requests" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand">
                     <LayoutDashboard className="h-4 w-4" /> Dashboard
                   </Link>
                   {session.user.role === "ADMIN" && (
-                    <Link
-                      href="/admin"
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
-                    >
+                    <Link href="/admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand">
                       <Shield className="h-4 w-4" /> Admin panel
                     </Link>
                   )}
@@ -409,20 +465,13 @@ export default function Navbar() {
                   </button>
                 </>
               ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand"
-                >
+                <Link href="/login" onClick={() => setMobileOpen(false)} className="block rounded-xl px-3 py-3 font-semibold text-ink/80 hover:bg-brand/5 hover:text-brand">
                   Log in
                 </Link>
               )}
 
               <div className="mt-2 px-1">
-                <BookCta
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full justify-between"
-                />
+                <BookCta onClick={() => setMobileOpen(false)} className="w-full justify-between" />
               </div>
             </nav>
           </motion.div>
