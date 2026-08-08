@@ -27,8 +27,8 @@ export default function BrandGrid() {
               Choose your brand
             </h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-soft">
-              Pick your phone&apos;s brand to start a repair. Next you&apos;ll select the exact
-              model and tell us what&apos;s wrong — and get an instant estimate.
+              Pick your phone&apos;s brand to start a repair. Next you&apos;ll choose the exact
+              model, tell us what&apos;s wrong, and get an instant estimate.
             </p>
           </div>
         </div>
@@ -74,8 +74,8 @@ export default function BrandGrid() {
           Don&apos;t see your brand?{" "}
           <Link href="/contact" className="font-semibold text-brand hover:underline">
             Contact us
-          </Link>{" "}
-          — we repair almost everything.
+          </Link>
+          , we repair almost everything.
         </p>
       </div>
     </section>

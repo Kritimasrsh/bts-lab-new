@@ -20,5 +20,5 @@ export const SERVICE_STACK: StackItem[] = SHOWCASE_SERVICES.map((s, i) => ({
   image: IMAGES[i] ?? IMAGES[0],
   points: s.covers,
   meta: s.turnaround,
-  href: "/#select-brand",
+  href: "/repair",
 }));

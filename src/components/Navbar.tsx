@@ -97,7 +97,7 @@ const NAV: NavLink[] = [
 function BookCta({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
   return (
     <Link
-      href="/services"
+      href="/repair"
       onClick={onClick}
       className={`group focus-ring inline-flex items-center gap-2 rounded-full bg-brand py-1.5 pl-5 pr-1.5 font-display text-sm font-bold text-paper shadow-sm transition-colors hover:bg-brand-deep ${className}`}
     >
@@ -268,7 +268,7 @@ export default function Navbar() {
                                 })}
                               </div>
                               <Link
-                                href={item.href}
+                                href="/repair"
                                 onClick={() => setOpenMenu(null)}
                                 className="flex items-center justify-between border-t border-ink/8 bg-paper-dim px-4 py-3 text-sm font-bold text-brand transition-colors hover:bg-brand/5"
                               >

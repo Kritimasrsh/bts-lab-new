@@ -11,7 +11,7 @@ export default function CtaBanner({
   title = "Ready to fix your phone?",
   subtitle = "Pick your brand, model and problem, get an instant estimate, and we'll take it from there.",
   ctaLabel = "Start a repair",
-  ctaHref = "/services",
+  ctaHref = "/repair",
 }: CtaBannerProps) {
   return (
     <section className="brand-gradient border-y border-ink/10">

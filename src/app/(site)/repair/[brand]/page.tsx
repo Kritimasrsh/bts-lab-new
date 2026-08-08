@@ -36,7 +36,7 @@ export default async function BrandModelsPage({
       <section className="border-b border-ink/10 bg-paper-dim">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
           <nav className="flex items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink-soft">
-            <Link href="/#select-brand" className="hover:text-brand">
+            <Link href="/repair" className="hover:text-brand">
               Brands
             </Link>
             <ChevronRight className="h-3 w-3" />
@@ -109,7 +109,7 @@ export default async function BrandModelsPage({
 
         <div className="mt-12">
           <Link
-            href="/#select-brand"
+            href="/repair"
             className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-brand"
           >
             <ArrowLeft className="h-4 w-4" />

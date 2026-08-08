@@ -30,7 +30,7 @@ export default function ServicesPage() {
         title="Not sure what's wrong with it?"
         subtitle="Bring it in for a free diagnostic. No pressure, no obligation, and we find the fault before you spend a rupee."
         ctaLabel="Start a repair"
-        ctaHref="/#select-brand"
+        ctaHref="/repair"
       />
     </>
   );

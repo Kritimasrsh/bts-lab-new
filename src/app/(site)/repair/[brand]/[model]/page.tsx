@@ -36,7 +36,7 @@ export default async function ModelProblemPage({
       <section className="border-b border-ink/10 bg-paper-dim">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12">
           <nav className="flex flex-wrap items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink-soft">
-            <Link href="/#select-brand" className="hover:text-brand">
+            <Link href="/repair" className="hover:text-brand">
               Brands
             </Link>
             <ChevronRight className="h-3 w-3" />

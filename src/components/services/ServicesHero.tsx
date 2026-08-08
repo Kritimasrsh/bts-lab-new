@@ -82,7 +82,7 @@ export default function ServicesHero() {
           </motion.p>
 
           <motion.div variants={rise} className="mt-9 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/#select-brand" className="btn-glass-dark is-primary group">
+            <Link href="/repair" className="btn-glass-dark is-primary group">
               Start a repair
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>

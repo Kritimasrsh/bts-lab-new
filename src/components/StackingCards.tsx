@@ -154,7 +154,7 @@ function CardBody({
 
         <div className="mt-6 flex items-center gap-4">
           <Link
-            href={item.href ?? "/#select-brand"}
+            href={item.href ?? "/repair"}
             className="group inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-display text-sm font-bold text-brand-deep transition hover:gap-3"
           >
             Book this repair

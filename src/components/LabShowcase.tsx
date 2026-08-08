@@ -138,7 +138,7 @@ export default function LabShowcase() {
         {/* CTA */}
         <Reveal delay={0.1} className="mt-10 flex justify-center">
           <Link
-            href="/#select-brand"
+            href="/repair"
             className="btn-glass-dark is-primary group"
           >
             Book your repair

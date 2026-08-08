@@ -47,7 +47,7 @@ export default async function AccountPage() {
           <div className="mt-4 rounded-2xl border border-dashed border-ink/15 p-8 text-center">
             <p className="text-sm text-ink-soft">No repair requests yet.</p>
             <Link
-              href="/#select-brand"
+              href="/repair"
               className="focus-ring mt-4 inline-flex items-center rounded-full bg-brand px-5 py-2.5 font-display text-sm font-bold text-paper hover:bg-brand-deep"
             >
               Start a repair
