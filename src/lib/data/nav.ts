@@ -29,7 +29,7 @@ export type NavItem = {
 export const NAV_FOOTER: NavLink[] = [
   { label: "Track my repair", href: "/services" },
   { label: "Free diagnostics", href: "/contact" },
-  { label: "Call us", href: "tel:+9779866754678" },
+  { label: "Call us", href: "tel:+9779851128220" },
 ];
 
 export const NAV_ITEMS: NavItem[] = [

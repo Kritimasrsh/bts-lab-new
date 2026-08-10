@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { Phone, MessageCircle } from "lucide-react";
 import Reveal from "@/components/animated/Reveal";
+import { CONTACT } from "@/lib/data/contact";
 
-const WHATSAPP = "9779866754678";
+const WHATSAPP = CONTACT.whatsapp;
 
 export default function DoorstepCta() {
   return (
@@ -57,7 +58,7 @@ export default function DoorstepCta() {
                 className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:underline"
               >
                 <Phone className="h-3.5 w-3.5" />
-                +977-9866754678
+                {CONTACT.phonesDisplay[0]}
               </a>
             </div>
           </div>

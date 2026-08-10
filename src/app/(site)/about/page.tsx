@@ -1,5 +1,6 @@
 import { Wrench, ShieldCheck, Cpu, HeartHandshake } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import { CONTACT } from "@/lib/data/contact";
 import DoorstepCta from "@/components/DoorstepCta";
 import Counter from "@/components/Counter";
 import Reveal from "@/components/animated/Reveal";
@@ -133,7 +134,10 @@ export default function AboutPage() {
             New Road, Kathmandu, Nepal
           </p>
           <p className="mt-4 font-mono-tag text-sm">
-            +977 98-0101-8203 · 01-5354999
+            {CONTACT.phonesDisplay.join(" · ")}
+          </p>
+          <p className="mt-1 font-mono-tag text-sm text-ink-soft">
+            Landline {CONTACT.landlineDisplay}
           </p>
         </Reveal>
       </section>

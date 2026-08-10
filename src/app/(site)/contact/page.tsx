@@ -1,15 +1,14 @@
 import { MapPin, Phone, Clock, Navigation } from "lucide-react";
 import Reveal from "@/components/animated/Reveal";
+import { CONTACT } from "@/lib/data/contact";
 
 export const metadata = {
   title: "Contact | BTS Lab",
   description: "Book a repair, ask a question, or visit BTS Lab in Kathmandu.",
 };
 
-const MAP_SRC =
-  "https://www.google.com/maps?q=New+Road,+Kathmandu,+Nepal&z=15&output=embed";
-const DIRECTIONS =
-  "https://www.google.com/maps/dir/?api=1&destination=New+Road,+Kathmandu,+Nepal";
+const MAP_SRC = CONTACT.mapEmbed;
+const DIRECTIONS = CONTACT.directions;
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
@@ -127,10 +126,23 @@ export default function ContactPage() {
             </Reveal>
             <Reveal delay={0.08} className="glass rounded-2xl p-6">
               <Label>Call or message</Label>
-              <p className="mt-3 flex items-center gap-2 font-mono-tag text-lg font-bold">
-                <Phone className="h-4 w-4 text-brand" /> +977 98-0101-8203
-              </p>
-              <p className="mt-1 font-mono-tag text-sm text-ink-soft">Landline 01-5354999</p>
+              <div className="mt-3 space-y-1.5">
+                {CONTACT.phonesDisplay.map((num, i) => (
+                  <a
+                    key={num}
+                    href={`tel:${CONTACT.phonesTel[i]}`}
+                    className="flex items-center gap-2 font-mono-tag text-lg font-bold text-ink hover:text-brand"
+                  >
+                    <Phone className="h-4 w-4 text-brand" /> {num}
+                  </a>
+                ))}
+              </div>
+              <a
+                href={`tel:${CONTACT.landlineTel}`}
+                className="mt-1.5 inline-block font-mono-tag text-sm text-ink-soft hover:text-brand"
+              >
+                Landline {CONTACT.landlineDisplay}
+              </a>
             </Reveal>
             <Reveal delay={0.16} className="glass rounded-2xl p-6">
               <Label>

@@ -1,4 +1,6 @@
-const WHATSAPP = "9779866754678";
+import { CONTACT } from "@/lib/data/contact";
+
+const WHATSAPP = CONTACT.whatsapp;
 const MESSAGE = "Hi BTS Lab, I need help with a device repair.";
 
 function WhatsAppIcon({ className }: { className?: string }) {

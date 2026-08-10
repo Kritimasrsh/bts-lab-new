@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CONTACT } from "@/lib/data/contact";
 
 const COLUMNS = [
   {
@@ -54,11 +55,18 @@ export default function Footer() {
               Your one-stop shop for mobile repairs and buyback. Real technicians,
               genuine parts, and fair prices, every time.
             </p>
-            <p className="mt-5 font-sans text-sm text-white/60">
-              +977-1-5354999
-            </p>
-            <p className="mt-1 font-mono-tag text-xs uppercase tracking-wide text-white/50">
-              New Road, Kathmandu, Nepal
+            <div className="mt-5 space-y-0.5 font-sans text-sm text-white/60">
+              {CONTACT.phonesDisplay.map((num, i) => (
+                <a key={num} href={`tel:${CONTACT.phonesTel[i]}`} className="block hover:text-white">
+                  {num}
+                </a>
+              ))}
+              <a href={`tel:${CONTACT.landlineTel}`} className="block hover:text-white">
+                {CONTACT.landlineDisplay}
+              </a>
+            </div>
+            <p className="mt-3 font-mono-tag text-xs uppercase tracking-wide text-white/50">
+              {CONTACT.address}
             </p>
           </div>
 
