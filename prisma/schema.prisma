@@ -185,6 +185,104 @@ model RepairRequestProblem {
   @@unique([requestId, problemId])
 }
 
+/// A customer in the system — a person or partner shop we do repairs for.
+/// Maintained separately from repair orders so their whole history and details
+/// live in one record. Fully admin-managed (edit, block, delete).
+model Customer {
+  id        String         @id @default(cuid())
+  name      String
+  phone     String         @unique
+  company   String?
+  address   String?
+  source    OrderSource    @default(DIRECT)
+  status    CustomerStatus @default(ACTIVE)
+  notes     String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  orders    RepairOrder[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+/// A manually-entered repair order (offline intake at the lab). Captures the
+/// full paper "Repair Order Form": customer, device, quote, workflow status and
+/// payment. Most orders come from partner shops (billed on credit); some are
+/// walk-in direct customers.
+model RepairOrder {
+  id       String @id @default(cuid())
+  labNo    String @unique
+
+  // Customer / party
+  customerName     String
+  companyName      String?
+  address          String?
+  contactNo        String
+  source           OrderSource   @default(SHOP)
+  preferredPayment PaymentMethod @default(CREDIT)
+  customerId       String?
+  customer         Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  // Device & repair
+  brand             String
+  deviceModel       String
+  relatedFault      String?
+  serialImei        String?
+  passwordProtected Boolean @default(false)
+  devicePassword    String?
+  quoted            Boolean @default(false)
+  quotedAmount      Int?
+  faultDescription  String?
+
+  // Workflow & money
+  status        OrderStatus   @default(RECEIVED)
+  cost          Int?
+  paymentStatus PaymentStatus @default(UNPAID)
+  amountPaid    Int?          @default(0)
+  termsAccepted Boolean       @default(true)
+  notes         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([source])
+  @@index([preferredPayment])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@index([customerId])
+}
+
+enum CustomerStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum OrderSource {
+  SHOP
+  DIRECT
+}
+
+enum PaymentMethod {
+  CASH
+  CHEQUE
+  CREDIT
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+}
+
+enum OrderStatus {
+  RECEIVED
+  IN_PROGRESS
+  READY
+  DELIVERED
+  CANCELLED
+}
+
 enum Role {
   CUSTOMER
   ADMIN

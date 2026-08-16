@@ -10,7 +10,10 @@ import {
   Smartphone,
   Wrench,
   ClipboardList,
+  ClipboardPlus,
+  BarChart3,
   UsersRound,
+  Contact,
   ExternalLink,
   LogOut,
   type LucideIcon,
@@ -25,6 +28,14 @@ const GROUPS: NavGroup[] = [
     items: [{ href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true }],
   },
   {
+    title: "Operations",
+    items: [
+      { href: "/admin/orders/new", label: "New Entry", icon: ClipboardPlus, exact: true },
+      { href: "/admin/orders", label: "Repair Orders", icon: ClipboardList, exact: true },
+      { href: "/admin/reports", label: "Reports", icon: BarChart3 },
+    ],
+  },
+  {
     title: "Catalog",
     items: [
       { href: "/admin/brands", label: "Brands", icon: Tag },
@@ -35,6 +46,7 @@ const GROUPS: NavGroup[] = [
   {
     title: "Customers",
     items: [
+      { href: "/admin/customers", label: "Customers", icon: Contact },
       { href: "/admin/bookings", label: "Bookings", icon: ClipboardList },
       { href: "/admin/users", label: "Users", icon: UsersRound },
     ],
@@ -60,7 +72,7 @@ export default function AdminShell({
     <div className="min-h-screen bg-paper-dim text-ink">
       <div className="flex w-full">
         {/* Sidebar */}
-        <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-ink/10 bg-paper px-4 py-5 lg:flex">
+        <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-ink/10 bg-paper px-4 py-5 lg:flex print:hidden">
           <Link href="/admin" className="flex items-center gap-2 px-2">
             <Image src="/logo.png" alt="BTS Lab" width={40} height={40} className="h-8 w-auto object-contain" />
             <span className="font-display text-lg font-extrabold tracking-tight">
@@ -68,27 +80,39 @@ export default function AdminShell({
             </span>
           </Link>
 
-          <nav className="mt-7 flex flex-1 flex-col gap-6 overflow-y-auto">
+          <nav className="mt-7 flex flex-1 flex-col gap-5 overflow-y-auto">
             {GROUPS.map((group) => (
               <div key={group.title}>
-                <p className="px-3 pb-1.5 font-mono-tag text-[10px] uppercase tracking-[0.18em] text-ink-soft">
+                <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-ink-soft/70">
                   {group.title}
                 </p>
-                <div className="flex flex-col gap-0.5">
-                  {group.items.map(({ href, label, icon: Icon, exact }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${
-                        active(href, exact)
-                          ? "bg-brand/10 text-brand"
-                          : "text-ink/70 hover:bg-ink/5 hover:text-ink"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4" />
-                      {label}
-                    </Link>
-                  ))}
+                {/* children indented under a guide line */}
+                <div className="ml-3 flex flex-col gap-0.5 border-l border-ink/10 pl-2.5">
+                  {group.items.map(({ href, label, icon: Icon, exact }) => {
+                    const isActive = active(href, exact);
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        className={`group relative flex items-center gap-3 rounded-lg py-2 pl-3 pr-3 text-sm transition-colors ${
+                          isActive
+                            ? "bg-brand/8 font-semibold text-brand"
+                            : "font-medium text-ink/65 hover:bg-ink/5 hover:text-ink"
+                        }`}
+                      >
+                        {/* professional active indicator: left rail sitting on the guide line */}
+                        {isActive && (
+                          <span className="absolute -left-2.75 top-1/2 h-5 w-0.75 -translate-y-1/2 rounded-full bg-brand" />
+                        )}
+                        <Icon
+                          className={`h-4 w-4 shrink-0 ${
+                            isActive ? "text-brand" : "text-ink-soft/70 group-hover:text-ink"
+                          }`}
+                        />
+                        {label}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             ))}
@@ -118,7 +142,7 @@ export default function AdminShell({
         {/* Main */}
         <main className="min-w-0 flex-1">
           {/* Mobile top nav */}
-          <header className="sticky top-0 z-10 border-b border-ink/10 bg-paper/90 backdrop-blur lg:hidden">
+          <header className="sticky top-0 z-10 border-b border-ink/10 bg-paper/90 backdrop-blur lg:hidden print:hidden">
             <div className="flex items-center justify-between px-4 py-3">
               <Link href="/admin" className="font-display text-base font-extrabold">
                 BTS <span className="text-brand">Admin</span>
