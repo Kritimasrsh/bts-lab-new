@@ -3,6 +3,8 @@ import { ClipboardPlus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import OrderFilters from "@/components/admin/OrderFilters";
+import Pagination from "@/components/admin/Pagination";
+import { PER_PAGE_OPTIONS, DEFAULT_PER_PAGE } from "@/components/admin/pagination-config";
 import {
   ORDER_STATUS_LABEL,
   ORDER_STATUS_STYLE,
@@ -51,17 +53,34 @@ function fmtDate(d: Date) {
   return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(d);
 }
 
+const toInt = (v: string | undefined, fallback: number) => {
+  const n = parseInt(v ?? "", 10);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+};
+
 export default async function OrdersPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   const where = buildWhere(sp);
-  const orders = await prisma.repairOrder.findMany({ where, orderBy: { createdAt: "desc" }, take: 300 });
+
+  const perPageRaw = toInt(one(sp.perPage), DEFAULT_PER_PAGE);
+  const perPage = PER_PAGE_OPTIONS.includes(perPageRaw) ? perPageRaw : DEFAULT_PER_PAGE;
+  const total = await prisma.repairOrder.count({ where });
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const page = Math.min(toInt(one(sp.page), 1), totalPages);
+
+  const orders = await prisma.repairOrder.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    skip: (page - 1) * perPage,
+    take: perPage,
+  });
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-extrabold tracking-tight">Repair Orders</h1>
-          <p className="mt-1 text-sm text-ink-soft">{orders.length} orders — newest first.</p>
+          <p className="mt-1 text-sm text-ink-soft">{total} orders — newest first.</p>
         </div>
         <Link
           href="/admin/orders/new"
@@ -126,6 +145,8 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
           ))
         )}
       </div>
+
+      <Pagination total={total} page={page} perPage={perPage} />
     </div>
   );
 }

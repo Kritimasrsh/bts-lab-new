@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 import OrderFilters from "@/components/admin/OrderFilters";
 import ReportActions from "@/components/admin/ReportActions";
+import Pagination from "@/components/admin/Pagination";
+import { PER_PAGE_OPTIONS, DEFAULT_PER_PAGE } from "@/components/admin/pagination-config";
 import {
   ORDER_STATUS_LABEL,
   ORDER_STATUS_STYLE,
@@ -59,22 +61,45 @@ function fmt(d: Date) {
   return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(d);
 }
 
+const toInt = (v: string | undefined, fallback: number) => {
+  const n = parseInt(v ?? "", 10);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+};
+
 export default async function ReportsPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   const where = buildWhere(sp);
 
-  const orders = await prisma.repairOrder.findMany({ where, orderBy: { createdAt: "desc" }, take: 1000 });
+  // Summary is computed over the FULL filtered set (not just the current page).
+  const [total, sums, delivered, creditAgg] = await Promise.all([
+    prisma.repairOrder.count({ where }),
+    prisma.repairOrder.aggregate({ where, _sum: { cost: true, amountPaid: true } }),
+    prisma.repairOrder.count({ where: { AND: [where, { status: "DELIVERED" }] } }),
+    prisma.repairOrder.aggregate({
+      where: { AND: [where, { preferredPayment: "CREDIT", paymentStatus: { in: ["UNPAID", "PARTIAL"] } }] },
+      _sum: { cost: true, amountPaid: true },
+    }),
+  ]);
 
-  const totalBilled = orders.reduce((s, o) => s + (o.cost ?? 0), 0);
-  const totalPaid = orders.reduce((s, o) => s + (o.amountPaid ?? 0), 0);
+  const totalBilled = sums._sum.cost ?? 0;
+  const totalPaid = sums._sum.amountPaid ?? 0;
   const outstanding = totalBilled - totalPaid;
-  const creditOutstanding = orders
-    .filter((o) => o.preferredPayment === "CREDIT" && o.paymentStatus !== "PAID")
-    .reduce((s, o) => s + ((o.cost ?? 0) - (o.amountPaid ?? 0)), 0);
-  const delivered = orders.filter((o) => o.status === "DELIVERED").length;
+  const creditOutstanding = (creditAgg._sum.cost ?? 0) - (creditAgg._sum.amountPaid ?? 0);
+
+  // Paginated table rows.
+  const perPageRaw = toInt(one(sp.perPage), DEFAULT_PER_PAGE);
+  const perPage = PER_PAGE_OPTIONS.includes(perPageRaw) ? perPageRaw : DEFAULT_PER_PAGE;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const page = Math.min(toInt(one(sp.page), 1), totalPages);
+  const orders = await prisma.repairOrder.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    skip: (page - 1) * perPage,
+    take: perPage,
+  });
 
   const tiles = [
-    { label: "Orders", value: String(orders.length) },
+    { label: "Orders", value: String(total) },
     { label: "Delivered", value: String(delivered), accent: "text-emerald-600" },
     { label: "Total billed", value: rs(totalBilled) },
     { label: "Collected", value: rs(totalPaid), accent: "text-emerald-600" },
@@ -89,7 +114,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
           <h1 className="font-display text-2xl font-extrabold tracking-tight">Reports</h1>
           <p className="mt-1 text-sm text-ink-soft">Filter repair orders, then export to Excel or print.</p>
         </div>
-        <ReportActions count={orders.length} />
+        <ReportActions count={total} />
       </div>
 
       <div className="mt-5 print:hidden">
@@ -157,6 +182,8 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
           </tbody>
         </table>
       </div>
+
+      <Pagination total={total} page={page} perPage={perPage} />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { CONTACT } from "@/lib/data/contact";
-import PrintButton from "@/components/admin/PrintButton";
+import DownloadPdfButton from "@/components/admin/DownloadPdfButton";
 import { PAYMENT_METHODS, PAYMENT_METHOD_LABEL, rs } from "@/components/admin/order-status";
 
 export const dynamic = "force-dynamic";
@@ -56,11 +56,11 @@ export default async function PrintRepairOrderPage({ params }: { params: Promise
         <Link href={`/admin/orders/${o.id}`} className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-brand">
           <ArrowLeft className="h-4 w-4" /> Back to order
         </Link>
-        <PrintButton />
+        <DownloadPdfButton targetId="repair-order-sheet" fileName={`BTS-Lab-Repair-Order-${o.labNo}.pdf`} />
       </div>
 
       {/* sheet */}
-      <div className="mx-auto max-w-[820px] bg-white p-10 text-black shadow-lg print:max-w-none print:p-6 print:shadow-none">
+      <div id="repair-order-sheet" className="mx-auto max-w-[820px] bg-white p-10 text-black shadow-lg print:max-w-none print:p-6 print:shadow-none">
         {/* header */}
         <div className="text-center">
           <h1 className="font-display text-3xl font-extrabold tracking-tight">BTS Lab</h1>

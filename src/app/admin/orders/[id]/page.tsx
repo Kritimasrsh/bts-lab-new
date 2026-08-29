@@ -61,7 +61,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
           target="_blank"
           className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand"
         >
-          <Printer className="h-4 w-4" /> Print form
+          <Printer className="h-4 w-4" /> Print / PDF
         </Link>
       </div>
 

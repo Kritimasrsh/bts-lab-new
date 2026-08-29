@@ -2,9 +2,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 
 export default function Loading() {
   return (
-    <div className="bg-paper">
+    <div className="bg-[#f6f3ef]">
       {/* header */}
-      <section className="border-b border-ink/10 bg-paper-dim">
+      <section className="border-b border-white/70">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12">
           <Skeleton className="h-3 w-56" />
           <Skeleton className="mt-5 h-9 w-72" />

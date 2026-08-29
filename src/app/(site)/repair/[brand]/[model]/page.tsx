@@ -31,26 +31,30 @@ export default async function ModelProblemPage({
   if (!m) notFound();
 
   return (
-    <div className="bg-paper">
+    <div className="relative overflow-hidden bg-[#f6f3ef]">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -left-28 -top-24 h-72 w-72 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+      </div>
       {/* header */}
-      <section className="border-b border-ink/10 bg-paper-dim">
+      <section className="relative border-b border-white/70">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12">
-          <nav className="flex flex-wrap items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink-soft">
-            <Link href="/repair" className="hover:text-brand">
+          <nav className="flex flex-wrap items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink/55">
+            <Link href="/repair" className="hover:text-[#e85d04]">
               Brands
             </Link>
             <ChevronRight className="h-3 w-3" />
-            <Link href={`/repair/${m.brand.slug}`} className="hover:text-brand">
+            <Link href={`/repair/${m.brand.slug}`} className="hover:text-[#e85d04]">
               {m.brand.name}
             </Link>
             <ChevronRight className="h-3 w-3" />
-            <span className="text-brand">{m.name}</span>
+            <span className="text-[#e85d04]">{m.name}</span>
           </nav>
 
           <h1 className="mt-5 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             What&apos;s the problem?
           </h1>
-          <p className="mt-2 text-sm text-ink-soft">
+          <p className="mt-2 text-sm text-ink/60">
             Select the issue(s) with your <span className="font-semibold text-ink">{m.name}</span>.
             Pick as many as apply, or describe it in your own words.
           </p>
@@ -58,7 +62,7 @@ export default async function ModelProblemPage({
       </section>
 
       {/* selector */}
-      <section className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12">
+      <section className="relative mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12">
         <ProblemSelector modelId={m.id} modelName={m.name} categories={categories} />
       </section>
     </div>

@@ -73,8 +73,8 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
 
   if (done) {
     return (
-      <div className="mx-auto max-w-lg rounded-2xl border border-ink/10 bg-paper p-8 text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand">
+      <div className="mx-auto max-w-lg rounded-3xl border border-white/70 bg-white/55 p-8 text-center shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ff6b1a]/10 text-[#e85d04]">
           <Check className="h-7 w-7" strokeWidth={3} />
         </span>
         <h2 className="mt-5 font-display text-2xl font-extrabold text-ink">Request received!</h2>
@@ -86,7 +86,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
         <button
           type="button"
           onClick={() => router.push("/")}
-          className="focus-ring mt-6 inline-flex items-center rounded-full bg-brand px-6 py-3 font-display text-sm font-bold text-paper transition hover:bg-brand-deep"
+          className="focus-ring mt-6 inline-flex items-center rounded-full bg-[#ff6b1a] px-6 py-3 font-display text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)] transition hover:bg-[#e85d04]"
         >
           Back to home
         </button>
@@ -101,7 +101,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
         <div className="space-y-8">
           {categories.map((cat) => (
             <fieldset key={cat.id}>
-              <legend className="font-mono-tag text-xs uppercase tracking-[0.2em] text-brand">
+              <legend className="font-mono-tag text-xs uppercase tracking-[0.2em] text-[#e85d04]">
                 {cat.name}
               </legend>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -112,13 +112,13 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                       key={p.id}
                       className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
                         isOn
-                          ? "border-brand bg-brand/10 text-ink"
-                          : "border-ink/10 bg-paper text-ink hover:border-brand/40 hover:bg-brand/5"
+                          ? "border-[#ff6b1a] bg-[#ff6b1a]/10 text-ink"
+                          : "border-white/70 bg-white/60 text-ink backdrop-blur-md hover:border-[#ff6b1a]/40 hover:bg-[#ff6b1a]/5"
                       }`}
                     >
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
-                          isOn ? "border-brand bg-brand text-paper" : "border-ink/25 bg-paper"
+                          isOn ? "border-[#ff6b1a] bg-[#ff6b1a] text-white" : "border-ink/25 bg-white"
                         }`}
                       >
                         {isOn && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
@@ -141,7 +141,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
 
       {/* sticky summary / note / submit */}
       <aside className="lg:sticky lg:top-28">
-        <div className="rounded-2xl border border-ink/10 bg-paper-dim p-5">
+        <div className="rounded-3xl border border-white/70 bg-white/55 p-5 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl">
           <p className="font-display text-sm font-bold text-ink">Your repair</p>
           <p className="mt-1 text-sm text-ink-soft">{modelName}</p>
 
@@ -152,7 +152,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
             {selectedNames.length > 0 ? (
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {selectedNames.map((n) => (
-                  <li key={n} className="rounded-full bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand">
+                  <li key={n} className="rounded-full bg-[#ff6b1a]/10 px-2.5 py-1 text-xs font-semibold text-[#e85d04]">
                     {n}
                   </li>
                 ))}
@@ -176,7 +176,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
               onChange={(e) => setCustomNote(e.target.value)}
               rows={4}
               placeholder="Anything else we should know? e.g. 'got wet and won't turn on since yesterday…'"
-              className="focus-ring mt-2 w-full resize-y rounded-xl border border-ink/15 bg-paper px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none"
+              className="focus-ring mt-2 w-full resize-y rounded-xl border border-white/70 bg-white/70 px-3.5 py-2.5 text-sm text-ink backdrop-blur-md placeholder:text-ink-soft/70 focus:border-[#ff6b1a] focus:outline-none"
             />
           </div>
 
@@ -186,8 +186,8 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
               <div className="skeleton h-24 rounded-xl" />
             ) : isAuthed ? (
               <>
-                <div className="flex items-center gap-2.5 rounded-xl bg-paper px-3 py-2.5">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <div className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/70 px-3 py-2.5 backdrop-blur-md">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ff6b1a]/10 text-[#e85d04]">
                     <User className="h-4 w-4" />
                   </span>
                   <div className="min-w-0">
@@ -202,7 +202,7 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                   type="button"
                   onClick={submit}
                   disabled={!canSubmit || submitting}
-                  className="focus-ring mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-display text-sm font-bold text-paper transition hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-40"
+                  className="focus-ring mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#ff6b1a] px-6 py-3.5 font-display text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)] transition hover:bg-[#e85d04] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {submitting ? (
                     <>
@@ -221,8 +221,8 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
               </>
             ) : (
               /* Not logged in require login to send the request */
-              <div className="rounded-xl border border-brand/20 bg-brand/5 p-4 text-center">
-                <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-brand">
+              <div className="rounded-xl border border-[#ff6b1a]/20 bg-[#ff6b1a]/5 p-4 text-center">
+                <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#ff6b1a]/10 text-[#e85d04]">
                   <Lock className="h-5 w-5" />
                 </span>
                 <p className="mt-3 font-display text-sm font-bold text-ink">
@@ -234,13 +234,13 @@ export default function ProblemSelector({ modelId, modelName, categories }: Prop
                 </p>
                 <Link
                   href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}
-                  className="focus-ring mt-4 inline-flex w-full items-center justify-center rounded-full bg-brand px-6 py-3 font-display text-sm font-bold text-paper transition hover:bg-brand-deep"
+                  className="focus-ring mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#ff6b1a] px-6 py-3 font-display text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)] transition hover:bg-[#e85d04]"
                 >
                   Log in to continue
                 </Link>
                 <Link
                   href={`/register?callbackUrl=${encodeURIComponent(pathname)}`}
-                  className="mt-2 inline-block text-xs font-semibold text-brand hover:underline"
+                  className="mt-2 inline-block text-xs font-semibold text-[#e85d04] hover:underline"
                 >
                   New here? Create an account
                 </Link>

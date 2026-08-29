@@ -50,14 +50,18 @@ export default function FAQ() {
   const current = FAQS[active] ?? FAQS[0];
 
   return (
-    <section id="faq" className="scroll-mt-24 bg-paper py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="faq" className="relative scroll-mt-24 overflow-hidden bg-[#f6f3ef] py-20 sm:py-24">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         {/* Heading */}
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-            Questions, <span className="text-brand">answered.</span>
+            Questions, <span className="text-[#e85d04]">answered.</span>
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-ink-soft sm:text-base">
+          <p className="mt-3 text-sm leading-relaxed text-ink/70 sm:text-base">
             Everything customers ask before their first repair. Can&apos;t find yours? Our team
             replies within a day.
           </p>
@@ -73,26 +77,24 @@ export default function FAQ() {
                   key={index}
                   layout
                   transition={{ duration: 0.25 }}
-                  className={`overflow-hidden rounded-2xl border transition-colors ${
+                  className={`overflow-hidden rounded-3xl border backdrop-blur-xl transition-colors ${
                     isOpen
-                      ? "border-transparent bg-ink text-paper shadow-[0_24px_48px_-28px_rgba(13,43,46,0.6)]"
-                      : "glass glass-hover border-ink/10"
+                      ? "border-white/70 bg-white/70 text-ink shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)]"
+                      : "glass-hover border-white/70 bg-white/55"
                   }`}
                 >
                   <button
                     onClick={() => setActive(index)}
                     className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
                   >
-                    <span
-                      className={`font-display text-sm font-bold md:text-base ${
-                        isOpen ? "text-paper" : "text-ink"
-                      }`}
-                    >
+                    <span className="font-display text-sm font-bold text-ink md:text-base">
                       {faq.question}
                     </span>
                     <span
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
-                        isOpen ? "bg-brand text-paper" : "bg-brand/10 text-brand"
+                        isOpen
+                          ? "bg-[#ff6b1a] text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)]"
+                          : "bg-[#ff6b1a]/10 text-[#e85d04]"
                       }`}
                     >
                       {isOpen ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
@@ -113,7 +115,7 @@ export default function FAQ() {
                           <div className="relative mb-4 aspect-video overflow-hidden rounded-xl">
                             <Image src={faq.image} alt={faq.question} fill className="object-cover" />
                           </div>
-                          <p className="text-sm leading-6 text-paper/80">{faq.answer}</p>
+                          <p className="text-sm leading-6 text-ink/70">{faq.answer}</p>
                         </div>
                       </motion.div>
                     )}
@@ -125,7 +127,7 @@ export default function FAQ() {
 
           {/* RIGHT — image + answer panel (desktop) */}
           <div className="hidden lg:block lg:sticky lg:top-28">
-            <div className="glass overflow-hidden rounded-3xl">
+            <div className="overflow-hidden rounded-3xl border border-white/70 bg-white/55 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl">
               <div className="relative aspect-[16/11] w-full overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -137,7 +139,7 @@ export default function FAQ() {
                     className="absolute inset-0"
                   >
                     <Image src={current.image} alt={current.question} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -151,7 +153,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3 }}
                   >
                     <h3 className="font-display text-xl font-extrabold text-ink">{current.question}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-soft">{current.answer}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-ink/70">{current.answer}</p>
                   </motion.div>
                 </AnimatePresence>
               </div>

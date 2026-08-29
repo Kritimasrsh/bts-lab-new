@@ -42,24 +42,33 @@ export default function BlogPage() {
         desc="Practical advice from our technicians, straight from the workbench."
       />
 
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-        <div className="grid gap-6 sm:grid-cols-2">
-          {POSTS.map((post) => (
-            <article key={post.title} className="ticket hover-lift flex flex-col p-6">
-              <span className="inline-flex w-fit items-center rounded-full bg-violet/10 px-3 py-1 font-mono-tag text-xs font-bold uppercase tracking-wide text-violet">
-                {post.tag}
-              </span>
-              <h2 className="mt-4 font-display text-xl font-bold leading-snug text-ink">
-                {post.title}
-              </h2>
-              <p className="mt-2 font-sans text-sm leading-relaxed text-ink-soft">
-                {post.desc}
-              </p>
-              <p className="mt-4 font-mono-tag text-xs uppercase tracking-wide text-ink-soft">
-                {post.date}
-              </p>
-            </article>
-          ))}
+      <section className="relative overflow-hidden bg-[#f6f3ef]">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -left-28 -top-24 h-72 w-72 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+          <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8">
+          <div className="grid gap-6 sm:grid-cols-2">
+            {POSTS.map((post) => (
+              <article
+                key={post.title}
+                className="flex flex-col rounded-3xl border border-white/70 bg-white/55 p-6 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1"
+              >
+                <span className="inline-flex w-fit items-center rounded-full bg-[#ff6b1a]/10 px-3 py-1 font-mono-tag text-xs font-bold uppercase tracking-wide text-[#e85d04]">
+                  {post.tag}
+                </span>
+                <h2 className="mt-4 font-display text-xl font-bold leading-snug text-ink">
+                  {post.title}
+                </h2>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-ink/60">
+                  {post.desc}
+                </p>
+                <p className="mt-4 font-mono-tag text-xs uppercase tracking-wide text-ink/55">
+                  {post.date}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

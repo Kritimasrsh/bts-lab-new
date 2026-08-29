@@ -34,7 +34,7 @@ function FramedVisual({
 }) {
   const num = String(index + 1).padStart(2, "0");
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-ink/10 shadow-[0_30px_60px_-30px_rgba(13,43,46,0.5)]">
+    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/70 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)]">
       <Image
         src={image}
         alt={`${title} — repair at BTS Lab`}
@@ -43,10 +43,10 @@ function FramedVisual({
         className="object-cover"
       />
       {/* brand wash unifies the varied source photos */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-brand/45 via-brand/5 to-transparent mix-blend-multiply" />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#ff6b1a]/35 via-[#ff6b1a]/5 to-transparent mix-blend-multiply" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
 
-      <span className="absolute left-5 top-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-paper/95 font-display text-sm font-extrabold text-brand shadow-md backdrop-blur">
+      <span className="absolute left-5 top-5 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/70 bg-white/90 font-display text-sm font-extrabold text-[#e85d04] shadow-md backdrop-blur">
         {num}
       </span>
     </div>
@@ -55,8 +55,13 @@ function FramedVisual({
 
 export default function ServicesShowcase() {
   return (
-    <section id="what-we-fix" className="relative scroll-mt-24 bg-paper py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="what-we-fix" className="relative scroll-mt-24 overflow-hidden bg-[#f6f3ef] py-20 sm:py-24">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -left-24 top-24 h-80 w-80 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+        <div className="absolute -right-24 bottom-24 h-80 w-80 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         {/* animated statement */}
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal
@@ -91,8 +96,8 @@ export default function ServicesShowcase() {
                 {/* content */}
                 <div className={flip ? "lg:order-1" : ""}>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono-tag text-sm font-bold text-brand/50">{num}</span>
-                    <span className="font-mono-tag text-[11px] uppercase tracking-[0.2em] text-brand">
+                    <span className="font-mono-tag text-sm font-bold text-[#e85d04]/50">{num}</span>
+                    <span className="font-mono-tag text-[11px] uppercase tracking-[0.2em] text-[#e85d04]">
                       {s.tagline}
                     </span>
                   </div>
@@ -100,14 +105,14 @@ export default function ServicesShowcase() {
                   <h3 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
                     {s.title}
                   </h3>
-                  <p className="mt-4 max-w-lg text-base leading-relaxed text-ink-soft">
+                  <p className="mt-4 max-w-lg text-base leading-relaxed text-ink/60">
                     {s.desc}
                   </p>
 
                   <ul className="mt-6 grid gap-x-6 gap-y-3 sm:grid-cols-2">
                     {s.covers.map((c) => (
-                      <li key={c} className="flex items-center gap-2.5 text-sm text-ink/80">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                      <li key={c} className="flex items-center gap-2.5 text-sm text-ink/70">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#ff6b1a]/10 text-[#e85d04]">
                           <Check className="h-3 w-3" strokeWidth={3} />
                         </span>
                         {c}
@@ -116,17 +121,17 @@ export default function ServicesShowcase() {
                   </ul>
 
                   {/* professional spec strip */}
-                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl border border-ink/10 bg-paper-dim px-5 py-4">
+                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl border border-white/70 bg-white/55 px-5 py-4 backdrop-blur-xl">
                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-ink">
-                      <Clock className="h-4 w-4 text-brand" /> {s.turnaround}
+                      <Clock className="h-4 w-4 text-[#e85d04]" /> {s.turnaround}
                     </span>
                     <span className="hidden h-4 w-px bg-ink/15 sm:block" />
                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-ink">
-                      <ShieldCheck className="h-4 w-4 text-brand" /> 90-day warranty
+                      <ShieldCheck className="h-4 w-4 text-[#e85d04]" /> 90-day warranty
                     </span>
                     <span className="hidden h-4 w-px bg-ink/15 sm:block" />
                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-ink">
-                      <BadgeCheck className="h-4 w-4 text-brand" /> Genuine parts
+                      <BadgeCheck className="h-4 w-4 text-[#e85d04]" /> Genuine parts
                     </span>
                   </div>
 

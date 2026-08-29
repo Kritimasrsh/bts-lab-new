@@ -81,13 +81,13 @@ export default function RegisterForm() {
   }
 
   const inputCls =
-    "focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none";
+    "focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-[#ff6b1a] focus:outline-none";
   const confirmCls = `focus-ring w-full rounded-xl border bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:outline-none ${
     showMismatch
       ? "border-red-400 focus:border-red-500"
       : showMatch
       ? "border-emerald-400 focus:border-emerald-500"
-      : "border-ink/15 focus:border-brand"
+      : "border-ink/15 focus:border-[#ff6b1a]"
   }`;
 
   return (
@@ -207,7 +207,7 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={loading}
-          className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-display text-sm font-bold text-paper transition hover:bg-brand-deep disabled:opacity-60"
+          className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#ff6b1a] px-6 py-3.5 font-display text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)] transition hover:bg-[#e85d04] disabled:opacity-60"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           Create account
@@ -218,7 +218,7 @@ export default function RegisterForm() {
         Already have an account?{" "}
         <Link
           href={`/login${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
-          className="font-semibold text-brand hover:underline"
+          className="font-semibold text-[#e85d04] hover:underline"
         >
           Sign in
         </Link>

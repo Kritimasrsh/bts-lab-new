@@ -28,8 +28,13 @@ const container: Variants = {
 
 export default function ServiceSteps() {
   return (
-    <section id="how-it-works" className="scroll-mt-24 bg-paper-dim py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="how-it-works" className="relative scroll-mt-24 overflow-hidden bg-[#f6f3ef] py-20 sm:py-24">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+        <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <h2 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Four steps, zero surprises.
@@ -45,11 +50,11 @@ export default function ServiceSteps() {
         >
           {STEPS.map((step) => (
             <motion.div key={step.n} variants={item} className="relative">
-              <span className="font-display text-5xl font-extrabold text-brand/15">
+              <span className="font-display text-5xl font-extrabold text-[#ff6b1a]/20">
                 {step.n}
               </span>
               <h3 className="mt-2 font-display text-lg font-bold text-ink">{step.t}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{step.d}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{step.d}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -60,16 +65,16 @@ export default function ServiceSteps() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="brand-gradient mt-16 grid grid-cols-2 gap-x-8 gap-y-10 rounded-3xl px-8 py-12 lg:grid-cols-4"
+          className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 rounded-3xl border border-white/70 bg-white/55 px-8 py-12 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl lg:grid-cols-4"
         >
           {STATS.map((s) => (
             <div key={s.name} className="flex items-center justify-center gap-3 lg:justify-start">
-              <StatIcon name={s.name} className="h-9 w-9 shrink-0 text-paper" />
+              <StatIcon name={s.name} className="h-9 w-9 shrink-0 text-[#e85d04]" />
               <div className="text-left">
-                <span className="block font-display text-2xl font-extrabold leading-none text-paper">
+                <span className="block font-display text-2xl font-extrabold leading-none text-ink">
                   {s.value}
                 </span>
-                <span className="mt-1 block whitespace-nowrap font-mono-tag text-[10px] font-bold uppercase tracking-widest text-paper/75">
+                <span className="mt-1 block whitespace-nowrap font-mono-tag text-[10px] font-bold uppercase tracking-widest text-ink/55">
                   {s.label}
                 </span>
               </div>

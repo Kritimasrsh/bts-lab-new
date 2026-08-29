@@ -8,9 +8,9 @@ const BRANDS = [
 export default function BrandStrip() {
   const row = [...BRANDS, ...BRANDS];
   return (
-    <section className="border-y border-ink/10 bg-paper py-12">
+    <section className="border-y border-white/70 bg-[#f6f3ef] py-12">
       <div className="mx-auto max-w-7xl px-5 text-center sm:px-8">
-        <p className="font-mono-tag text-[11px] uppercase tracking-[0.22em] text-ink-soft">
+        <p className="font-mono-tag text-[11px] uppercase tracking-[0.22em] text-ink/55">
           Every major brand. If it powers on (or doesn&apos;t), we fix it
         </p>
       </div>

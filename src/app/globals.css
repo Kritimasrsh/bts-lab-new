@@ -57,6 +57,22 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* ---- Glassmorphism primitives (light theme) ---- */
+@utility glass-card {
+  border-radius: var(--radius-3xl);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  background-color: rgb(255 255 255 / 0.55);
+  box-shadow: 0 20px 50px -24px rgb(180 100 40 / 0.35);
+  backdrop-filter: blur(24px) saturate(1.5);
+}
+
+@utility glass-chip {
+  border-radius: calc(infinity * 1px);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  background-color: rgb(255 255 255 / 0.5);
+  backdrop-filter: blur(12px);
+}
+
 @theme inline {
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);

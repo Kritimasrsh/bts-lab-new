@@ -33,49 +33,63 @@ export default function ShopPage() {
         desc="Accessories to protect what you've got, and verified refurbished phones if you're ready for something new."
       />
 
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-        <Reveal>
-          <h2 className="font-display text-2xl font-extrabold sm:text-3xl">Accessories</h2>
-        </Reveal>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {ACCESSORIES.map((product, i) => (
-            <Reveal key={product.name} delay={0.05 * i} className="h-full">
-              <div className="glass glass-hover h-full rounded-2xl p-6">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-ink/12 bg-paper text-2xl">
-                  {product.icon}
-                </span>
-                <h3 className="mt-5 font-display text-base font-bold">{product.name}</h3>
-                <p className="mt-1 font-mono-tag text-sm text-ink-soft">
-                  from {product.price}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+      <section className="relative overflow-hidden bg-[#f6f3ef]">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -left-28 -top-24 h-72 w-72 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+          <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8">
+          <Reveal>
+            <h2 className="font-display text-2xl font-extrabold text-ink sm:text-3xl">Accessories</h2>
+          </Reveal>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {ACCESSORIES.map((product, i) => (
+              <Reveal key={product.name} delay={0.05 * i} className="h-full">
+                <div className="h-full rounded-3xl border border-white/70 bg-white/55 p-6 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/70 bg-white/60 text-2xl backdrop-blur-md">
+                    {product.icon}
+                  </span>
+                  <h3 className="mt-5 font-display text-base font-bold text-ink">{product.name}</h3>
+                  <p className="mt-1 font-mono-tag text-sm text-ink/55">
+                    from {product.price}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="border-y border-ink/10 bg-paper-dim">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+      <section className="relative overflow-hidden bg-[#f6f3ef]">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -right-32 -top-20 h-80 w-80 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+          <div className="absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8">
           <Reveal>
-            <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
+            <h2 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">
               Verified, tested, guaranteed.
             </h2>
           </Reveal>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {PHONES.map((phone, i) => (
-              <Reveal key={phone.name} delay={0.08 * i} className="glass rounded-2xl">
+              <Reveal
+                key={phone.name}
+                delay={0.08 * i}
+                className="rounded-3xl border border-white/70 bg-white/55 shadow-[0_20px_50px_-24px_rgba(180,100,40,0.35)] backdrop-blur-xl"
+              >
                 <div className="p-6">
-                  <h3 className="font-display text-lg font-bold">{phone.name}</h3>
-                  <span className="mt-2 inline-block rounded-full bg-mint px-3 py-1 font-mono-tag text-xs font-bold text-ink">
+                  <h3 className="font-display text-lg font-bold text-ink">{phone.name}</h3>
+                  <span className="mt-2 inline-block rounded-full bg-[#ff6b1a]/10 px-3 py-1 font-mono-tag text-xs font-bold text-[#e85d04]">
                     {phone.grade}
                   </span>
                 </div>
                 <div className="ticket-perf mx-6" />
                 <div className="flex items-center justify-between px-6 py-4">
-                  <span className="font-mono-tag text-xs text-ink-soft">
+                  <span className="font-mono-tag text-xs text-ink/55">
                     30-day warranty
                   </span>
-                  <span className="font-display text-sm font-bold">
+                  <span className="font-display text-sm font-bold text-ink">
                     {phone.price}
                   </span>
                 </div>

@@ -31,21 +31,25 @@ export default async function BrandModelsPage({
   const totalModels = groups.reduce((n, g) => n + g.models.length, 0);
 
   return (
-    <div className="bg-paper">
+    <div className="relative overflow-hidden bg-[#f6f3ef]">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute -left-28 -top-24 h-72 w-72 rounded-full bg-[#ff6b1a]/10 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-[#2fa89a]/10 blur-3xl" />
+      </div>
       {/* header */}
-      <section className="border-b border-ink/10 bg-paper-dim">
+      <section className="relative border-b border-white/70">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
-          <nav className="flex items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink-soft">
-            <Link href="/repair" className="hover:text-brand">
+          <nav className="flex items-center gap-2 font-mono-tag text-xs uppercase tracking-widest text-ink/55">
+            <Link href="/repair" className="hover:text-[#e85d04]">
               Brands
             </Link>
             <ChevronRight className="h-3 w-3" />
-            <span className="text-brand">{b.name}</span>
+            <span className="text-[#e85d04]">{b.name}</span>
           </nav>
 
           <div className="mt-5 flex items-center gap-4">
             {b.logo && (
-              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-ink/10 bg-paper p-2.5">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/70 bg-white/60 p-2.5 backdrop-blur-md">
                 <Image
                   src={b.logo}
                   alt={b.name}
@@ -59,7 +63,7 @@ export default async function BrandModelsPage({
               <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
                 Select your {b.name} model
               </h1>
-              <p className="mt-1 text-sm text-ink-soft">
+              <p className="mt-1 text-sm text-ink/55">
                 {totalModels} models · choose yours to see repair options
               </p>
             </div>
@@ -68,11 +72,11 @@ export default async function BrandModelsPage({
       </section>
 
       {/* model groups */}
-      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
+      <section className="relative mx-auto max-w-7xl px-5 py-12 sm:px-8">
         {groups.length === 0 && (
-          <p className="text-ink-soft">
+          <p className="text-ink/55">
             No models listed yet.{" "}
-            <Link href="/contact" className="font-semibold text-brand hover:underline">
+            <Link href="/contact" className="font-semibold text-[#e85d04] hover:underline">
               Contact us
             </Link>{" "}
             and we&apos;ll sort you out.
@@ -82,7 +86,7 @@ export default async function BrandModelsPage({
         <div className="space-y-10">
           {groups.map((group) => (
             <div key={group.series}>
-              <h2 className="font-mono-tag text-xs uppercase tracking-[0.2em] text-ink-soft">
+              <h2 className="font-mono-tag text-xs uppercase tracking-[0.2em] text-ink/55">
                 {group.series}
               </h2>
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -90,16 +94,16 @@ export default async function BrandModelsPage({
                   <Link
                     key={model.id}
                     href={`/repair/${b.slug}/${model.slug}`}
-                    className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-ink/10 bg-paper px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-brand/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                    className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-white/70 bg-white/60 px-5 py-4 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-[#ff6b1a]/40 hover:bg-[#ff6b1a]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b1a]"
                   >
-                    <span className="font-display text-[15px] font-bold text-ink transition-colors group-hover:text-brand">
+                    <span className="font-display text-[15px] font-bold text-ink transition-colors group-hover:text-[#e85d04]">
                       {model.name}
                     </span>
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink/5 text-ink-soft transition-all group-hover:bg-brand group-hover:text-paper">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink/5 text-ink/55 transition-all group-hover:bg-[#ff6b1a] group-hover:text-white">
                       <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
                     {/* left accent bar on hover */}
-                    <span className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-brand transition-transform duration-200 group-hover:scale-y-100" />
+                    <span className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-[#ff6b1a] transition-transform duration-200 group-hover:scale-y-100" />
                   </Link>
                 ))}
               </div>
@@ -110,7 +114,7 @@ export default async function BrandModelsPage({
         <div className="mt-12">
           <Link
             href="/repair"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-ink-soft hover:text-brand"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-ink/55 hover:text-[#e85d04]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to all brands

@@ -62,7 +62,7 @@ export default function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none"
+            className="focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-[#ff6b1a] focus:outline-none"
           />
         </div>
 
@@ -81,7 +81,7 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 pr-11 text-sm text-ink placeholder:text-ink-soft/70 focus:border-brand focus:outline-none"
+              className="focus-ring w-full rounded-xl border border-ink/15 bg-paper px-4 py-3 pr-11 text-sm text-ink placeholder:text-ink-soft/70 focus:border-[#ff6b1a] focus:outline-none"
             />
             <button
               type="button"
@@ -97,7 +97,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-display text-sm font-bold text-paper transition hover:bg-brand-deep disabled:opacity-60"
+          className="focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#ff6b1a] px-6 py-3.5 font-display text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgba(232,93,4,0.7)] transition hover:bg-[#e85d04] disabled:opacity-60"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           Sign in
@@ -108,7 +108,7 @@ export default function LoginForm() {
         Don&apos;t have an account?{" "}
         <Link
           href={`/register${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
-          className="font-semibold text-brand hover:underline"
+          className="font-semibold text-[#e85d04] hover:underline"
         >
           Create one
         </Link>
